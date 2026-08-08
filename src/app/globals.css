@@ -1,0 +1,366 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand — sampled from the Future Builders logomark and social assets:
+     deep navy → bright blue → cyan, on a pale blue-white ground. */
+  --color-ink: #061635;
+  --color-navy: #0a2050;
+  --color-navy-soft: #123072;
+
+  --color-paper: #ffffff;
+  --color-cloud: #f1f6fd;
+  --color-mist: #e3ecf9;
+  --color-line: #dbe6f6;
+
+  --color-brand: #112f73;
+  --color-accent: #1e6be8;
+  --color-accent-bright: #4ab8ff;
+  --color-accent-sky: #2e90ff;
+
+  --font-sans: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.75rem, 7vw, 5.5rem);
+  --text-h1: clamp(2.25rem, 5vw, 4rem);
+  --text-h2: clamp(1.875rem, 3.6vw, 3rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.625rem);
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+  --page: #ffffff;
+  --page-fg: #0e2450;
+  --muted-fg: #52678f;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--page);
+  color: var(--page-fg);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-accent) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  /* Layout ---------------------------------------------------------------- */
+  .shell {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  .section {
+    padding-block: clamp(4.5rem, 9vw, 8.5rem);
+  }
+
+  /* Type ------------------------------------------------------------------ */
+  .display {
+    font-size: var(--text-display);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+  .h1 {
+    font-size: var(--text-h1);
+    line-height: 1.06;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+  }
+  .h2 {
+    font-size: var(--text-h2);
+    line-height: 1.1;
+    letter-spacing: -0.024em;
+    font-weight: 600;
+  }
+  .h3 {
+    font-size: var(--text-h3);
+    line-height: 1.28;
+    letter-spacing: -0.014em;
+    font-weight: 500;
+  }
+  .lede {
+    font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
+    line-height: 1.65;
+    color: var(--muted-fg);
+  }
+
+  /* Eyebrow --------------------------------------------------------------- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .eyebrow::before {
+    content: "";
+    inline-size: 1.5rem;
+    block-size: 1px;
+    background: linear-gradient(
+      to right,
+      var(--color-accent),
+      var(--color-accent-bright)
+    );
+  }
+  .on-dark .eyebrow {
+    color: var(--color-accent-bright);
+  }
+
+  /* Buttons --------------------------------------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.9375rem 1.5rem;
+    transition:
+      transform 0.25s var(--ease-out-soft),
+      background-color 0.25s,
+      border-color 0.25s,
+      color 0.25s,
+      box-shadow 0.25s;
+    white-space: nowrap;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-image: linear-gradient(
+      100deg,
+      var(--color-brand) 0%,
+      var(--color-accent) 55%,
+      var(--color-accent-sky) 100%
+    );
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.2) inset,
+      0 12px 28px -14px color-mix(in oklab, var(--color-accent) 85%, transparent);
+  }
+  .btn-primary:hover {
+    box-shadow:
+      0 1px 0 0 rgb(255 255 255 / 0.25) inset,
+      0 20px 40px -16px color-mix(in oklab, var(--color-accent) 95%, transparent);
+  }
+
+  .btn-ghost {
+    color: var(--color-brand);
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.7);
+    backdrop-filter: blur(6px);
+  }
+  .btn-ghost:hover {
+    border-color: color-mix(in oklab, var(--color-accent) 50%, var(--color-line));
+    background: #fff;
+  }
+
+  .on-dark .btn-ghost {
+    color: #fff;
+    border-color: rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 0.04);
+  }
+  .on-dark .btn-ghost:hover {
+    border-color: rgb(255 255 255 / 0.45);
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  /* Surfaces -------------------------------------------------------------- */
+  .card {
+    position: relative;
+    border-radius: 1.125rem;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.86);
+    backdrop-filter: blur(8px);
+    padding: 1.75rem;
+    transition:
+      border-color 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s var(--ease-out-soft);
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-line));
+    box-shadow: 0 26px 50px -32px rgb(11 42 107 / 0.35);
+  }
+
+  .on-dark .card {
+    border-color: rgb(255 255 255 / 0.12);
+    background: rgb(255 255 255 / 0.04);
+  }
+  .on-dark .card:hover {
+    border-color: rgb(255 255 255 / 0.28);
+    box-shadow: 0 30px 60px -40px rgb(0 0 0 / 0.9);
+  }
+
+  .on-dark {
+    --page-fg: #ffffff;
+    --muted-fg: #9fb3d8;
+    --color-line: rgb(255 255 255 / 0.14);
+    color: #fff;
+  }
+
+  /* Field ----------------------------------------------------------------- */
+  .field-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.5rem;
+    color: var(--color-brand);
+  }
+  .field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-line);
+    background: #fff;
+    padding: 0.8125rem 1rem;
+    font-size: 0.9375rem;
+    color: var(--page-fg);
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .field::placeholder {
+    color: color-mix(in oklab, var(--muted-fg) 65%, transparent);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+  .on-dark .field-label {
+    color: #fff;
+  }
+  .on-dark .field {
+    background: rgb(255 255 255 / 0.05);
+    color: #fff;
+  }
+
+  /* Gradient text — navy → blue, mirroring the social artwork ------------- */
+  .grad-text {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-brand) 0%,
+      var(--color-accent) 55%,
+      var(--color-accent-sky) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .on-dark .grad-text {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-accent-bright) 0%,
+      var(--color-accent-sky) 55%,
+      #9dc7ff 100%
+    );
+  }
+
+  /* Decoration ------------------------------------------------------------ */
+  .grid-veil {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgb(11 42 107 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(11 42 107 / 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 50% 35%, #000 0%, transparent 72%);
+    pointer-events: none;
+  }
+  .on-dark .grid-veil {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(90px);
+    pointer-events: none;
+    opacity: 0.45;
+  }
+
+  /* Pale blue ground used by the hero and other light feature sections.
+     Mirrors the social artwork: blue-tinted body, brighter down the middle. */
+  .brand-sky {
+    background:
+      radial-gradient(
+        70% 55% at 50% 30%,
+        rgb(255 255 255 / 0.85) 0%,
+        rgb(255 255 255 / 0) 100%
+      ),
+      linear-gradient(168deg, #dbe6fa 0%, #e6eefc 45%, #eef4fe 100%);
+  }
+}
+
+/* Marquee ----------------------------------------------------------------- */
+@keyframes fb-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: fb-marquee 42s linear infinite;
+}
+[dir="rtl"] .marquee-track {
+  animation-direction: reverse;
+}
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
