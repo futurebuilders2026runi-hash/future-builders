@@ -39,7 +39,7 @@ export const he: Dict = {
   hero: {
     badge: "אוניברסיטת רייכמן · בית הספר למדעי המחשב",
     titleLead: "לבנות את העתיד",
-    titleAccent: "עם AI.‎",
+    titleAccent: "עם AI‎",
     body: "Future Builders הוא מועדון AI לסטודנטים נבחרים למדעי המחשב באוניברסיטת רייכמן, המשלב טכנולוגיה, מוצר ועבודה מעשית על מוצרי AI אמיתיים.",
     primaryCta: "הגשת מועמדות",
     secondaryCta: "לתוכנית המלאה",
