@@ -2,7 +2,7 @@ export const en = {
   meta: {
     title: "Future Builders | AI Club at Reichman University",
     description:
-      "Future Builders is a selective AI program for Computer Science students at Reichman University, taking students from idea to working AI product.",
+      "Reichman University's AI club — learn, build, and turn ideas into real AI products.",
     keywords: [
       "AI Club Reichman",
       "Reichman AI",

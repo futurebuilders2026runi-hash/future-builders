@@ -58,11 +58,23 @@ export async function generateMetadata({
       description: dict.meta.description,
       url: `/${lang}`,
       locale: lang === "he" ? "he_IL" : "en_US",
+      images: [
+        {
+          url: "/og.png",
+          width: 1536,
+          height: 1024,
+          alt:
+            lang === "he"
+              ? "Future Builders — מועדון ה-AI של אוניברסיטת רייכמן"
+              : "Future Builders — AI Club at Reichman University",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: dict.meta.title,
       description: dict.meta.description,
+      images: ["/og.png"],
     },
   };
 }
