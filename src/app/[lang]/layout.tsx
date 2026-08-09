@@ -34,9 +34,14 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) return {};
   const dict = getDict(lang);
+  const deploymentHost =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+  const metadataBase = new URL(
+    deploymentHost ? `https://${deploymentHost}` : contact.siteUrl,
+  );
 
   return {
-    metadataBase: new URL(contact.siteUrl),
+    metadataBase,
     title: {
       default: dict.meta.title,
       template: "%s",
