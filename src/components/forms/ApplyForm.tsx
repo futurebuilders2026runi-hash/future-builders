@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Select, Text, TextArea } from "./Fields";
 import { applicationLimits, degreeValues, yearValues, validateApplication, type ApplicationError } from "@/lib/application-schema";
@@ -16,6 +16,18 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
   const f = t.fields;
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string>("");
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (status !== "sent") return;
+    const confirmation = successRef.current;
+    if (!confirmation) return;
+    confirmation.focus({ preventScroll: true });
+    confirmation.scrollIntoView({
+      block: "center",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
+  }, [status]);
 
   function errorMessage(error: string) {
     const messages: Record<ApplicationError, string> = {
@@ -58,8 +70,6 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
         return;
       }
       setStatus("sent");
-      form.reset();
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       setStatus("error");
       setMessage("");
@@ -69,6 +79,11 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
   if (status === "sent") {
     return (
       <motion.div
+        ref={successRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        tabIndex={-1}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}

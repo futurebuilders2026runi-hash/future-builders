@@ -382,9 +382,8 @@ export const en = {
     },
     submit: "Submit registration",
     submitting: "Sending…",
-    successTitle: "Application received.",
-    successBody:
-      "We'll contact selected applicants regarding the next stage. In the meantime, feel free to follow us for updates.",
+    successTitle: "You’re registered!",
+    successBody: "We’ve received your registration. We’ll be in touch with details about the next step.",
     successCta: "Back to home",
     errorTitle: "Something went wrong.",
     errorBody: "Please try again, or contact us on WhatsApp.",

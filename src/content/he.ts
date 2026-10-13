@@ -376,9 +376,8 @@ export const he: Dict = {
     },
     submit: "שליחת הרשמה",
     submitting: "שולח…",
-    successTitle: "המועמדות התקבלה.",
-    successBody:
-      "ניצור קשר עם המועמדים הנבחרים לגבי השלב הבא. בינתיים מוזמנים לעקוב אחרינו לעדכונים.",
+    successTitle: "נרשמת בהצלחה!",
+    successBody: "ההרשמה שלך התקבלה. ניצור איתך קשר בהמשך עם פרטים על השלב הבא.",
     successCta: "חזרה לדף הבית",
     errorTitle: "משהו השתבש.",
     errorBody: "נסו שוב, או פנו אלינו ב־WhatsApp.",
