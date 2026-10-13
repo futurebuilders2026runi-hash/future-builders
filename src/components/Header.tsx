@@ -141,7 +141,7 @@ export function Header({ locale, dict }: Props) {
             className="brand-sky fixed inset-0 z-40 pt-[4.5rem] lg:hidden"
           >
             <div className="shell flex h-full flex-col justify-between py-8">
-              <nav className="flex flex-col" aria-label={dict.nav.menu}>
+              <nav className="flex flex-col text-center md:text-start" aria-label={dict.nav.menu}>
                 {links.map((link, i) => (
                   <motion.div
                     key={link.href}

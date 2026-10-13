@@ -72,11 +72,11 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="rounded-2xl border border-line bg-white p-10 text-center"
+        className="rounded-2xl border border-line bg-white p-6 text-center"
       >
         <span
           aria-hidden
-          className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-full bg-linear-to-br from-accent-bright to-accent"
+          className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-linear-to-br from-accent-bright to-accent"
         >
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
             <path
@@ -89,8 +89,8 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
           </svg>
         </span>
         <h2 className="h2">{t.successTitle}</h2>
-        <p className="lede mx-auto mt-4 max-w-md">{t.successBody}</p>
-        <Link href={`/${locale}`} className="btn btn-ghost mt-8">
+        <p className="lede mx-auto mt-3 max-w-md">{t.successBody}</p>
+        <Link href={`/${locale}`} className="btn btn-ghost mt-5">
           {t.successCta}
         </Link>
       </motion.div>
@@ -102,14 +102,14 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       onSubmit={onSubmit}
       noValidate
       aria-busy={status === "sending"}
-      className="rounded-2xl border border-line bg-white p-6 sm:p-9"
+      className="rounded-2xl border border-line bg-white p-4 sm:p-6"
     >
       <h2 className="h3">{t.formTitle}</h2>
       <p className="mt-3 text-sm text-(--muted-fg)">{t.requiredNote}</p>
 
-      <fieldset className="mt-8" disabled={status === "sending"}>
-        <legend className="eyebrow mb-5">{t.sections.about}</legend>
-        <div className="grid gap-5 sm:grid-cols-2">
+      <fieldset className="mt-5" disabled={status === "sending"}>
+        <legend className="eyebrow mx-auto mb-3 md:mx-0">{t.sections.about}</legend>
+        <div className="grid gap-3 sm:grid-cols-2">
           <Text id="firstName" name="firstName" label={f.firstName} required autoComplete="given-name" maxLength={applicationLimits.firstName} />
           <Text id="lastName" name="lastName" label={f.lastName} required autoComplete="family-name" maxLength={applicationLimits.lastName} />
           <Select
@@ -133,9 +133,9 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
         </div>
       </fieldset>
 
-      <fieldset className="mt-10" disabled={status === "sending"}>
-        <legend className="eyebrow mb-5">{t.sections.questions}</legend>
-        <div className="grid gap-5">
+      <fieldset className="mt-6" disabled={status === "sending"}>
+        <legend className="eyebrow mx-auto mb-3 md:mx-0">{t.sections.questions}</legend>
+        <div className="grid gap-3">
           <TextArea id="why" name="why" label={f.why} required rows={4} maxLength={applicationLimits.why} />
           <TextArea id="background" name="background" label={f.background} placeholder={f.backgroundPlaceholder} required rows={4} maxLength={applicationLimits.background} />
           <TextArea id="aiExperience" name="aiExperience" label={f.aiExperience} optional={f.optional} placeholder={f.aiExperiencePlaceholder} hint={f.aiExperienceHint} rows={4} maxLength={applicationLimits.aiExperience} />
@@ -145,17 +145,18 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       {status === "error" && (
         <p
           role="alert"
-          className="mt-7 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
         >
           {message || (
             <>
               {t.errorTitle} {t.errorBody}{" "}
               <a
-                href={`mailto:${contact.email}`}
-                dir="ltr"
-                className="underline"
+                href={contact.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline underline-offset-4"
               >
-                {contact.email}
+                {t.errorContact}
               </a>
             </>
           )}
@@ -165,7 +166,7 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="btn btn-primary mt-8 w-full disabled:opacity-60"
+        className="btn btn-primary mt-5 w-full disabled:opacity-60"
       >
         {status === "sending" ? t.submitting : t.submit}
       </button>

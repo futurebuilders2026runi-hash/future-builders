@@ -127,7 +127,7 @@ export default async function LocaleLayout({
         </a>
 
         <Header locale={locale} dict={dict} />
-        <main id="main">{children}</main>
+        <main id="main" className="text-center md:text-start">{children}</main>
         <Footer locale={locale} dict={dict} />
         <MobileCta locale={locale} label={dict.nav.apply} />
 

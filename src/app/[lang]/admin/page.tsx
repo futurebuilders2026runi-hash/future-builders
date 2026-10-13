@@ -36,36 +36,36 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
   });
 
   return (
-    <section className="min-h-screen bg-cloud pb-20 pt-32 sm:pt-40">
+    <section className="bg-cloud pb-10 pt-24 sm:pt-26">
       <div className="shell max-w-5xl">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+        <div className="mb-6 flex flex-col items-center justify-between gap-4 md:flex-row md:flex-wrap md:items-end">
           <div>
             <p className="eyebrow">{t.eyebrow}</p>
-            <h1 className="h1 mt-4 text-brand">{t.title}</h1>
-            <p className="mt-4 text-(--muted-fg)">{authenticated ? t.body : t.loginBody}</p>
+            <h1 className="h1 mt-3 text-brand">{t.title}</h1>
+            <p className="mt-3 text-(--muted-fg)">{authenticated ? t.body : t.loginBody}</p>
           </div>
           {authenticated && <AdminControls dict={dict} />}
         </div>
 
         {!authenticated ? <AdminLogin dict={dict} configured={adminConfigured()} /> : loadError ? (
-          <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">{t.loadError}</p>
+          <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">{t.loadError}</p>
         ) : (
           <>
-            <p className="mb-5 font-medium text-brand">{applications.length} {t.total}</p>
+            <p className="mb-3 font-medium text-brand">{applications.length} {t.total}</p>
             {applications.length === 0 ? (
-              <div className="rounded-2xl border border-line bg-white p-9 text-center">
+              <div className="rounded-2xl border border-line bg-white p-6 text-center">
                 <h2 className="h3">{t.emptyTitle}</h2>
                 <p className="mt-3 text-(--muted-fg)">{t.emptyBody}</p>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid gap-3">
                 {applications.map((application) => {
                   const degree = f.degreeOptions[degreeValues.indexOf(application.degree)] ?? application.degree ?? "—";
                   const year = f.yearOptions[yearValues.indexOf(application.year)] ?? application.year ?? "—";
                   const date = new Date(application.submittedAt);
                   return (
                     <details key={application.id} className="group rounded-2xl border border-line bg-white">
-                      <summary className="cursor-pointer rounded-2xl p-6 focus-visible:outline-2 focus-visible:outline-accent sm:p-7">
+                      <summary className="cursor-pointer rounded-2xl p-4 focus-visible:outline-2 focus-visible:outline-accent sm:p-5">
                         <span className="ms-2 inline-flex max-w-full flex-col gap-2 align-middle">
                           <span className="text-lg font-semibold text-brand">{application.fullName || `${application.firstName} ${application.lastName}`}</span>
                           <span className="text-sm text-(--muted-fg)">{degree} · {year}</span>
@@ -73,7 +73,7 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
                           <span className="mt-1 text-sm font-medium text-accent">{t.details}</span>
                         </span>
                       </summary>
-                      <dl className="grid gap-6 border-t border-line p-6 sm:grid-cols-2 sm:p-7">
+                      <dl className="grid gap-4 border-t border-line p-4 sm:grid-cols-2 sm:p-5">
                         {[
                           [f.firstName, application.firstName || application.fullName || "—"],
                           [f.lastName, application.lastName || "—"],

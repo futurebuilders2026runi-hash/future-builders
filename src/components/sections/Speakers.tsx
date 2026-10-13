@@ -30,10 +30,10 @@ export function Speakers({ dict }: { dict: Dict }) {
       <div className="shell">
         <Reveal>
           <p className="eyebrow">{copy.eyebrow}</p>
-          <h2 className="h2 mt-5 max-w-2xl">{copy.title}</h2>
+          <h2 className="h2 mx-auto mt-3 max-w-2xl md:mx-0">{copy.title}</h2>
         </Reveal>
 
-        <div className="mt-8 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap justify-center gap-2 md:justify-start">
           {chips.map((chip) => (
             <button
               key={chip.key}
@@ -51,11 +51,11 @@ export function Speakers({ dict }: { dict: Dict }) {
           ))}
         </div>
 
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {visible.map((speaker) => (
             <li key={`${speaker.name}-${speaker.company}`}>
               <article className="card h-full">
-                <div className="mb-5 aspect-square w-full overflow-hidden rounded-xl bg-mist">
+                <div className="mb-3 aspect-square w-full overflow-hidden rounded-xl bg-mist">
                   {speaker.photo && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img

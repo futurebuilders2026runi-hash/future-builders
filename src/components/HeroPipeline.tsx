@@ -34,8 +34,8 @@ export function HeroPipeline({
     <div className="relative" dir="ltr">
       <div className="glow -inset-6 bg-accent/20" aria-hidden />
 
-      <div className="relative overflow-hidden rounded-2xl border border-line bg-white/80 p-5 shadow-[0_36px_70px_-46px_rgba(11,42,107,0.55)] backdrop-blur-xl sm:p-6">
-        <div className="flex items-center justify-between gap-4 border-b border-line pb-4">
+      <div className="relative overflow-hidden rounded-2xl border border-line bg-white/80 p-4 shadow-[0_36px_70px_-46px_rgba(11,42,107,0.55)] backdrop-blur-xl sm:p-4">
+        <div className="flex items-center justify-center gap-3 border-b border-line pb-4 md:justify-between">
           <div className="flex items-center gap-1.5" aria-hidden>
             <span className="h-2 w-2 rounded-full bg-mist" />
             <span className="h-2 w-2 rounded-full bg-mist" />
@@ -46,7 +46,7 @@ export function HeroPipeline({
           </span>
         </div>
 
-        <ol className="relative mt-5 space-y-1">
+        <ol className="relative mt-3 space-y-1">
           <span
             aria-hidden
             className="absolute inset-y-3 left-4.25 w-px bg-line"
@@ -62,7 +62,7 @@ export function HeroPipeline({
             const isActive = i === active;
             const isPast = i < active;
             return (
-              <li key={step.key} className="relative flex items-start gap-4 py-2">
+              <li key={step.key} className="relative grid grid-cols-[2.125rem_minmax(0,1fr)_2.125rem] items-start gap-2 py-2 md:flex md:gap-3">
                 <span className="relative z-10 mt-0.5 grid h-8.5 w-8.5 shrink-0 place-items-center">
                   <motion.span
                     className="absolute inset-0 rounded-full border"

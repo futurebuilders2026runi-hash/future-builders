@@ -36,18 +36,18 @@ export function AdminLogin({ dict, configured }: { dict: Dict; configured: boole
   }
 
   return (
-    <form onSubmit={onSubmit} className="mx-auto max-w-md rounded-2xl border border-line bg-white p-6 sm:p-9" aria-busy={sending}>
+    <form onSubmit={onSubmit} className="mx-auto max-w-md rounded-2xl border border-line bg-white p-4 sm:p-6" aria-busy={sending}>
       <h2 className="h3">{t.loginTitle}</h2>
       <p className="mt-3 text-sm leading-relaxed text-(--muted-fg)">{t.loginBody}</p>
       {configured ? (
         <>
-          <label htmlFor="admin-password" className="field-label mt-7">{t.password}</label>
+          <label htmlFor="admin-password" className="field-label mt-4">{t.password}</label>
           <input id="admin-password" name="password" type="password" autoComplete="current-password" required maxLength={256} disabled={sending} className="field" dir="ltr" />
-          {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
-          <button type="submit" disabled={sending} className="btn btn-primary mt-7 w-full disabled:opacity-60">{sending ? t.loggingIn : t.login}</button>
+          {error && <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>}
+          <button type="submit" disabled={sending} className="btn btn-primary mt-4 w-full disabled:opacity-60">{sending ? t.loggingIn : t.login}</button>
         </>
       ) : (
-        <p role="status" className="mt-6 rounded-xl bg-cloud p-4 text-sm">{t.loginUnavailable}</p>
+        <p role="status" className="mt-4 rounded-xl bg-cloud p-4 text-sm">{t.loginUnavailable}</p>
       )}
     </form>
   );

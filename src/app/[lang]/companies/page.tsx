@@ -47,12 +47,12 @@ export default async function CompaniesPage({
         />
         <Waves />
 
-        <div className="shell relative pb-20 pt-32 sm:pt-40">
+        <div className="shell relative pb-10 pt-24 sm:pt-26">
           <Reveal>
             <p className="eyebrow">{t.eyebrow}</p>
-            <h1 className="display mt-6 max-w-4xl text-brand">{t.title}</h1>
-            <p className="lede mt-6 max-w-2xl">{t.body}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <h1 className="display mx-auto mt-4 max-w-4xl text-brand md:mx-0">{t.title}</h1>
+            <p className="lede mx-auto mt-4 max-w-2xl md:mx-0">{t.body}</p>
+            <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row md:justify-start">
               <Link href="#partner-form" className="btn btn-primary">
                 {t.primaryCta}
               </Link>
@@ -67,14 +67,14 @@ export default async function CompaniesPage({
       {/* Who we are / what students build */}
       <section className="section relative overflow-hidden bg-white">
         <CircuitFlow variant={2} />
-        <div className="shell relative grid gap-10 md:grid-cols-2 lg:gap-16">
+        <div className="shell relative grid gap-6 md:grid-cols-2 lg:gap-8">
           <Reveal>
             <h2 className="h2">{t.whoTitle}</h2>
-            <p className="lede mt-5">{t.whoBody}</p>
+            <p className="lede mt-3">{t.whoBody}</p>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="h2">{t.buildTitle}</h2>
-            <p className="lede mt-5">{t.buildBody}</p>
+            <p className="lede mt-3">{t.buildBody}</p>
           </Reveal>
         </div>
       </section>
@@ -84,9 +84,9 @@ export default async function CompaniesPage({
         <CircuitFlow variant={3} />
         <div className="shell relative">
           <Reveal>
-            <h2 className="h2 max-w-xl">{t.waysTitle}</h2>
+            <h2 className="h2 mx-auto max-w-xl md:mx-0">{t.waysTitle}</h2>
           </Reveal>
-          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {t.ways.map((way, i) => (
               <Reveal as="li" key={way.title} delay={(i % 3) * 0.06}>
                 <article className="card h-full">
@@ -110,9 +110,9 @@ export default async function CompaniesPage({
         <CircuitFlow variant={4} tone="dark" />
         <div className="shell relative">
           <Reveal>
-            <h2 className="h2 max-w-xl text-white">{t.whyTitle}</h2>
+            <h2 className="h2 mx-auto max-w-xl text-white md:mx-0">{t.whyTitle}</h2>
           </Reveal>
-          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {t.why.map((item, i) => (
               <Reveal as="li" key={item.title} delay={i * 0.07}>
                 <article className="card h-full">

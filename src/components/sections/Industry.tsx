@@ -14,13 +14,13 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
     <section id="partners" className="section relative overflow-hidden bg-white">
       <CircuitFlow variant={5} />
       <div className="shell relative">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-14">
+        <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:gap-8">
           <Reveal>
             <p className="eyebrow">{industry.eyebrow}</p>
-            <h2 className="h2 mt-5 max-w-lg">{industry.title}</h2>
+            <h2 className="h2 mx-auto mt-3 max-w-lg md:mx-0">{industry.title}</h2>
           </Reveal>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {industry.body.map((paragraph, i) => (
               <Reveal key={i} delay={0.08 + i * 0.08}>
                 <p className="lede">{paragraph}</p>
@@ -31,14 +31,14 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
 
         {/* Partners */}
         <Reveal delay={0.1}>
-          <div className="mt-10 rounded-2xl border border-line bg-cloud px-6 py-8 lg:mt-12">
+          <div className="mt-6 rounded-2xl border border-line bg-cloud px-4 py-5 lg:mt-6">
             <p className="eyebrow justify-center w-full text-center">
               {industry.partnersLabel}
             </p>
 
             {hasPartners ? (
-              <div className="marquee-mask mt-8 overflow-hidden">
-                <ul className="marquee-track items-center gap-14">
+              <div className="marquee-mask mt-5 overflow-hidden">
+                <ul className="marquee-track items-center gap-8">
                   {loop.map((partner, i) => (
                     <li
                       key={`${partner.name}-${i}`}
@@ -62,7 +62,7 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
                 </ul>
               </div>
             ) : (
-              <div className="mt-6 text-center">
+              <div className="mt-4 text-center">
                 <p className="h3 mx-auto max-w-md">
                   {industry.partnersEmptyTitle}
                 </p>
@@ -71,7 +71,7 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
                 </p>
                 <Link
                   href={`/${locale}/companies`}
-                  className="btn btn-ghost mt-7 bg-white"
+                  className="btn btn-ghost mt-4 bg-white"
                 >
                   {industry.partnersCta}
                 </Link>
@@ -81,7 +81,7 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
         </Reveal>
 
         {/* Industry sessions */}
-        <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {industry.sessions.map((session, i) => (
             <Reveal as="li" key={session.title} delay={i * 0.06}>
               <article className="card h-full">

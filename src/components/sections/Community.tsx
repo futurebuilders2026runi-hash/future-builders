@@ -11,16 +11,16 @@ export function Community({ dict }: { dict: Dict }) {
     <section className="section relative overflow-hidden bg-cloud">
       <CircuitFlow variant={1} />
       <div className="shell relative">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl md:mx-0">
           <Reveal>
             <p className="eyebrow">{community.eyebrow}</p>
-            <h2 className="h2 mt-5">{community.title}</h2>
-            <p className="lede mt-5">{community.body}</p>
+            <h2 className="h2 mt-3">{community.title}</h2>
+            <p className="lede mt-3">{community.body}</p>
           </Reveal>
         </div>
 
         {hasPhotos ? (
-          <ul className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3">
+          <ul className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
             {communityPhotos.map((photo, i) => (
               <Reveal as="li" key={photo.src} delay={(i % 3) * 0.06}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -35,11 +35,11 @@ export function Community({ dict }: { dict: Dict }) {
           </ul>
         ) : (
           <>
-            <ul className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3">
+            <ul className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
               {community.tiles.map((tile, i) => (
                 <Reveal as="li" key={tile} delay={(i % 3) * 0.06}>
                   <div
-                    className="relative flex aspect-4/3 items-end overflow-hidden rounded-xl border border-line bg-white p-4"
+                    className="relative flex aspect-4/3 items-end justify-center overflow-hidden rounded-xl border border-line bg-white p-4 md:justify-start"
                   >
                     <span
                       aria-hidden
@@ -57,7 +57,7 @@ export function Community({ dict }: { dict: Dict }) {
               ))}
             </ul>
             <Reveal delay={0.1}>
-              <p className="mt-6 text-center text-sm text-(--muted-fg)">
+              <p className="mt-4 text-center text-sm text-(--muted-fg)">
                 {community.emptyNote}
               </p>
             </Reveal>

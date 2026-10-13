@@ -41,11 +41,11 @@ export default async function ApplyPage({
         <div className="glow -top-20 start-1/3 h-80 w-80 bg-accent/25" aria-hidden />
         <Waves lines={14} />
 
-        <div className="shell relative pb-20 pt-32 sm:pt-40">
+        <div className="shell relative pb-10 pt-24 sm:pt-26">
           <Reveal>
             <p className="eyebrow">{dict.apply.eyebrow}</p>
-            <h1 className="h1 mt-5 max-w-3xl text-brand">{dict.apply.title}</h1>
-            <p className="lede mt-6 max-w-xl">{dict.apply.body}</p>
+            <h1 className="h1 mx-auto mt-3 max-w-3xl text-brand md:mx-0">{dict.apply.title}</h1>
+            <p className="lede mx-auto mt-4 max-w-xl md:mx-0">{dict.apply.body}</p>
           </Reveal>
         </div>
       </section>

@@ -23,8 +23,8 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dict }) {
       />
       <Waves className="opacity-90" />
 
-      <div className="shell relative pb-12 pt-28 sm:pt-32 lg:pb-16 lg:pt-36">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+      <div className="shell relative pb-7 pt-24 sm:pt-26 lg:pb-10 lg:pt-28">
+        <div className="grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6">
           <div>
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3.5 py-1.5 text-[0.72rem] font-medium text-brand backdrop-blur">
@@ -34,18 +34,18 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dict }) {
             </Reveal>
 
             <Reveal delay={0.08}>
-              <h1 className="display mt-7 text-brand">
+              <h1 className="display mt-4 text-brand">
                 {hero.titleLead}{" "}
                 <span className="grad-text">{hero.titleAccent}</span>
               </h1>
             </Reveal>
 
             <Reveal delay={0.16}>
-              <p className="lede mt-6 max-w-xl">{hero.body}</p>
+              <p className="lede mx-auto mt-4 max-w-xl md:mx-0">{hero.body}</p>
             </Reveal>
 
             <Reveal delay={0.24}>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row sm:items-center md:justify-start">
                 <Link href={`/${locale}/apply`} className="btn btn-primary">
                   {hero.primaryCta}
                 </Link>
@@ -78,7 +78,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dict }) {
         </div>
 
         {/* Quick stats */}
-        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 lg:mt-14 lg:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-line pt-5 lg:mt-7 lg:grid-cols-4">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.07}>
               <p className="text-3xl font-semibold tracking-tight text-brand sm:text-4xl">

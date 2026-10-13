@@ -11,17 +11,17 @@ export function Who({ locale, dict }: { locale: Locale; dict: Dict }) {
     <section id="apply-info" className="section relative overflow-hidden bg-white">
       <CircuitFlow variant={3} />
       <div className="shell relative">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-14">
+        <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:gap-8">
           <Reveal>
             <p className="eyebrow">{who.eyebrow}</p>
-            <h2 className="h2 mt-5">{who.title}</h2>
-            <p className="lede mt-5">{who.body}</p>
+            <h2 className="h2 mt-3">{who.title}</h2>
+            <p className="lede mt-3">{who.body}</p>
           </Reveal>
 
           <ul className="space-y-3">
             {who.items.map((item, i) => (
               <Reveal as="li" key={item} delay={i * 0.05}>
-                <span className="flex items-start gap-3.5 border-b border-line pb-3">
+                <span className="flex flex-col items-center gap-2 border-b border-line pb-3 md:flex-row md:items-start md:gap-3.5">
                   <svg
                     width="16"
                     height="16"
@@ -52,23 +52,23 @@ export function Who({ locale, dict }: { locale: Locale; dict: Dict }) {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="h1 mx-auto mt-14 max-w-3xl text-center lg:mt-16">
+          <p className="h1 mx-auto mt-7 max-w-3xl text-center lg:mt-8">
             <span className="grad-text">{who.pull}</span>
           </p>
         </Reveal>
 
         {/* Selection process */}
-        <div className="mt-14 border-t border-line pt-10 lg:mt-16">
+        <div className="mt-7 border-t border-line pt-6 lg:mt-8">
           <Reveal>
             <p className="eyebrow">{selection.eyebrow}</p>
-            <h2 className="h2 mt-5">{selection.title}</h2>
+            <h2 className="h2 mt-3">{selection.title}</h2>
           </Reveal>
 
-          <ol className="mt-8 grid gap-4 md:grid-cols-3">
+          <ol className="mt-5 grid gap-3 md:grid-cols-3">
             {selection.steps.map((step, i) => (
               <Reveal as="li" key={step.title} delay={i * 0.08}>
                 <article className="card h-full">
-                  <div className="flex items-baseline gap-3 md:block">
+                  <div className="flex items-baseline justify-center gap-3 md:block">
                     <span className="text-xs font-semibold tabular-nums text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
@@ -83,7 +83,7 @@ export function Who({ locale, dict }: { locale: Locale; dict: Dict }) {
           </ol>
 
           <Reveal delay={0.12}>
-            <div className="mt-10">
+            <div className="mt-6">
               <Link href={`/${locale}/apply`} className="btn btn-primary w-full sm:w-auto">
                 {selection.cta}
               </Link>

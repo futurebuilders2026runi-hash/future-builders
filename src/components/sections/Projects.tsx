@@ -11,16 +11,16 @@ export function Projects({ dict }: { dict: Dict }) {
     <section id="projects" className="section relative overflow-hidden bg-white">
       <CircuitFlow variant={5} />
       <div className="shell relative">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl md:mx-0">
           <Reveal>
             <p className="eyebrow">{copy.eyebrow}</p>
-            <h2 className="h2 mt-5">{copy.title}</h2>
-            <p className="lede mt-5">{copy.body}</p>
+            <h2 className="h2 mt-3">{copy.title}</h2>
+            <p className="lede mt-3">{copy.body}</p>
           </Reveal>
         </div>
 
         {hasProjects ? (
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project, i) => (
               <Reveal as="li" key={project.slug} delay={(i % 3) * 0.06}>
                 <article className="card h-full overflow-hidden p-0">
@@ -35,18 +35,18 @@ export function Projects({ dict }: { dict: Dict }) {
                       />
                     )}
                   </div>
-                  <div className="p-6">
+                  <div className="p-4">
                     <h3 className="h3">{project.name}</h3>
                     <p className="mt-2 text-[0.9375rem] leading-relaxed text-(--muted-fg)">
                       {project.summary}
                     </p>
 
-                    <p className="mt-4 text-xs text-(--muted-fg)">
+                    <p className="mt-3 text-xs text-(--muted-fg)">
                       <span className="font-medium">{copy.teamLabel}:</span>{" "}
                       {project.team.join(", ")}
                     </p>
 
-                    <ul className="mt-4 flex flex-wrap gap-1.5" dir="ltr">
+                    <ul className="mt-3 flex flex-wrap justify-center gap-1.5 md:justify-start" dir="ltr">
                       {[project.model, ...project.stack]
                         .filter(Boolean)
                         .map((tech) => (
@@ -59,7 +59,7 @@ export function Projects({ dict }: { dict: Dict }) {
                         ))}
                     </ul>
 
-                    <div className="mt-5 flex flex-wrap gap-4 text-sm font-medium">
+                    <div className="mt-3 flex flex-wrap justify-center gap-3 text-sm font-medium md:justify-start">
                       {project.siteUrl && (
                         <a
                           href={project.siteUrl}
@@ -98,10 +98,10 @@ export function Projects({ dict }: { dict: Dict }) {
           </ul>
         ) : (
           <Reveal delay={0.12}>
-            <div className="mt-8 grid place-items-center rounded-2xl border border-dashed border-line bg-white px-6 py-14 text-center">
+            <div className="mt-5 grid place-items-center rounded-2xl border border-dashed border-line bg-white px-4 py-8 text-center">
               <span
                 aria-hidden
-                className="mb-6 grid h-12 w-12 place-items-center rounded-full border border-line"
+                className="mb-4 grid h-12 w-12 place-items-center rounded-full border border-line"
               >
                 <span className="h-2 w-2 animate-pulse rounded-full bg-linear-to-br from-accent-bright to-accent" />
               </span>

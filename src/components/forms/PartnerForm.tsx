@@ -56,11 +56,11 @@ export function PartnerForm({ locale, dict }: { locale: Locale; dict: Dict }) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="rounded-2xl border border-line bg-white p-10 text-center"
+        className="rounded-2xl border border-line bg-white p-6 text-center"
       >
         <h2 className="h2">{t.successTitle}</h2>
-        <p className="lede mx-auto mt-4 max-w-md">{t.successBody}</p>
-        <Link href={`/${locale}`} className="btn btn-ghost mt-8">
+        <p className="lede mx-auto mt-3 max-w-md">{t.successBody}</p>
+        <Link href={`/${locale}`} className="btn btn-ghost mt-5">
           {t.successCta}
         </Link>
       </motion.div>
@@ -71,15 +71,15 @@ export function PartnerForm({ locale, dict }: { locale: Locale; dict: Dict }) {
     <form
       onSubmit={onSubmit}
       noValidate
-      className="rounded-2xl border border-line bg-white p-6 sm:p-9"
+      className="rounded-2xl border border-line bg-white p-4 sm:p-6"
     >
       <h2 className="h3">{t.formTitle}</h2>
       <p className="mt-3 text-[0.9375rem] leading-relaxed text-(--muted-fg)">
         {t.formBody}
       </p>
 
-      <fieldset className="mt-8 grid gap-5" disabled={status === "sending"}>
-        <div className="grid gap-5 sm:grid-cols-2">
+      <fieldset className="mt-5 grid gap-3" disabled={status === "sending"}>
+        <div className="grid gap-3 sm:grid-cols-2">
           <Text id="p-name" name="name" label={f.name} required />
           <Text id="p-company" name="company" label={f.company} required />
           <Text id="p-role" name="role" label={f.role} />
@@ -105,13 +105,13 @@ export function PartnerForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       {status === "error" && (
         <p
           role="alert"
-          className="mt-7 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
         >
           {message || (
             <>
               {dict.apply.errorTitle} {dict.apply.errorBody}{" "}
-              <a href={`mailto:${contact.email}`} dir="ltr" className="underline">
-                {contact.email}
+              <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="font-medium underline underline-offset-4">
+                {dict.apply.errorContact}
               </a>
             </>
           )}
@@ -121,7 +121,7 @@ export function PartnerForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="btn btn-primary mt-8 w-full disabled:opacity-60"
+        className="btn btn-primary mt-5 w-full disabled:opacity-60"
       >
         {status === "sending" ? t.submitting : t.submit}
       </button>

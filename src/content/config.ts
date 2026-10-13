@@ -17,6 +17,7 @@ export const isLocale = (value: string): value is Locale =>
  */
 export const contact = {
   email: "futurebuilders@post.runi.ac.il",
+  whatsapp: "https://wa.me/972587878676",
   linkedin: "https://www.linkedin.com/",
   instagram: "https://www.instagram.com/",
   siteUrl: "https://futurebuilders.ai",

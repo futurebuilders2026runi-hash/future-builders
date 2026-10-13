@@ -22,17 +22,17 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dict }) {
       />
       <Waves tone="dark" className="opacity-60" />
 
-      <div className="shell relative py-16 text-center lg:py-24">
+      <div className="shell relative py-10 text-center lg:py-12">
         <Reveal>
           <h2 className="display text-white">{finalCta.title}</h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="lede mx-auto mt-6 max-w-lg text-white/60">
+          <p className="lede mx-auto mt-4 max-w-lg text-white/60">
             {finalCta.body}
           </p>
         </Reveal>
         <Reveal delay={0.18}>
-          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
             <Link href={`/${locale}/apply`} className="btn btn-primary">
               {finalCta.primary}
             </Link>

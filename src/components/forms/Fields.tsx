@@ -158,8 +158,8 @@ export function RadioGroup({
 }) {
   return (
     <fieldset>
-      <legend className="field-label">{label}</legend>
-      <div className="flex flex-wrap gap-2">
+      <legend className="field-label mx-auto md:mx-0">{label}</legend>
+      <div className="flex flex-wrap justify-center gap-2 md:justify-start">
         {options.map((option, i) => (
           <label
             key={option}

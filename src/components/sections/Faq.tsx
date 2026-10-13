@@ -13,10 +13,10 @@ export function Faq({ dict }: { dict: Dict }) {
   return (
     <section id="faq" className="section relative overflow-hidden bg-cloud">
       <CircuitFlow variant={0} />
-      <div className="shell relative grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div className="shell relative grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10">
         <Reveal>
           <p className="eyebrow">{faq.eyebrow}</p>
-          <h2 className="h2 mt-5">{faq.title}</h2>
+          <h2 className="h2 mt-3">{faq.title}</h2>
         </Reveal>
 
         <ul className="border-t border-line">
@@ -30,14 +30,14 @@ export function Faq({ dict }: { dict: Dict }) {
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
                     aria-controls={`faq-panel-${i}`}
-                    className="flex w-full items-center justify-between gap-6 py-5 text-start"
+                    className="grid w-full grid-cols-[1.75rem_minmax(0,1fr)_1.75rem] items-center gap-2 py-4 text-center md:flex md:justify-between md:gap-4 md:text-start"
                   >
-                    <span className="text-[1.0625rem] font-medium tracking-tight">
+                    <span className="col-start-2 text-[1.0625rem] font-medium tracking-tight">
                       {item.q}
                     </span>
                     <span
                       aria-hidden
-                      className={`relative grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-colors duration-300 ${
+                      className={`relative col-start-3 grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-colors duration-300 ${
                         isOpen ? "border-accent bg-accent/8" : "border-line"
                       }`}
                     >
@@ -62,7 +62,7 @@ export function Faq({ dict }: { dict: Dict }) {
                       transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="pb-6 pe-10 text-[0.9375rem] leading-relaxed text-(--muted-fg)">
+                      <p className="pb-4 text-[0.9375rem] leading-relaxed text-(--muted-fg) md:pe-10">
                         {item.a}
                       </p>
                     </motion.div>

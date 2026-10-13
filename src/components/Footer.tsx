@@ -16,15 +16,15 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
   ];
 
   return (
-    <footer className="on-dark relative overflow-hidden bg-ink pb-24 pt-20 sm:pb-16">
+    <footer className="on-dark relative overflow-hidden bg-ink pb-20 pt-10 text-center sm:pb-8 md:text-start">
       <div className="glow -top-40 start-1/4 h-72 w-72 bg-accent/25" aria-hidden />
-      <div className="shell relative grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div className="shell relative grid gap-6 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <div>
-          <Logo variant="light" />
-          <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/55">
+          <Logo variant="light" className="mx-auto md:mx-0" />
+          <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/55 md:mx-0">
             {dict.footer.tagline}
           </p>
-          <div className="mt-7 flex items-center gap-3.5">
+          <div className="mt-4 flex items-center justify-center gap-3.5 md:justify-start">
             <ReichmanLogo
               variant="light"
               alt={dict.footer.affiliation[0]}
@@ -41,7 +41,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
           <h2 className="text-xs font-medium uppercase tracking-[0.16em] text-white/40">
             {dict.footer.linksLabel}
           </h2>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-3 space-y-2.5 text-sm">
             {links.map((link) => (
               <li key={link.label}>
                 <Link
@@ -59,7 +59,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
           <h2 className="text-xs font-medium uppercase tracking-[0.16em] text-white/40">
             {dict.footer.socialLabel}
           </h2>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-3 space-y-2.5 text-sm">
             <li>
               <a
                 href={contact.linkedin}
@@ -90,20 +90,20 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
           <a
             href={`mailto:${contact.email}`}
             dir="ltr"
-            className="mt-4 inline-block text-sm text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline"
+            className="mt-3 inline-block text-sm text-white/70 underline-offset-4 transition-colors hover:text-white hover:underline"
           >
             {contact.email}
           </a>
           <Link
             href={`/${locale}/companies`}
-            className="btn btn-ghost mt-6 w-full sm:w-auto"
+            className="btn btn-ghost mt-4 w-full sm:w-auto"
           >
             {dict.nav.forCompanies}
           </Link>
         </div>
       </div>
 
-      <div className="shell relative mt-14 flex flex-col gap-3 border-t border-white/8 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
+      <div className="shell relative mt-7 flex flex-col items-center gap-3 border-t border-white/8 pt-4 text-xs text-white/40 md:flex-row md:justify-between">
         <p>{dict.footer.rights}</p>
         <p>{dict.footer.affiliation.join(" · ")}</p>
       </div>

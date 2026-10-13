@@ -34,15 +34,15 @@ export function Program({ dict }: { dict: Dict }) {
       />
 
       <div className="shell relative">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl md:mx-0">
           <Reveal>
             <p className="eyebrow">{program.eyebrow}</p>
-            <h2 className="h2 mt-5 text-white">{program.title}</h2>
-            <p className="lede mt-5 text-white/55">{program.body}</p>
+            <h2 className="h2 mt-3 text-white">{program.title}</h2>
+            <p className="lede mt-3 text-white/55">{program.body}</p>
           </Reveal>
         </div>
 
-        <div ref={ref} className="mt-10 lg:mt-14">
+        <div ref={ref} className="mt-6 lg:mt-7">
           {/* Desktop: horizontal rail */}
           <div className="relative hidden lg:block">
             <div
@@ -55,7 +55,7 @@ export function Program({ dict }: { dict: Dict }) {
               style={{ scaleX: scale }}
             />
 
-            <ol className="relative grid grid-cols-7 gap-4">
+            <ol className="relative grid grid-cols-7 gap-3">
               {program.steps.map((step, i) => (
                 <li key={step.title}>
                   <span className="relative z-10 block h-4.5 w-4.5">
@@ -64,7 +64,7 @@ export function Program({ dict }: { dict: Dict }) {
                   </span>
 
                   <Reveal delay={0.12 + i * 0.07}>
-                    <h3 className="mt-6 text-base font-semibold tracking-tight text-white">
+                    <h3 className="mt-4 text-base font-semibold tracking-tight text-white">
                       {step.title}
                     </h3>
                     <ul className="mt-3 space-y-1.5">
@@ -87,22 +87,22 @@ export function Program({ dict }: { dict: Dict }) {
           <ol className="relative lg:hidden">
             <span
               aria-hidden
-              className="absolute inset-y-2 inset-s-[0.5rem] w-px bg-white/12"
+              className="absolute inset-y-2 inset-s-[0.5rem] hidden w-px bg-white/12 md:block"
             />
             <motion.span
               aria-hidden
-              className="absolute top-2 inset-s-[0.5rem] h-full w-px origin-top bg-linear-to-b from-accent-bright via-accent-sky to-accent"
+              className="absolute top-2 inset-s-[0.5rem] hidden h-full w-px origin-top bg-linear-to-b from-accent-bright via-accent-sky to-accent md:block"
               style={{ scaleY: scale }}
             />
 
             {program.steps.map((step, i) => (
-              <li key={step.title} className="relative flex gap-6 pb-10 last:pb-0">
-                <span className="relative z-10 mt-1.5 h-4.5 w-4.5 shrink-0">
+              <li key={step.title} className="relative flex flex-col items-center gap-2 pb-6 last:pb-0 md:flex-row md:items-start md:gap-4">
+                <span className="relative z-10 h-4.5 w-4.5 shrink-0 md:mt-1.5">
                   <span className="absolute inset-0 rounded-full border border-white/20 bg-navy" />
                   <span className="absolute inset-[3px] rounded-full bg-linear-to-br from-accent-bright to-accent" />
                 </span>
 
-                <Reveal delay={i * 0.03} className="flex-1">
+                <Reveal delay={i * 0.03} className="w-full md:w-auto md:flex-1">
                   <h3 className="text-lg font-semibold tracking-tight text-white">
                     {step.title}
                   </h3>
