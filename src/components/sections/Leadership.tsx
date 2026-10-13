@@ -41,12 +41,12 @@ export function Leadership({ dict }: { dict: Dict }) {
                         src={photo}
                         alt={person.name}
                         loading="lazy"
-                        className="h-28 w-28 rounded-2xl object-cover"
+                        className="h-32 w-32 rounded-2xl object-cover"
                       />
                     ) : (
                       <span
                         aria-hidden
-                        className="grid h-28 w-28 place-items-center rounded-2xl bg-linear-to-br from-accent-bright/25 to-accent/20 text-3xl font-semibold text-brand"
+                        className="grid h-32 w-32 place-items-center rounded-2xl bg-linear-to-br from-accent-bright/25 to-accent/20 text-3xl font-semibold text-brand"
                       >
                         {initial(person.name)}
                       </span>
@@ -55,6 +55,11 @@ export function Leadership({ dict }: { dict: Dict }) {
 
                   <div className="min-w-0">
                     <h3 className="h3 text-brand">{person.name}</h3>
+                    {person.role && (
+                      <p dir="ltr" className="mt-1 text-sm font-medium text-accent rtl:text-right">
+                        {person.role}
+                      </p>
+                    )}
                     {person.bio && (
                       <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-(--muted-fg)">
                         {person.bio}

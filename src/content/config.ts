@@ -58,7 +58,10 @@ export const projects: Project[] = [];
  *
  *   leadPhotos = { lia: "/team/lia.jpg", shoham: "/team/shoham.jpg" }
  */
-export const leadPhotos: Record<string, string> = {};
+export const leadPhotos: Record<string, string> = {
+  lia: "/team/lia.jpg",
+  shoham: "/team/shoham.jpg",
+};
 
 /** Optional LinkedIn profiles for the same people, same keys. */
 export const leadLinks: Record<string, string> = {};

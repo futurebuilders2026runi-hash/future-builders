@@ -32,6 +32,8 @@ export function Text({
   optional,
   placeholder,
   dir,
+  autoComplete,
+  maxLength,
 }: {
   id: string;
   name: string;
@@ -41,6 +43,8 @@ export function Text({
   optional?: string;
   placeholder?: string;
   dir?: "ltr" | "rtl";
+  autoComplete?: string;
+  maxLength?: number;
 }) {
   return (
     <div>
@@ -54,8 +58,9 @@ export function Text({
         required={required}
         placeholder={placeholder}
         dir={dir}
+        maxLength={maxLength}
         autoComplete={
-          type === "email" ? "email" : type === "tel" ? "tel" : undefined
+          autoComplete ?? (type === "email" ? "email" : type === "tel" ? "tel" : undefined)
         }
         className="field"
       />
@@ -71,6 +76,8 @@ export function TextArea({
   optional,
   placeholder,
   rows = 4,
+  maxLength,
+  hint,
 }: {
   id: string;
   name: string;
@@ -79,6 +86,8 @@ export function TextArea({
   optional?: string;
   placeholder?: string;
   rows?: number;
+  maxLength?: number;
+  hint?: string;
 }) {
   return (
     <div>
@@ -91,8 +100,11 @@ export function TextArea({
         rows={rows}
         required={required}
         placeholder={placeholder}
+        maxLength={maxLength}
+        aria-describedby={hint ? `${id}-hint` : undefined}
         className="field resize-y"
       />
+      {hint && <p id={`${id}-hint`} className="mt-2 text-sm text-(--muted-fg)">{hint}</p>}
     </div>
   );
 }
@@ -108,7 +120,7 @@ export function Select({
   id: string;
   name: string;
   label: string;
-  options: string[];
+  options: (string | { value: string; label: string })[];
   placeholder: string;
   required?: boolean;
 }) {
@@ -125,11 +137,11 @@ export function Select({
         <option value="" disabled>
           {placeholder}
         </option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
+        {options.map((option) => {
+          const value = typeof option === "string" ? option : option.value;
+          const label = typeof option === "string" ? option : option.label;
+          return <option key={value} value={value}>{label}</option>;
+        })}
       </select>
     </div>
   );

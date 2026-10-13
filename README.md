@@ -24,8 +24,11 @@ npm run typecheck  # tsc --noEmit
 | ---------------- | ----------------------------------------------------------- |
 | `/he`, `/en`     | Home — every section from the spec, one page                 |
 | `/*/apply`       | Application page + form                                      |
+| `/*/admin`       | Password-protected registration inbox                        |
 | `/*/companies`   | For Companies page + partnership form                        |
 | `/api/apply`     | Application submissions (POST)                               |
+| `/api/admin/login`, `/api/admin/logout` | Admin session (POST)                 |
+| `/api/admin/applications` | Registrations (GET, admin session required)          |
 | `/api/partner`   | Partnership submissions (POST)                               |
 | `/sitemap.xml`, `/robots.txt` | Generated, both locales                        |
 
@@ -75,25 +78,44 @@ carry an invisible LRM (`U+200E`) after the period so bidi doesn't flip it
 
 ## Form submissions
 
-Both forms POST JSON to a route handler that validates, trims and length-caps
-every field, then delivers it to whatever is configured. **With no environment
-variables set the submission is only logged to the server console** — the site
-works out of the box, but nothing is stored. Wire up at least one target before
-launch:
+The registration form collects first name, last name, one of four Computer
+Science tracks, year 2 or 3, phone, email, motivation, background, and an optional
+AI introduction. The same field validation runs in the browser and on the server.
+
+Registrations are saved to Supabase before the form confirms success. In local
+development without Supabase, records persist in `.data/applications.jsonl`,
+which is ignored by Git. **Production requires Supabase; the server returns an
+error rather than silently logging or losing a registration.** The partnership
+form retains its original delivery configuration.
+
+Before deploying:
+
+1. Run [supabase/applications.sql](supabase/applications.sql) in the Supabase SQL
+   editor to create or update the table. This also restricts public access.
+2. Set the server-only environment variables shown in `.env.example`.
+3. Open `/he/admin` (or `/en/admin`) and sign in with `ADMIN_PASSWORD`.
+
+The admin page lists all registrations, newest first, with expandable details.
+It requires a signed, HttpOnly session cookie that expires after eight hours;
+the registrations API checks the same session. Changing the password or session
+secret invalidates existing sessions. No admin page is included in the sitemap.
 
 ```bash
 # .env.local
 
-# Option A — Supabase. Expects tables `applications` and `partner_requests`
-# with text columns matching the field names plus `kind` and `submittedAt`.
+# Required for production registration storage.
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=…            # server-side only, never NEXT_PUBLIC_
+ADMIN_PASSWORD=…                       # at least 12 characters
+ADMIN_SESSION_SECRET=…                 # random secret, at least 32 characters
 
-# Option B — any webhook (Slack, Make, Zapier, n8n, your own endpoint)
+# Optional registration notification / partnership delivery.
 SUBMISSIONS_WEBHOOK_URL=https://…
 ```
 
-Both can be set at once. Delivery logic: [src/lib/submissions.ts](src/lib/submissions.ts).
+Registration storage: [src/lib/applications.ts](src/lib/applications.ts).
+Partnership delivery: [src/lib/submissions.ts](src/lib/submissions.ts).
+A failed optional registration notification does not undo a saved registration.
 
 ---
 

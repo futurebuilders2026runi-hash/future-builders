@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { RadioGroup, Select, Text, TextArea } from "./Fields";
+import { Select, Text, TextArea } from "./Fields";
+import { applicationLimits, degreeValues, yearValues, validateApplication, type ApplicationError } from "@/lib/application-schema";
 import { contact } from "@/content/config";
 import type { Dict } from "@/content";
 import type { Locale } from "@/content/config";
@@ -16,19 +17,28 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string>("");
 
+  function errorMessage(error: string) {
+    const messages: Record<ApplicationError, string> = {
+      missing_fields: t.requiredError,
+      invalid_email: t.emailError,
+      invalid_phone: t.phoneError,
+      invalid_degree: t.degreeError,
+      invalid_year: t.yearError,
+      field_too_long: t.lengthError,
+    };
+    return messages[error as ApplicationError] ?? "";
+  }
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
 
-    if (!data.fullName || !data.email || !data.why || !data.built) {
+    const validation = validateApplication({ ...data, locale });
+    if (validation.error) {
       setStatus("error");
-      setMessage(t.requiredError);
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email))) {
-      setStatus("error");
-      setMessage(t.emailError);
+      setMessage(errorMessage(validation.error));
+      form.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(":invalid")?.focus();
       return;
     }
 
@@ -39,9 +49,14 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       const res = await fetch("/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, locale }),
+        body: JSON.stringify(validation.data),
       });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const result = await res.json();
+        setStatus("error");
+        setMessage(errorMessage(String(result.error)));
+        return;
+      }
       setStatus("sent");
       form.reset();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -86,98 +101,44 @@ export function ApplyForm({ locale, dict }: { locale: Locale; dict: Dict }) {
     <form
       onSubmit={onSubmit}
       noValidate
+      aria-busy={status === "sending"}
       className="rounded-2xl border border-line bg-white p-6 sm:p-9"
     >
       <h2 className="h3">{t.formTitle}</h2>
+      <p className="mt-3 text-sm text-(--muted-fg)">{t.requiredNote}</p>
 
       <fieldset className="mt-8" disabled={status === "sending"}>
         <legend className="eyebrow mb-5">{t.sections.about}</legend>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Text id="fullName" name="fullName" label={f.fullName} required />
-          <Text
-            id="email"
-            name="email"
-            type="email"
-            label={f.email}
+          <Text id="firstName" name="firstName" label={f.firstName} required autoComplete="given-name" maxLength={applicationLimits.firstName} />
+          <Text id="lastName" name="lastName" label={f.lastName} required autoComplete="family-name" maxLength={applicationLimits.lastName} />
+          <Select
+            id="degree"
+            name="degree"
+            label={f.degree}
+            options={degreeValues.map((value, i) => ({ value, label: f.degreeOptions[i] }))}
+            placeholder={f.degreePlaceholder}
             required
-            dir="ltr"
-          />
-          <Text
-            id="phone"
-            name="phone"
-            type="tel"
-            label={f.phone}
-            optional={f.optional}
-            dir="ltr"
           />
           <Select
             id="year"
             name="year"
             label={f.year}
-            options={f.yearOptions}
+            options={yearValues.map((value, i) => ({ value, label: f.yearOptions[i] }))}
             placeholder={f.yearPlaceholder}
+            required
           />
-        </div>
-      </fieldset>
-
-      <fieldset className="mt-10" disabled={status === "sending"}>
-        <legend className="eyebrow mb-5">{t.sections.links}</legend>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Text
-            id="linkedin"
-            name="linkedin"
-            type="url"
-            label={f.linkedin}
-            optional={f.optional}
-            placeholder="https://linkedin.com/in/…"
-            dir="ltr"
-          />
-          <Text
-            id="github"
-            name="github"
-            type="url"
-            label={f.github}
-            optional={f.optional}
-            placeholder="https://github.com/…"
-            dir="ltr"
-          />
-          <div className="sm:col-span-2">
-            <Text
-              id="portfolio"
-              name="portfolio"
-              type="url"
-              label={f.portfolio}
-              optional={f.optional}
-              dir="ltr"
-            />
-          </div>
+          <Text id="phone" name="phone" type="tel" label={f.phone} required dir="ltr" maxLength={applicationLimits.phone} />
+          <Text id="email" name="email" type="email" label={f.email} required dir="ltr" maxLength={applicationLimits.email} />
         </div>
       </fieldset>
 
       <fieldset className="mt-10" disabled={status === "sending"}>
         <legend className="eyebrow mb-5">{t.sections.questions}</legend>
         <div className="grid gap-5">
-          <TextArea id="why" name="why" label={f.why} required rows={4} />
-          <TextArea id="built" name="built" label={f.built} required rows={4} />
-          <Select
-            id="interest"
-            name="interest"
-            label={f.interest}
-            options={f.interestOptions}
-            placeholder={f.yearPlaceholder}
-          />
-          <RadioGroup
-            name="aiExperience"
-            label={f.aiExperience}
-            options={f.aiExperienceOptions}
-          />
-          <Text
-            id="projectLink"
-            name="projectLink"
-            type="url"
-            label={f.projectLink}
-            dir="ltr"
-          />
+          <TextArea id="why" name="why" label={f.why} required rows={4} maxLength={applicationLimits.why} />
+          <TextArea id="background" name="background" label={f.background} placeholder={f.backgroundPlaceholder} required rows={4} maxLength={applicationLimits.background} />
+          <TextArea id="aiExperience" name="aiExperience" label={f.aiExperience} optional={f.optional} placeholder={f.aiExperiencePlaceholder} hint={f.aiExperienceHint} rows={4} maxLength={applicationLimits.aiExperience} />
         </div>
       </fieldset>
 
