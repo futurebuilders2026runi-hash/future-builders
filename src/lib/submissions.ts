@@ -49,7 +49,7 @@ export async function deliver(
   const targets: Promise<void>[] = [];
 
   const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (supabaseUrl && supabaseKey) {
     const table = kind === "application" ? "applications" : "partner_requests";
     targets.push(
@@ -58,7 +58,7 @@ export async function deliver(
         headers: {
           "Content-Type": "application/json",
           apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
+          ...(!supabaseKey.startsWith("sb_secret_") ? { Authorization: `Bearer ${supabaseKey}` } : {}),
           Prefer: "return=minimal",
         },
         body: JSON.stringify(record),

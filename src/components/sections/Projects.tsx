@@ -20,7 +20,7 @@ export function Projects({ dict }: { dict: Dict }) {
         </div>
 
         {hasProjects ? (
-          <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project, i) => (
               <Reveal as="li" key={project.slug} delay={(i % 3) * 0.06}>
                 <article className="card h-full overflow-hidden p-0">
@@ -98,7 +98,7 @@ export function Projects({ dict }: { dict: Dict }) {
           </ul>
         ) : (
           <Reveal delay={0.12}>
-            <div className="mt-12 grid place-items-center rounded-2xl border border-dashed border-line bg-white px-6 py-20 text-center">
+            <div className="mt-8 grid place-items-center rounded-2xl border border-dashed border-line bg-white px-6 py-14 text-center">
               <span
                 aria-hidden
                 className="mb-6 grid h-12 w-12 place-items-center rounded-full border border-line"

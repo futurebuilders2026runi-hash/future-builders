@@ -17,20 +17,22 @@ export function Learn({ dict }: { dict: Dict }) {
           </Reveal>
         </div>
 
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {learn.cards.map((card, i) => (
             <Reveal as="li" key={card.title} delay={(i % 3) * 0.06}>
               <article className="card group h-full">
-                <span className="text-xs font-semibold tabular-nums text-accent">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="h3 mt-3">{card.title}</h3>
-                <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-(--muted-fg)">
+                <div className="flex items-baseline gap-3 sm:block">
+                  <span className="text-xs font-semibold tabular-nums text-accent">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="h3 sm:mt-3">{card.title}</h3>
+                </div>
+                <p className="mt-2 text-[0.9375rem] sm:mt-2.5 leading-relaxed text-(--muted-fg)">
                   {card.body}
                 </p>
                 <span
                   aria-hidden
-                  className="mt-6 block h-px w-10 origin-[left_center] bg-linear-to-r from-accent-bright to-accent transition-all duration-500 group-hover:w-20 rtl:origin-[right_center]"
+                  className="mt-6 hidden h-px w-10 sm:block origin-[left_center] bg-linear-to-r from-accent-bright to-accent transition-all duration-500 group-hover:w-20 rtl:origin-[right_center]"
                 />
               </article>
             </Reveal>

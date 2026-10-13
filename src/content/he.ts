@@ -13,7 +13,7 @@ export const he: Dict = {
       "תוכנית AI ישראל",
       "Future Builders",
     ],
-    applyTitle: "הגשת מועמדות | Future Builders",
+    applyTitle: "הרשמה למועדון | Future Builders",
     applyDescription:
       "הגשת מועמדות ל-Future Builders — מועדון AI לסטודנטים נבחרים למדעי המחשב באוניברסיטת רייכמן.",
     companiesTitle: "לחברות | Future Builders",
@@ -28,7 +28,7 @@ export const he: Dict = {
     projects: "פרויקטים",
     faq: "שאלות נפוצות",
     forCompanies: "לחברות",
-    apply: "הגשת מועמדות",
+    apply: "הרשמה למועדון",
     menu: "תפריט",
     close: "סגירה",
     langLabel: "EN",
@@ -412,7 +412,6 @@ export const he: Dict = {
     submittedAt: "תאריך הרשמה",
     details: "צפייה בפרטים",
     noAiExperience: "לא נמסרה היכרות עם AI",
-    legacyName: "שם מלא",
   },
 
   companies: {

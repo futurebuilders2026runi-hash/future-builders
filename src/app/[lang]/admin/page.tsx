@@ -83,7 +83,7 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
                           <div key={label}><dt className="field-label">{label}</dt><dd className="break-words">{value}</dd></div>
                         ))}
                         <div><dt className="field-label">{f.phone}</dt><dd><a href={`tel:${application.phone?.replace(/[^\d+]/g, "") ?? ""}`} dir="ltr" className="inline-block break-all text-accent underline">{application.phone || "—"}</a></dd></div>
-                        <div><dt className="field-label">{f.email}</dt><dd><a href={`mailto:${application.email}`} dir="ltr" className="inline-block break-all text-accent underline">{application.email}</a></dd></div>
+                        <div><dt className="field-label">{f.email}</dt><dd><a href={`mailto:${encodeURIComponent(application.email)}`} dir="ltr" className="inline-block break-all text-accent underline">{application.email}</a></dd></div>
                         {[
                           [f.why, application.why],
                           [f.background, application.background],

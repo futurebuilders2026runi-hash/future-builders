@@ -18,7 +18,7 @@ export function Leadership({ dict }: { dict: Dict }) {
     <section id="team" className="section relative overflow-hidden bg-cloud">
       <CircuitFlow variant={2} />
       <div className="shell relative">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl text-center">
           <Reveal>
             <p className="eyebrow">{leadership.eyebrow}</p>
             <h2 className="h2 mt-5">{leadership.title}</h2>
@@ -26,14 +26,14 @@ export function Leadership({ dict }: { dict: Dict }) {
           </Reveal>
         </div>
 
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2">
+        <ul className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-2">
           {leadership.people.map((person, i) => {
             const photo = leadPhotos[person.key];
             const link = leadLinks[person.key];
 
             return (
               <Reveal as="li" key={person.key} delay={i * 0.08}>
-                <article className="card flex h-full flex-col gap-6 sm:flex-row sm:items-start">
+                <article className="card flex h-full flex-col items-center gap-6 text-center sm:p-8">
                   <span className="shrink-0">
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -41,12 +41,12 @@ export function Leadership({ dict }: { dict: Dict }) {
                         src={photo}
                         alt={person.name}
                         loading="lazy"
-                        className="h-32 w-32 rounded-2xl object-cover"
+                        className="h-52 w-52 rounded-3xl object-cover shadow-[0_24px_48px_-28px_rgb(11_42_107/0.45)] sm:h-60 sm:w-60"
                       />
                     ) : (
                       <span
                         aria-hidden
-                        className="grid h-32 w-32 place-items-center rounded-2xl bg-linear-to-br from-accent-bright/25 to-accent/20 text-3xl font-semibold text-brand"
+                        className="grid h-52 w-52 place-items-center rounded-3xl sm:h-60 sm:w-60 bg-linear-to-br from-accent-bright/25 to-accent/20 text-5xl font-semibold text-brand"
                       >
                         {initial(person.name)}
                       </span>
@@ -56,7 +56,7 @@ export function Leadership({ dict }: { dict: Dict }) {
                   <div className="min-w-0">
                     <h3 className="h3 text-brand">{person.name}</h3>
                     {person.role && (
-                      <p dir="ltr" className="mt-1 text-sm font-medium text-accent rtl:text-right">
+                      <p dir="ltr" className="mt-1 text-sm font-medium text-accent">
                         {person.role}
                       </p>
                     )}

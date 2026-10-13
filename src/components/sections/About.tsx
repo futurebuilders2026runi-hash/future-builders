@@ -34,7 +34,7 @@ export function About({ dict }: { dict: Dict }) {
         </div>
 
         <Reveal delay={0.1}>
-          <figure className="mt-20 border-t border-line pt-12 text-center lg:mt-28">
+          <figure className="mt-12 border-t border-line pt-10 text-center lg:mt-16">
             <blockquote className="h1 mx-auto max-w-3xl">
               <span className="grad-text">{about.pull.quote}</span>
             </blockquote>

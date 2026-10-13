@@ -55,9 +55,17 @@ export function sameOrigin(request: Request) {
 const attempts = new Map<string, { count: number; expires: number }>();
 const windowMs = 15 * 60 * 1000;
 
-export function loginRateLimited(request: Request) {
+function attemptKey(request: Request) {
   const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  const key = createHash("sha256").update(address).digest("hex");
+  return createHash("sha256").update(address).digest("hex");
+}
+
+export function resetLoginAttempts(request: Request) {
+  attempts.delete(attemptKey(request));
+}
+
+export function loginRateLimited(request: Request) {
+  const key = attemptKey(request);
   const now = Date.now();
   for (const [entry, value] of attempts) {
     if (value.expires <= now) attempts.delete(entry);

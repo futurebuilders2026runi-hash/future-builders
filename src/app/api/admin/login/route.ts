@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { adminConfigured, adminCookie, checkAdminPassword, createAdminSession, loginRateLimited, sameOrigin, sessionSeconds } from "@/lib/admin-auth";
+import { adminConfigured, adminCookie, checkAdminPassword, createAdminSession, loginRateLimited, resetLoginAttempts, sameOrigin, sessionSeconds } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 
@@ -16,6 +16,7 @@ export async function POST(request: Request) {
   if (typeof password !== "string" || password.length > 256 || !checkAdminPassword(password)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
+  resetLoginAttempts(request);
   const response = NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
   response.cookies.set(adminCookie, createAdminSession(), {
     httpOnly: true,

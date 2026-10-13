@@ -7,11 +7,13 @@ import type { ApplicationData, ApplicationRecord } from "./application-schema";
 
 function storageConfig() {
   const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (url && key) {
+    const headers: Record<string, string> = { apikey: key };
+    if (!key.startsWith("sb_secret_")) headers.Authorization = `Bearer ${key}`;
     return {
       endpoint: `${url.replace(/\/$/, "")}/rest/v1/applications`,
-      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      headers,
     };
   }
   // Never acknowledge a production registration without durable storage.

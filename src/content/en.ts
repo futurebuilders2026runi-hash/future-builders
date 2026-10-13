@@ -11,7 +11,7 @@ export const en = {
       "AI Program Israel",
       "Future Builders",
     ],
-    applyTitle: "Apply | Future Builders",
+    applyTitle: "Club registration | Future Builders",
     applyDescription:
       "Apply to Future Builders — a selective AI program for Computer Science students at Reichman University.",
     companiesTitle: "For Companies | Future Builders",
@@ -26,7 +26,7 @@ export const en = {
     projects: "Projects",
     faq: "FAQ",
     forCompanies: "For Companies",
-    apply: "Apply",
+    apply: "Join the club",
     menu: "Menu",
     close: "Close",
     langLabel: "עב",
@@ -418,7 +418,6 @@ export const en = {
     submittedAt: "Registration date",
     details: "View details",
     noAiExperience: "No AI experience provided",
-    legacyName: "Full name",
   },
 
   companies: {

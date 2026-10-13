@@ -23,8 +23,8 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dict }) {
       />
       <Waves className="opacity-90" />
 
-      <div className="shell relative pb-16 pt-32 sm:pt-36 lg:pb-24 lg:pt-44">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+      <div className="shell relative pb-12 pt-28 sm:pt-32 lg:pb-16 lg:pt-36">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
           <div>
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3.5 py-1.5 text-[0.72rem] font-medium text-brand backdrop-blur">
@@ -78,7 +78,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dict }) {
         </div>
 
         {/* Quick stats */}
-        <div className="mt-16 grid grid-cols-2 gap-x-6 gap-y-9 border-t border-line pt-10 lg:mt-24 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8 lg:mt-14 lg:grid-cols-4">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.07}>
               <p className="text-3xl font-semibold tracking-tight text-brand sm:text-4xl">

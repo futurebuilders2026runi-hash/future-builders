@@ -42,7 +42,7 @@ export function Program({ dict }: { dict: Dict }) {
           </Reveal>
         </div>
 
-        <div ref={ref} className="mt-16 lg:mt-24">
+        <div ref={ref} className="mt-10 lg:mt-14">
           {/* Desktop: horizontal rail */}
           <div className="relative hidden lg:block">
             <div

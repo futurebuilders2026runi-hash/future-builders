@@ -14,7 +14,7 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
     <section id="partners" className="section relative overflow-hidden bg-white">
       <CircuitFlow variant={5} />
       <div className="shell relative">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-14">
           <Reveal>
             <p className="eyebrow">{industry.eyebrow}</p>
             <h2 className="h2 mt-5 max-w-lg">{industry.title}</h2>
@@ -31,7 +31,7 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
 
         {/* Partners */}
         <Reveal delay={0.1}>
-          <div className="mt-16 rounded-2xl border border-line bg-cloud px-6 py-10 lg:mt-20">
+          <div className="mt-10 rounded-2xl border border-line bg-cloud px-6 py-8 lg:mt-12">
             <p className="eyebrow justify-center w-full text-center">
               {industry.partnersLabel}
             </p>

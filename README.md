@@ -105,7 +105,8 @@ secret invalidates existing sessions. No admin page is included in the sitemap.
 
 # Required for production registration storage.
 SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=…            # server-side only, never NEXT_PUBLIC_
+SUPABASE_SECRET_KEY=…                  # server-side only, never NEXT_PUBLIC_
+# SUPABASE_SERVICE_ROLE_KEY=…          # alternative for an existing legacy key
 ADMIN_PASSWORD=…                       # at least 12 characters
 ADMIN_SESSION_SECRET=…                 # random secret, at least 32 characters
 
