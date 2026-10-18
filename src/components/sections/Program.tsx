@@ -114,6 +114,31 @@ export function Program({ dict }: { dict: Dict }) {
             ))}
           </ol>
         </div>
+
+        <Reveal delay={0.1}>
+          <dl className="mt-10 grid gap-3 sm:grid-cols-3 lg:mt-12">
+            {program.schedule.map((entry) => (
+              <div
+                key={entry.label}
+                className="rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-4 text-center sm:text-start"
+              >
+                <dt className="text-xs font-medium tracking-wide text-accent-bright">
+                  {entry.label}
+                </dt>
+                <dd className="mt-1.5 text-lg font-semibold tracking-tight text-white">
+                  {/* keeps dates and times in LTR order on Hebrew pages */}
+                  <bdi>{entry.value}</bdi>
+                  {"time" in entry && (
+                    <>
+                      {" · "}
+                      <bdi dir="ltr">{entry.time}</bdi>
+                    </>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
       </div>
     </section>
   );

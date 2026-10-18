@@ -54,7 +54,7 @@ export const en = {
 
   stats: [
     { value: "30–40", label: "Selected students" },
-    { value: "12–14", label: "Sessions" },
+    { value: "14", label: "Sessions" },
     { value: "1 semester", label: "From idea to POC" },
     { value: "Demo Day", label: "Final product showcase" },
   ],
@@ -143,6 +143,11 @@ export const en = {
     eyebrow: "The Program",
     title: "From an idea to something real.",
     body: "One semester, seven stages. Each stage ends with something you can show.",
+    schedule: [
+      { label: "Kickoff", value: "8.3.2027" },
+      { label: "Sessions", value: "Every Monday", time: "18:00–20:00" },
+      { label: "Demo Day", value: "21.6.2027" },
+    ],
     steps: [
       {
         title: "Explore",
@@ -222,7 +227,7 @@ export const en = {
   demoDay: {
     eyebrow: "Demo Day",
     title: "It ends with a Demo.",
-    body: "At the end of the semester, teams present the products they built to students, industry professionals, founders and partners.",
+    body: "On 21.6.2027, at the end of the semester, teams present the products they built to students, industry professionals, founders and partners.",
     itemsLabel: "Every team presents",
     items: [
       "Problem",
@@ -308,7 +313,7 @@ export const en = {
       },
       {
         q: "How long is the program?",
-        a: "One academic semester.",
+        a: "One academic semester: the kickoff session is on 8.3.2027 and Demo Day is on 21.6.2027. Sessions take place every Monday from 18:00 to 20:00.",
       },
       {
         q: "Is attendance required?",
