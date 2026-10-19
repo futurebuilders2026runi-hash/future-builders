@@ -94,5 +94,7 @@ export const speakers: Speaker[] = [];
 export const conference = {
   path: "/future-of-ai",
   image: "/events/future-of-ai-2026.jpg",
+  /** 1200×630 link-preview image (WhatsApp, LinkedIn, X…). */
+  ogImage: "/events/future-of-ai-og.jpg",
   registerUrl: "https://events.lynx.co/future-of-ai/?coupon_code=FB_AI_CLUB",
 };

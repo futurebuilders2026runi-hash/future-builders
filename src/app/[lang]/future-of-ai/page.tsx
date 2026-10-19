@@ -18,7 +18,29 @@ export async function generateMetadata({
     title: dict.meta.conferenceTitle,
     description: dict.meta.conferenceDescription,
     alternates: { canonical: `/${lang}${conference.path}` },
-    openGraph: { images: [conference.image] },
+    // Page-level openGraph replaces the layout's, so it is spelled out in full.
+    openGraph: {
+      type: "website",
+      siteName: "Future Builders",
+      title: dict.meta.conferenceTitle,
+      description: dict.meta.conferenceDescription,
+      url: `/${lang}${conference.path}`,
+      locale: lang === "he" ? "he_IL" : "en_US",
+      images: [
+        {
+          url: conference.ogImage,
+          width: 1200,
+          height: 630,
+          alt: dict.conference.imageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.meta.conferenceTitle,
+      description: dict.meta.conferenceDescription,
+      images: [conference.ogImage],
+    },
   };
 }
 
