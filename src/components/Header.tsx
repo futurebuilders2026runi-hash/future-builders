@@ -54,7 +54,8 @@ export function Header({ locale, dict }: Props) {
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <div className="shell flex h-[4.5rem] items-center justify-between gap-6 text-brand">
+        {/* Below lg the menu button sits on the right and the logo on the left in both languages */}
+        <div className="shell flex h-[4.5rem] items-center justify-between gap-6 text-brand rtl:max-lg:flex-row-reverse">
           <div className="flex items-center gap-3.5">
             <Link
               href={home}
@@ -85,7 +86,7 @@ export function Header({ locale, dict }: Props) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 rtl:max-lg:flex-row-reverse">
             <Link
               href={altPath}
               hrefLang={otherLocale}
