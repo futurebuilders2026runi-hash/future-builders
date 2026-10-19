@@ -17,6 +17,9 @@ export const en = {
     companiesTitle: "For Companies | Future Builders",
     companiesDescription:
       "Partner with Future Builders. Run expert sessions, workshops and mentorship with a selected group of Computer Science students building real AI products.",
+    conferenceTitle: "Future of AI 2026 | Future Builders",
+    conferenceDescription:
+      "Future Builders AI Club is an official community partner of Future of AI 2026 — Wednesday, 21.10.2026, Hilton Tel Aviv. Community members get 20% off tickets.",
   },
 
   nav: {
@@ -509,6 +512,39 @@ export const en = {
     successTitle: "Thanks — message received.",
     successBody: "We'll be in touch shortly to talk about the details.",
     successCta: "Back to home",
+  },
+
+  conference: {
+    eyebrow: "Official community partner",
+    title: "Future of AI 2026",
+    body: "Future Builders AI Club is an official community partner of the conference — and our community members get 20% off tickets.",
+    details: [
+      { label: "Date", value: "Wednesday, 21.10.2026" },
+      { label: "Venue", value: "Hilton Tel Aviv" },
+    ],
+    cta: "Register with 20% off",
+    ctaNote: "The registration link includes the discount code FB_AI_CLUB.",
+    imageAlt:
+      "Future Builders is joining Future of AI — October 21, Hilton Tel Aviv",
+    aboutEyebrow: "About the conference",
+    aboutTitle: "A day at the heart of Israel's AI scene.",
+    aboutBody:
+      "One of the largest AI conferences in Israel, bringing together senior leaders from tech companies, founders, investors and AI leaders for a day of talks, live demos and networking.",
+    highlights: [
+      { title: "Talks", body: "Senior leaders from tech companies and the people driving AI forward." },
+      { title: "Live demos", body: "AI products and technologies, shown in action." },
+      { title: "Networking", body: "Founders, investors and industry professionals in one room." },
+    ],
+    benefitEyebrow: "Community benefit",
+    benefitValue: "20%",
+    benefitTitle: "off conference tickets",
+    benefitBody:
+      "As an official community partner of Future of AI 2026, Future Builders AI Club members get 20% off their tickets.",
+    banner: {
+      badge: "Future of AI 2026",
+      text: "21.10 · Hilton Tel Aviv · 20% off for community members",
+      link: "Details",
+    },
   },
 
   common: {

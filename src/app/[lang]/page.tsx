@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { ConferenceBanner } from "@/components/ConferenceBanner";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Leadership } from "@/components/sections/Leadership";
@@ -29,6 +30,7 @@ export default async function HomePage({
   return (
     <>
       <Hero locale={locale} dict={dict} />
+      <ConferenceBanner locale={locale} dict={dict} />
       <About dict={dict} />
       <Leadership dict={dict} />
       <Learn dict={dict} />

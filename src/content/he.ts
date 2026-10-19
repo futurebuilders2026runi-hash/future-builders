@@ -16,6 +16,9 @@ export const he: Dict = {
     applyTitle: "הרשמה למועדון | Future Builders",
     applyDescription:
       "הגשת מועמדות ל-Future Builders — מועדון AI לסטודנטים נבחרים למדעי המחשב באוניברסיטת רייכמן.",
+    conferenceTitle: "Future of AI 2026 | Future Builders",
+    conferenceDescription:
+      "Future Builders AI Club הוא שותף קהילה רשמי של כנס Future of AI 2026 — יום רביעי, 21.10.2026, מלון הילטון תל אביב. חברי הקהילה נהנים מ-20% הנחה על הכרטיסים.",
     companiesTitle: "לחברות | Future Builders",
     companiesDescription:
       "שיתוף פעולה עם Future Builders — הרצאות מקצועיות, סדנאות ומנטורינג עם קבוצת סטודנטים נבחרת שבונה מוצרי AI אמיתיים.",
@@ -502,6 +505,38 @@ export const he: Dict = {
     successTitle: "תודה — ההודעה התקבלה.",
     successBody: "נחזור אליכם בקרוב כדי לדבר על הפרטים.",
     successCta: "חזרה לדף הבית",
+  },
+
+  conference: {
+    eyebrow: "שותף קהילה רשמי",
+    title: "Future of AI 2026",
+    body: "Future Builders AI Club הוא שותף קהילה רשמי של הכנס — וחברי הקהילה נהנים מ-20% הנחה על הכרטיסים.",
+    details: [
+      { label: "תאריך", value: "יום רביעי, 21.10.2026" },
+      { label: "מיקום", value: "מלון הילטון תל אביב" },
+    ],
+    cta: "להרשמה עם 20% הנחה",
+    ctaNote: "קישור ההרשמה כולל את קוד ההנחה FB_AI_CLUB.",
+    imageAlt: "Future Builders מצטרפים לכנס Future of AI — 21 באוקטובר, מלון הילטון תל אביב",
+    aboutEyebrow: "על הכנס",
+    aboutTitle: "יום אחד בלב סצנת ה-AI הישראלית.",
+    aboutBody:
+      "אחד מכנסי ה-AI הגדולים בישראל, המפגיש בכירים מחברות טכנולוגיה, יזמים, משקיעים ומובילי AI ליום של הרצאות, הדגמות חיות ונטוורקינג.",
+    highlights: [
+      { title: "הרצאות", body: "בכירים מחברות טכנולוגיה ומובילי תחום ה-AI." },
+      { title: "הדגמות חיות", body: "מוצרים וטכנולוגיות AI בפעולה." },
+      { title: "נטוורקינג", body: "יזמים, משקיעים ואנשי תעשייה במקום אחד." },
+    ],
+    benefitEyebrow: "הטבה לחברי הקהילה",
+    benefitValue: "20%",
+    benefitTitle: "הנחה על הכרטיסים לכנס",
+    benefitBody:
+      "Future Builders AI Club הוא שותף קהילה רשמי של Future of AI 2026, ולכן חברי הקהילה נהנים מ-20% הנחה על הכרטיסים.",
+    banner: {
+      badge: "Future of AI 2026",
+      text: "21.10 · מלון הילטון תל אביב · 20% הנחה לחברי הקהילה",
+      link: "לפרטים",
+    },
   },
 
   common: {

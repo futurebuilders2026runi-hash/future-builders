@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { contact, locales } from "@/content/config";
 
-const ROUTES = ["", "/apply", "/companies"];
+const ROUTES = ["", "/apply", "/companies", "/future-of-ai"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return locales.flatMap((locale) =>

@@ -86,3 +86,13 @@ export type Speaker = {
 };
 
 export const speakers: Speaker[] = [];
+
+/**
+ * Future of AI 2026 conference page (/[lang]/future-of-ai). The registration
+ * URL carries the community discount code — keep the query string intact.
+ */
+export const conference = {
+  path: "/future-of-ai",
+  image: "/events/future-of-ai-2026.jpg",
+  registerUrl: "https://events.lynx.co/future-of-ai/?coupon_code=FB_AI_CLUB",
+};
