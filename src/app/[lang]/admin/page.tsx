@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { AdminControls } from "@/components/admin/AdminControls";
+import { LinkStatsPanel } from "@/components/admin/LinkStatsPanel";
 import { getDict, isLocale } from "@/content";
 import { degreeValues, yearValues, type ApplicationRecord } from "@/lib/application-schema";
 import { adminConfigured, isAdmin } from "@/lib/admin-auth";
 import { listApplications } from "@/lib/applications";
+import { getLinkStats, type LinkStats } from "@/lib/link-events";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,12 +25,16 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
   const authenticated = await isAdmin();
   let applications: ApplicationRecord[] = [];
   let loadError = false;
+  let linkStats: LinkStats | null = null;
   if (authenticated) {
-    try { applications = await listApplications(); }
-    catch {
+    const [apps, stats] = await Promise.allSettled([listApplications(), getLinkStats("future-of-ai")]);
+    if (apps.status === "fulfilled") applications = apps.value;
+    else {
       loadError = true;
       console.error("[future-builders] failed to load admin applications");
     }
+    if (stats.status === "fulfilled") linkStats = stats.value;
+    else console.error("[future-builders] failed to load link stats", stats.reason);
   }
 
   const formatter = new Intl.DateTimeFormat(lang === "he" ? "he-IL" : "en-GB", {
@@ -46,6 +52,8 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
           </div>
           {authenticated && <AdminControls dict={dict} />}
         </div>
+
+        {authenticated && <LinkStatsPanel dict={dict} locale={lang} stats={linkStats} />}
 
         {!authenticated ? <AdminLogin dict={dict} configured={adminConfigured()} /> : loadError ? (
           <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">{t.loadError}</p>

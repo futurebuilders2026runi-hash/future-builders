@@ -426,6 +426,21 @@ export const en = {
     submittedAt: "Registration date",
     details: "View details",
     noAiExperience: "No AI experience provided",
+    linkStats: {
+      eyebrow: "Link tracking",
+      title: "Future of AI 2026",
+      opens: "Opens",
+      unique: "Unique visitors",
+      clicks: "Registration clicks",
+      today: "Opens today",
+      last: "Last open",
+      daily: "Opens in the last 14 days",
+      sources: "Sources",
+      direct: "Direct / unknown",
+      empty: "Not opened yet.",
+      loadError: "Tracking data can't be loaded right now.",
+      tip: "To see where opens come from, add the channel name to the end of the link, e.g.:",
+    },
   },
 
   companies: {

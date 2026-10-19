@@ -420,6 +420,21 @@ export const he: Dict = {
     submittedAt: "תאריך הרשמה",
     details: "צפייה בפרטים",
     noAiExperience: "לא נמסרה היכרות עם AI",
+    linkStats: {
+      eyebrow: "מעקב קישור",
+      title: "Future of AI 2026",
+      opens: "פתיחות",
+      unique: "מבקרים ייחודיים",
+      clicks: "לחיצות על הרשמה",
+      today: "פתיחות היום",
+      last: "פתיחה אחרונה",
+      daily: "פתיחות ב-14 הימים האחרונים",
+      sources: "מקורות",
+      direct: "ישיר / לא ידוע",
+      empty: "עדיין לא נפתח.",
+      loadError: "לא ניתן לטעון את נתוני המעקב כרגע.",
+      tip: "כדי לדעת מאיפה הגיעו הפתיחות, הוסיפו לסוף הקישור את שם הערוץ, למשל:",
+    },
   },
 
   companies: {

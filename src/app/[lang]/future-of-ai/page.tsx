@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CircuitCorner, Waves } from "@/components/BrandDecor";
 import { CircuitFlow } from "@/components/CircuitFlow";
+import { LinkTracker } from "@/components/LinkTracker";
 import { Reveal } from "@/components/Reveal";
 import { getDict } from "@/content";
 import { conference, isLocale } from "@/content/config";
@@ -51,6 +52,7 @@ function RegisterButton({ label }: { label: string }) {
       href={conference.registerUrl}
       target="_blank"
       rel="noopener noreferrer"
+      data-track="register"
       className="btn btn-primary w-full sm:w-auto"
     >
       {label}
@@ -86,6 +88,8 @@ export default async function ConferencePage({
 
   return (
     <>
+      <LinkTracker slug="future-of-ai" lang={lang} />
+
       {/* Hero */}
       <section className="brand-sky relative overflow-hidden">
         <CircuitFlow variant={1} />
