@@ -27,7 +27,8 @@ export const en = {
     program: "Program",
     partners: "Partners",
     projects: "Projects",
-    faq: "FAQ",
+    events: "Events",
+    aiRadar: "AI Radar",
     forCompanies: "For Companies",
     apply: "Join the club",
     menu: "Menu",
@@ -298,43 +299,21 @@ export const en = {
     },
   },
 
-  faq: {
-    eyebrow: "FAQ",
-    title: "Questions, answered",
-    items: [
-      {
-        q: "Who can apply?",
-        a: "Computer Science students at Reichman University.",
+  events: {
+    eyebrow: "Events",
+    title: "Upcoming events",
+    items: {
+      "future-of-ai": {
+        badge: "Community partner",
+        title: "Future of AI 2026",
+        date: "Wednesday, 21.10.2026",
+        venue: "Hilton Tel Aviv",
+        body: "One of the largest AI conferences in Israel, bringing together senior leaders from tech companies, founders, investors and AI leaders for a day of talks, live demos and networking.",
+        perk: "20% off tickets for community members",
+        cta: "Details & registration",
+        imageAlt: "Future of AI 2026 × Future Builders — community partner, October 21, Hilton Tel Aviv",
       },
-      {
-        q: "Do I need previous AI experience?",
-        a: "No. Curiosity, technical ability and motivation to build are more important.",
-      },
-      {
-        q: "How many students are selected?",
-        a: "Approximately 30–40 students per cohort.",
-      },
-      {
-        q: "How long is the program?",
-        a: "One academic semester: the kickoff session is on 8.3.2027 and Demo Day is on 21.6.2027. Sessions take place every Monday from 18:00 to 20:00.",
-      },
-      {
-        q: "Is attendance required?",
-        a: "Yes. The program is designed as a continuous building process, so consistent attendance matters.",
-      },
-      {
-        q: "Do students build a real project?",
-        a: "Yes. Students work in teams and build an AI product culminating in a POC, presented at Demo Day.",
-      },
-      {
-        q: "Is the program free?",
-        a: "Details on participation costs will be published together with the application details.",
-      },
-      {
-        q: "When does registration open?",
-        a: "Registration dates for the next cohort will be announced here and on our social channels.",
-      },
-    ],
+    },
   },
 
   finalCta: {

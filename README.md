@@ -208,6 +208,11 @@ These are placeholders written to read sensibly, not confirmed facts:
 
 ## Growing the site (phase 2+)
 
+AI Radar is implemented at `/he/ai-radar` and `/en/ai-radar`, with an editorial
+dashboard at `/*/admin/ai-radar`, live RSS imports, model comparison, company/tool
+catalogs, events and a shared home-page feed. Setup, migration, scheduling,
+source/translation policies and validation are documented in [AI-RADAR.md](AI-RADAR.md).
+
 The locale-scoped App Router layout means new pages are just new folders under
 `src/app/[lang]/`. Project and speaker detail pages can read from the same
 arrays in `config.ts`, or those arrays can be swapped for a CMS fetch without

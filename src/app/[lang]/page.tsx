@@ -11,10 +11,13 @@ import { DemoDay } from "@/components/sections/DemoDay";
 import { Who } from "@/components/sections/Who";
 import { Community } from "@/components/sections/Community";
 import { Speakers } from "@/components/sections/Speakers";
-import { Faq } from "@/components/sections/Faq";
+import { Events } from "@/components/sections/Events";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { getDict } from "@/content";
 import { isLocale, type Locale } from "@/content/config";
+import { RadarHome } from "@/components/radar/RadarHome";
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage({
   params,
@@ -41,7 +44,8 @@ export default async function HomePage({
       <Speakers dict={dict} />
       <Community dict={dict} />
       <Projects dict={dict} />
-      <Faq dict={dict} />
+      <Events locale={locale} dict={dict} />
+      <RadarHome locale={locale} />
       <FinalCta locale={locale} dict={dict} />
     </>
   );

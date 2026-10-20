@@ -98,3 +98,11 @@ export const conference = {
   ogImage: "/events/future-of-ai-og.jpg",
   registerUrl: "https://events.lynx.co/future-of-ai/?coupon_code=FB_AI_CLUB",
 };
+
+/**
+ * Cards in the home page "Upcoming events" section, in display order. Text for
+ * each key lives in the dictionaries under `events.items`.
+ */
+export const upcomingEvents = [
+  { key: "future-of-ai", image: conference.ogImage, path: conference.path },
+] as const;

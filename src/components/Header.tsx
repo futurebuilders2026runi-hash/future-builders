@@ -41,7 +41,8 @@ export function Header({ locale, dict }: Props) {
     { href: `${home}#program`, label: dict.nav.program },
     { href: `${home}#partners`, label: dict.nav.partners },
     { href: `${home}#projects`, label: dict.nav.projects },
-    { href: `${home}#faq`, label: dict.nav.faq },
+    { href: `${home}#events`, label: dict.nav.events },
+    { href: `${home}/ai-radar`, label: dict.nav.aiRadar },
     { href: `/${locale}/companies`, label: dict.nav.forCompanies },
   ];
 
@@ -55,7 +56,7 @@ export function Header({ locale, dict }: Props) {
         }`}
       >
         {/* Below lg the menu button sits on the right and the logo on the left in both languages */}
-        <div className="shell flex h-[4.5rem] items-center justify-between gap-6 text-brand rtl:max-lg:flex-row-reverse">
+        <div className="shell flex h-[4.5rem] items-center justify-between gap-4 text-brand rtl:max-xl:flex-row-reverse">
           <div className="flex items-center gap-3.5">
             <Link
               href={home}
@@ -72,21 +73,22 @@ export function Header({ locale, dict }: Props) {
           </div>
 
           <nav
-            className="hidden items-center gap-1 lg:flex"
+            className="hidden items-center gap-0 xl:flex"
             aria-label={dict.nav.menu}
           >
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-full px-3.5 py-2 text-sm text-(--muted-fg) transition-colors hover:bg-accent/8 hover:text-brand"
+                aria-current={pathname === link.href ? "page" : undefined}
+                className={`rounded-full px-2.5 py-2 text-sm transition-colors hover:bg-accent/8 hover:text-brand ${pathname === link.href ? "bg-accent/8 text-accent" : "text-(--muted-fg)"}`}
               >
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 rtl:max-lg:flex-row-reverse">
+          <div className="flex items-center gap-2 rtl:max-xl:flex-row-reverse">
             <Link
               href={altPath}
               hrefLang={otherLocale}
@@ -109,7 +111,7 @@ export function Header({ locale, dict }: Props) {
               aria-expanded={open}
               aria-controls="mobile-nav"
               aria-label={open ? dict.nav.close : dict.nav.menu}
-              className="relative grid h-11 w-11 place-items-center rounded-full border border-line bg-white/70 lg:hidden"
+              className="relative grid h-11 w-11 place-items-center rounded-full border border-line bg-white/70 xl:hidden"
             >
               <span className="sr-only">
                 {open ? dict.nav.close : dict.nav.menu}
@@ -139,7 +141,7 @@ export function Header({ locale, dict }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="brand-sky fixed inset-0 z-40 pt-[4.5rem] lg:hidden"
+            className="brand-sky fixed inset-0 z-40 pt-[4.5rem] xl:hidden"
           >
             <div className="shell flex h-full flex-col justify-between py-8">
               <nav className="flex flex-col text-center md:text-start" aria-label={dict.nav.menu}>

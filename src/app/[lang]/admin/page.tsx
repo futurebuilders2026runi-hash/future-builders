@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { radarCopy } from "@/content/radar";
 import { notFound } from "next/navigation";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { AdminControls } from "@/components/admin/AdminControls";
@@ -50,7 +52,7 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
             <h1 className="h1 mt-3 text-brand">{t.title}</h1>
             <p className="mt-3 text-(--muted-fg)">{authenticated ? t.body : t.loginBody}</p>
           </div>
-          {authenticated && <AdminControls dict={dict} />}
+          {authenticated && <div className="flex flex-wrap gap-3"><Link className="btn btn-primary" href={`/${lang}/admin/ai-radar`}>{radarCopy[lang].adminLink}</Link><AdminControls dict={dict} /></div>}
         </div>
 
         {authenticated && <LinkStatsPanel dict={dict} locale={lang} stats={linkStats} />}
