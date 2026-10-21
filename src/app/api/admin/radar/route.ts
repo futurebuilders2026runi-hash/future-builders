@@ -48,23 +48,28 @@ export async function POST(request: Request) {
     return Response.json({ error: "too_large" }, { status: 413, headers });
   let input: { action?: string; record?: unknown };
   try {
-    const reader=request.body?.getReader();
+    const reader = request.body?.getReader();
     if (!reader) throw new Error("Empty body");
-    const chunks:Uint8Array[]=[];
-    let bytes=0;
+    const chunks: Uint8Array[] = [];
+    let bytes = 0;
     try {
       for (;;) {
-        const {done,value}=await reader.read();
+        const { done, value } = await reader.read();
         if (done) break;
-        bytes+=value.length;
-        if (bytes>64000) throw new RangeError("Body too large");
+        bytes += value.length;
+        if (bytes > 64000) throw new RangeError("Body too large");
         chunks.push(value);
       }
-    } finally { await reader.cancel().catch(()=>{}); }
+    } finally {
+      await reader.cancel().catch(() => {});
+    }
     input = JSON.parse(Buffer.concat(chunks).toString("utf8"));
     if (!input || typeof input !== "object") throw new Error();
   } catch (error) {
-    return Response.json({ error:error instanceof RangeError?"too_large":"invalid_json" }, { status:error instanceof RangeError?413:400, headers });
+    return Response.json(
+      { error: error instanceof RangeError ? "too_large" : "invalid_json" },
+      { status: error instanceof RangeError ? 413 : 400, headers },
+    );
   }
   try {
     if (input.action === "import") {

@@ -212,6 +212,8 @@ export const recordSchema = z
   .superRefine((v, ctx) => {
     const issue = (message: string) =>
       ctx.addIssue({ code: "custom", message });
+    if ("status" in v && v.status === "published" && !v.verifiedAt)
+      issue("Published content requires a source verification date");
     if ("image" in v && v.image && (!v.imageCredit || !v.imageAlt))
       issue("Image credit and bilingual alt text are required");
     if (v.kind === "events") {

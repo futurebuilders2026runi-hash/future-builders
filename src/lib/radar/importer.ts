@@ -175,8 +175,19 @@ const angles: Record<string, { en: string; he: string }> = {
 
 export function makeDigest(item: FeedItem, source: Source, now: string): News {
   const category = classify(item.title);
-  const companyIds=new Set(source.companyId?[source.companyId]:[]);
-  for (const [pattern,id] of [[/\bopenai\b/i,"openai"],[/\banthropic\b|\bclaude\b/i,"anthropic"],[/\bgoogle\b|\bdeepmind\b|\bgemini\b/i,"google"],[/\bmeta\b/i,"meta"],[/\bmistral\b/i,"mistral"],[/\bxai\b|\bgrok\b/i,"xai"],[/\bdeepseek\b/i,"deepseek"],[/\balibaba\b|\bqwen\b/i,"qwen"],[/\bqodo\b/i,"qodo"]] as const) if (pattern.test(item.title)) companyIds.add(id);
+  const companyIds = new Set(source.companyId ? [source.companyId] : []);
+  for (const [pattern, id] of [
+    [/\bopenai\b/i, "openai"],
+    [/\banthropic\b|\bclaude\b/i, "anthropic"],
+    [/\bgoogle\b|\bdeepmind\b|\bgemini\b/i, "google"],
+    [/\bmeta\b/i, "meta"],
+    [/\bmistral\b/i, "mistral"],
+    [/\bxai\b|\bgrok\b/i, "xai"],
+    [/\bdeepseek\b/i, "deepseek"],
+    [/\balibaba\b|\bqwen\b/i, "qwen"],
+    [/\bqodo\b/i, "qodo"],
+  ] as const)
+    if (pattern.test(item.title)) companyIds.add(id);
   // Source digests intentionally preserve the original headline. They do not
   // pretend to be a translation or an AI-generated summary of an unread article.
   return recordSchema.parse({
@@ -207,7 +218,7 @@ export function makeDigest(item: FeedItem, source: Source, now: string): News {
     verifiedAt: now,
     categories: [category],
     tags: [source.title.en],
-    companyIds:[...companyIds],
+    companyIds: [...companyIds],
     status: source.autoPublish ? "published" : "review",
     featured: false,
     originalTitle: item.title,

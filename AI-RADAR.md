@@ -4,7 +4,7 @@
 
 - Public: `/he/ai-radar`, `/en/ai-radar`; each published record has a detail URL at `/{locale}/ai-radar/{kind}/{id}`.
 - Editorial dashboard: `/{locale}/admin/ai-radar`, using the site's existing signed, HttpOnly, eight-hour admin session. The registration inbox links to it.
-- Public API: `GET /api/radar`; supports `q`, `kind`, `category`, `company`, `since`, `until`, `sort`, `eventState`, `organizer`, `location`, `eventType`, `page`, `limit` (maximum 24).
+- Public API: `GET /api/radar`; supports `q`, `kind`, `category`, `company`, `since`, `until`, `sort`, `eventState`, `organizer`, `location`, `eventType`, `group` (`startups` / `picks`), `page`, `limit` (maximum 24).
 - The home page reads the same data layer: three recent news items, a featured/latest model and an upcoming/ongoing event.
 - Separate Supabase tables hold news, models, companies, tools, events, categories/tags, sources, import jobs, editorial reviews and version history. Company IDs connect news, models and tools. JSONB records are validated with Zod at every editorial write.
 - Existing applications and link statistics are untouched. The existing site-wide password defines the administrator role; no separate account system is introduced.
@@ -61,7 +61,7 @@ Manufacturer claims, release pricing and editorial build ideas are labelled sepa
 7. Official sources can auto-publish; community/review-only sources receive a pending editorial review. No tool becomes a Builders' Pick automatically. No event, funding amount, discount or company ranking is inferred by the importer.
 8. Complete the history record with inserted, duplicate, rejected and per-source results. Crashed jobs older than the lease are marked failed at the next run. Existing content remains readable during source outages, with original dates preserved.
 
-The public layer uses a 30-second process cache and short HTTP caching. A successful admin write invalidates the local process cache. Other instances refresh within their cache period. A warm server can retain its last verified snapshot during a database outage; a cold server shows an unavailable/empty state. Date, source and refresh timestamps are never rewritten to make content look new.
+The public layer uses a 30-second process cache and short HTTP caching. A successful admin write invalidates the local process cache. Other instances refresh within their cache period; HTTP caches can retain a response for up to 90 seconds, and open explorer pages poll once a minute. A warm server can retain its last verified snapshot during a database outage; a cold server shows an unavailable/empty state. Date, source and refresh timestamps are never rewritten to make content look new.
 
 ## Editing content and events
 
@@ -89,6 +89,8 @@ npm run test:e2e
 npm run build
 ```
 
+Development, browser tests and production builds use separate generated Next.js directories to avoid manifest conflicts when checks run alongside a local preview.
+
 Unit tests cover event boundaries, timezone offsets, cancellation, validation, publication privacy, bilingual search, safe RSS/Atom parsing, redirect rules, stable IDs, repeated/concurrent imports, editorial preservation and source outages. Browser tests use a separate server and data folder and cover RTL/LTR, mobile navigation, comparison/search/empty states, API authorization and a complete manual event create → publish → update → hide flow.
 
-A real local import was run against the connected publishers and repeated to check duplicate prevention. Some OpenAI article links returned HTTP 403 and were excluded; this produces a partial run and does not stop the other sources. Connected Supabase validation must run after the SQL migration is applied. No production deployment is performed by these scripts.
+A real local import was run against the connected publishers and repeated to check duplicate prevention. A real imported Google article was rendered on the page and its source was opened successfully in a browser. Some OpenAI article links returned HTTP 403, and redirects to hosts outside the source allowlist were excluded; these produce a partial run and do not stop the other sources. The migration was also applied twice against an isolated PostgreSQL-compatible engine, with RLS grants and overlapping import locks checked. Connected Supabase validation must run after the SQL migration is applied. No production deployment is performed by these scripts.

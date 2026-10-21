@@ -236,7 +236,12 @@ export function RadarCard({
                   [t.capabilities, value(item.capabilities)],
                   [t.changes, value(item.changes)],
                   [t.buildIdeas, value(item.buildIdeas)],
-                  [t.pricing, value(item.pricing)],
+                  [
+                    t.pricing,
+                    item.pricingUrl && item.verifiedAt
+                      ? value(item.pricing)
+                      : t.unknown,
+                  ],
                 ].map(([label, text]) => (
                   <div key={label}>
                     <dt className="mb-1 text-xs font-medium text-accent">
@@ -351,14 +356,27 @@ export function RadarCard({
               <dt>{locale === "he" ? "מועד" : "When"}</dt>
               <dd>
                 <time dateTime={item.startsAt}>
-                  {displayDate(item.startsAt, locale, item.timezone, true)}
-                </time>{" "}
-                –{" "}
-                {new Intl.DateTimeFormat(locale === "he" ? "he-IL" : "en-GB", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  timeZone: item.timezone,
-                }).format(new Date(item.endsAt))}
+                  {displayDate(item.startsAt, locale, item.timezone)}
+                </time>
+                <span className="mt-1 block" dir="ltr">
+                  {new Intl.DateTimeFormat("en-GB", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    timeZone: item.timezone,
+                  }).format(new Date(item.startsAt))}
+                  {" – "}
+                  {new Intl.DateTimeFormat("en-GB", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    timeZone: item.timezone,
+                  }).format(new Date(item.endsAt))}
+                </span>
+                {displayDate(item.startsAt, locale, item.timezone) !==
+                  displayDate(item.endsAt, locale, item.timezone) && (
+                  <time className="mt-1 block" dateTime={item.endsAt}>
+                    {displayDate(item.endsAt, locale, item.timezone)}
+                  </time>
+                )}
                 <span className="mt-1 block text-[11px]" dir="ltr">
                   {item.timezone}
                 </span>
@@ -472,7 +490,10 @@ export function ModelComparison({
     [t.capabilities, (m) => m.capabilities[locale]],
     [t.changes, (m) => m.changes[locale]],
     [t.buildIdeas, (m) => m.buildIdeas[locale]],
-    [t.pricing, (m) => m.pricing[locale]],
+    [
+      t.pricing,
+      (m) => (m.pricingUrl && m.verifiedAt ? m.pricing[locale] : t.unknown),
+    ],
   ];
   return (
     <section

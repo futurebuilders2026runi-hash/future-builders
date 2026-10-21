@@ -33,9 +33,9 @@ export default async function HomePage({
   return (
     <>
       <Hero locale={locale} dict={dict} />
+      <Leadership dict={dict} />
       <ConferenceBanner locale={locale} dict={dict} />
       <About dict={dict} />
-      <Leadership dict={dict} />
       <Learn dict={dict} />
       <Program dict={dict} />
       <Industry locale={locale} dict={dict} />

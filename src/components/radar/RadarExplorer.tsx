@@ -190,8 +190,8 @@ export function RadarExplorer({
                   kind: e.target.value ? "all" : query.kind,
                   category: "",
                   company: "",
-                  group:"",
-                  sort:"newest",
+                  group: "",
+                  sort: "newest",
                 })
               }
               placeholder={t.search}
@@ -205,7 +205,7 @@ export function RadarExplorer({
             <button
               className="radar-tag"
               onClick={() =>
-                setQuery({kind:"news",sort:"newest",page:1})
+                setQuery({ kind: "news", sort: "newest", page: 1 })
               }
             >
               {t.latest} <span aria-hidden>↗</span>
@@ -215,7 +215,8 @@ export function RadarExplorer({
               onClick={() =>
                 setQuery({
                   kind: "events",
-                  sort:"newest",page:1,
+                  sort: "newest",
+                  page: 1,
                   eventState: "upcoming",
                 })
               }
@@ -517,7 +518,13 @@ export function RadarExplorer({
                 tagLabels={tagLabels}
                 onTag={(tag) => change({ category: tag })}
                 onCompany={(id) =>
-                  change({ company: id, kind: "all", category: "", group:"", sort:"newest" })
+                  change({
+                    company: id,
+                    kind: "all",
+                    category: "",
+                    group: "",
+                    sort: "newest",
+                  })
                 }
                 onCompare={compare}
                 selected={models.some((m) => m.id === item.id)}

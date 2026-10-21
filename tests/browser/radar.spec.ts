@@ -66,6 +66,19 @@ test("Hebrew and English pages, responsive navigation and model comparison", asy
   await expect(
     page.getByRole("heading", { name: "Nothing on the radar yet." }),
   ).toBeVisible();
+  await page.route("**/api/radar?**", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "temporarily_unavailable" }),
+    }),
+  );
+  await page.getByRole("searchbox").fill("test-source-outage");
+  await expect(page.locator("#radar-content").getByRole("alert")).toContainText(
+    "temporarily unavailable",
+  );
+  await expect(page.getByRole("heading", { name: "AI RADAR." })).toBeVisible();
+  await page.unroute("**/api/radar?**");
   await page.goto("/he/ai-radar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   await page.setViewportSize({ width: 390, height: 844 });
