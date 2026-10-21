@@ -217,3 +217,4 @@ The locale-scoped App Router layout means new pages are just new folders under
 `src/app/[lang]/`. Project and speaker detail pages can read from the same
 arrays in `config.ts`, or those arrays can be swapped for a CMS fetch without
 touching any component.
+# future-builders
