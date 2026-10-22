@@ -8,11 +8,19 @@ export function displayDate(
   time = false,
 ) {
   if (!value || !Number.isFinite(Date.parse(value))) return "—";
-  return new Intl.DateTimeFormat(locale === "he" ? "he-IL" : "en-GB", {
-    dateStyle: "medium",
-    ...(time ? { timeStyle: "short" as const } : {}),
+  // Safari and Node's ICU disagree on abbreviations such as Sep/Sept. Extract
+  // calendar parts in the requested zone and use fixed labels for stable SSR.
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    day: "numeric", month: "numeric", year: "numeric",
+    ...(time ? { hour: "2-digit", minute: "2-digit", hourCycle: "h23" as const } : {}),
     timeZone: timezone,
-  }).format(new Date(value));
+  }).formatToParts(new Date(value));
+  const read = (part: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === part)?.value || "";
+  const months = locale === "he"
+    ? ["בינו׳", "בפבר׳", "במרץ", "באפר׳", "במאי", "ביוני", "ביולי", "באוג׳", "בספט׳", "באוק׳", "בנוב׳", "בדצמ׳"]
+    : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const date = `${read("day")} ${months[Number(read("month")) - 1]} ${read("year")}`;
+  return time ? `${date}, ${read("hour")}:${read("minute")}` : date;
 }
 
 export function eventState(
@@ -79,6 +87,14 @@ export function publicContent(item: Content, now = Date.now()) {
     (item.kind !== "events" ||
       (Boolean(item.verifiedAt) && item.eventStatus !== "draft"))
   );
+}
+
+/** Imported headlines stay on the English site until Hebrew prose is ready.
+ * Product and company names may retain their original spelling.
+ */
+export function contentAvailableInLocale(item: Content, locale: Locale) {
+  return locale !== "he" || item.kind !== "news" ||
+    [item.title.he, item.summary.he, item.why.he].every((text) => /[א-ת]/.test(text));
 }
 
 export function jsonLd(value: unknown) {

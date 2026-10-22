@@ -23,15 +23,33 @@ export const contact = {
   siteUrl: "https://futurebuilders.ai",
 };
 
-/**
- * Partner companies. IMPORTANT: only add a company here once the collaboration
- * is signed AND they have approved use of their name and logo. While this list
- * is empty the site shows a neutral "partners announced soon" state instead.
- *
- * logo: path to an SVG/PNG inside /public/partners (optional — falls back to the
- * company name set in type).
- */
-export const partners: { name: string; logo?: string; url?: string }[] = [];
+export type ClubPartner = {
+  id: string;
+  name: Record<Locale, string>;
+  role: Record<Locale, string>;
+  description: Record<Locale, string>;
+  resourceName: string;
+  url: string;
+  guestNote: Record<Locale, string>;
+};
+
+// Partnerships announced with the club's explicit authorization. Newsletter
+// details checked against LernerPython; the future visit has no scheduled date.
+export const partners: ClubPartner[] = [{
+  id: "reuven-lerner",
+  name: { he: "ראובן לרנר", en: "Reuven Lerner" },
+  role: { he: "מדריך Python, מחבר ספרים ושותף לקהילה", en: "Python trainer, author & community partner" },
+  description: {
+    he: "מנה שבועית של Python: הסברים ודוגמאות שיעזרו לכתוב קוד ברור, יעיל ופייתוני יותר. הניוזלטר של ראובן נשלח בכל יום שני, באנגלית.",
+    en: "A weekly dose of Python: explanations and examples to help you write clearer, more efficient, idiomatic code. Reuven's English-language newsletter arrives every Monday.",
+  },
+  resourceName: "Better Developers",
+  url: "https://lernerpython.com/become-a-better-developer/",
+  guestNote: {
+    he: "ראובן יתארח בהמשך באחד ממפגשי המועדון. פרטים על המפגש יפורסמו בהמשך.",
+    en: "Reuven will join us at a future club session. Session details will be announced later.",
+  },
+}];
 
 /**
  * Student projects. Empty until the first cohort ships — the Projects section

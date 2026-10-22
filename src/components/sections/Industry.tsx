@@ -2,13 +2,13 @@ import Link from "next/link";
 import { CircuitFlow } from "../CircuitFlow";
 import { Reveal } from "../Reveal";
 import { partners } from "@/content/config";
+import { PartnerCard } from "../PartnerCard";
 import type { Dict } from "@/content";
 import type { Locale } from "@/content/config";
 
 export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
   const { industry } = dict;
   const hasPartners = partners.length > 0;
-  const loop = hasPartners ? [...partners, ...partners] : [];
 
   return (
     <section id="partners" className="section relative overflow-hidden bg-white">
@@ -37,29 +37,8 @@ export function Industry({ locale, dict }: { locale: Locale; dict: Dict }) {
             </p>
 
             {hasPartners ? (
-              <div className="marquee-mask mt-5 overflow-hidden">
-                <ul className="marquee-track items-center gap-8">
-                  {loop.map((partner, i) => (
-                    <li
-                      key={`${partner.name}-${i}`}
-                      className="shrink-0 opacity-55 grayscale transition hover:opacity-100 hover:grayscale-0"
-                    >
-                      {partner.logo ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={partner.logo}
-                          alt={partner.name}
-                          className="h-8 w-auto object-contain"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span className="text-lg font-semibold tracking-tight">
-                          {partner.name}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-5 grid gap-4">
+                {partners.map((partner) => <PartnerCard key={partner.id} partner={partner} locale={locale} />)}
               </div>
             ) : (
               <div className="mt-4 text-center">

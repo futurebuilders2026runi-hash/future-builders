@@ -1,6 +1,7 @@
 import { createHash, randomUUID } from "node:crypto";
+import { applyReviewedHebrew } from "@/content/radar-translations";
 import { XMLParser, XMLValidator } from "fast-xml-parser";
-import { canonicalUrl } from "./domain";
+import { canonicalUrl, contentAvailableInLocale } from "./domain";
 import { recordSchema, type ImportJob, type News, type Source } from "./schema";
 import { get, list, put, withImportLock, newsByUrl } from "./store";
 import { enrichDigest, enrichmentConfigured } from "./enrichment";
@@ -188,9 +189,9 @@ export function makeDigest(item: FeedItem, source: Source, now: string): News {
     [/\bqodo\b/i, "qodo"],
   ] as const)
     if (pattern.test(item.title)) companyIds.add(id);
-  // Source digests intentionally preserve the original headline. They do not
-  // pretend to be a translation or an AI-generated summary of an unread article.
-  return recordSchema.parse({
+  // Preserve source wording unless a reviewed translation is available. Hebrew
+  // listings omit untranslated news; the English source update remains usable.
+  return applyReviewedHebrew(recordSchema.parse({
     id: articleId(item.url),
     kind: "news",
     title: { en: item.title, he: item.title },
@@ -223,7 +224,7 @@ export function makeDigest(item: FeedItem, source: Source, now: string): News {
     featured: false,
     originalTitle: item.title,
     languageMode: "source-digest",
-  }) as News;
+  }) as News);
 }
 
 export async function importRadar() {
@@ -298,16 +299,15 @@ export async function importRadar() {
                 }
                 // Persist review first: a failed content save leaves an actionable
                 // pending review, never published unreviewed community content.
-                if (article.status === "review")
+                if (article.status === "review" || !contentAvailableInLocale(article, "he"))
                   await put("reviews", {
                     id: article.id,
                     contentId: article.id,
                     kind: "news",
                     status: "pending",
-                    reason:
-                      article.languageMode === "edited"
-                        ? "Machine-generated bilingual draft: review source grounding and translation before publishing."
-                        : "Community or review-only source: verify claims and add editorial translations.",
+                    reason: !contentAvailableInLocale(article, "he")
+                      ? "Hebrew translation required: this update is available only in English until its Hebrew headline and summary are reviewed."
+                      : "Review source claims and bilingual copy before publishing.",
                     updatedAt: article.updatedAt,
                   });
                 if (await put("news", article, true)) {

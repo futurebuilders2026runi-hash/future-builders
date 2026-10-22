@@ -39,6 +39,7 @@ export function RadarExplorer({
   const [models, setModels] = useState<Model[]>([]);
   const [compareError, setCompareError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const previousQuery = useRef<string | null>(null);
 
   const change = (next: Partial<RadarQuery>) =>
     setQuery((q) => ({ ...q, ...next, page: 1 }));
@@ -46,15 +47,22 @@ export function RadarExplorer({
     const controller = new AbortController();
     setBusy(true);
     setError("");
-    const timeout = setTimeout(async () => {
-      const params = new URLSearchParams();
-      for (const [key, value] of Object.entries(query))
-        if (value) params.set(key, String(value));
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(query))
+      if (value && key !== "lang") params.set(key, String(value));
+    const serialized = params.toString();
+    // Sync user filter changes immediately. An initial/periodic fetch must not
+    // rewrite history while a story's Next.js navigation is already pending.
+    if (previousQuery.current !== null && previousQuery.current !== serialized)
       window.history.replaceState(
         null,
         "",
         `${window.location.pathname}?${params}`,
       );
+    previousQuery.current = serialized;
+    // Route language wins over any saved query string.
+    params.set("lang", locale);
+    const timeout = setTimeout(async () => {
       try {
         const response = await fetch(`/api/radar?${params}`, {
           signal: controller.signal,
@@ -84,7 +92,7 @@ export function RadarExplorer({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [query, t.unavailable]);
+  }, [query, locale, t.unavailable]);
 
   // Refresh saved browser pages too: Safari can restore an earlier empty result
   // from its back/forward cache without mounting this component again.
@@ -207,7 +215,7 @@ export function RadarExplorer({
               className="min-w-0 flex-1 bg-transparent py-2 text-base outline-none placeholder:text-(--muted-fg) sm:text-lg"
             />
             <span className="hidden text-[10px] tracking-widest text-(--muted-fg) md:block">
-              AI RADAR SEARCH
+              {locale === "he" ? "חיפוש ב־AI RADAR" : "AI RADAR SEARCH"}
             </span>
           </form>
           <div className="flex flex-wrap items-center gap-2 px-4 py-3 sm:px-6">
@@ -285,8 +293,8 @@ export function RadarExplorer({
           <div>
             <p className="eyebrow">
               {query.kind === "events"
-                ? "AI EVENTS / FUTURE BUILDERS"
-                : "THE SIGNAL, WITHOUT THE NOISE"}
+                ? locale === "he" ? "אירועי AI / פיוצ׳ר בילדרס" : "AI EVENTS / FUTURE BUILDERS"
+                : locale === "he" ? "מה שחשוב, בלי הרעש" : "THE SIGNAL, WITHOUT THE NOISE"}
             </p>
             <h2 className="h2 mt-3 text-brand">{heading}</h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-(--muted-fg)">

@@ -46,13 +46,25 @@ export function radarTheme(item: Content): RadarTheme {
 
 export const radarTextDirection = (text: string) => /[\u0590-\u05ff]/.test(text) ? "rtl" : "ltr";
 
+// Club-supplied illustrations. Match the subject, leaving the original editorial
+// collection (including the favourite builders cover) available as fallbacks.
+const suppliedArtwork = [
+  { match: /legacy|cobol|mainframe/i, image: "legacy-modernisation", alt: { he: "איור של מערכות מחשוב ותיקות המתחברות לכלי פיתוח ובינה מלאכותית", en: "An illustration connecting legacy systems with modern AI development tools" } },
+  { match: /southeast asia/i, image: "connected-asia", alt: { he: "איור של עיר בדרום־מזרח אסיה ורשת חיבורים דיגיטלית", en: "An illustrated Southeast Asian city linked by a digital network" } },
+  { match: /global data|every language|societal|private ai compute|olmoearth/i, image: "global-network", alt: { he: "איור של כדור הארץ בלילה וקשתות המחברות בין אזורים", en: "An illustration of Earth at night with connections between regions" } },
+  { match: /in-house legal|franchisee|ai & economy|beam expands/i, image: "industry-office", alt: { he: "איור של בניין משרדים מודרני בשקיעה", en: "An illustrated modern office building at sunset" } },
+  { match: /embeddinggemma|apertus|mps in pytorch|torchtpu|torchneuron|granite/i, image: "ai-compute", alt: { he: "איור של ליבת בינה מלאכותית זוהרת מעל מעגל אלקטרוני", en: "An illustrated glowing AI core on an electronic circuit" } },
+  { match: /scam|live avatar|robotics|\bagents?\b/i, image: "robotic-interface", alt: { he: "איור של יד רובוטית הנוגעת בממשק דיגיטלי", en: "An illustrated robotic hand touching a digital interface" } },
+];
+
 export function radarArtwork(item: Content) {
   const theme = radarTheme(item);
+  const supplied = suppliedArtwork.find((art) => art.match.test(item.kind === "news" ? item.originalTitle || item.title.en : item.title.en));
   return {
     theme,
     ...themes[theme],
-    image: item.image || themes[theme].image,
-    alt: item.image ? item.imageAlt || item.title : themes[theme].alt,
+    image: item.image || (supplied ? `/radar/selected/${supplied.image}.webp` : themes[theme].image),
+    alt: item.image ? item.imageAlt || item.title : supplied?.alt || themes[theme].alt,
     illustration: !item.image,
   };
 }

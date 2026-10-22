@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { contact, isLocale } from "@/content/config";
+import { contact, isLocale, partners } from "@/content/config";
+import { PartnerCard } from "@/components/PartnerCard";
 import { radarCopy } from "@/content/radar";
 import { radarData, featuredContent, queryFromParams } from "@/lib/radar/data";
 import { jsonLd, displayDate } from "@/lib/radar/domain";
@@ -69,9 +70,9 @@ export default async function RadarPage({
     page: 1,
   };
   const [data, featured, priority] = await Promise.all([
-    radarData(query),
-    featuredContent(),
-    radarData({ kind: "news", sort: "newest", limit: 12 }),
+    radarData({ ...query, lang }),
+    featuredContent(lang),
+    radarData({ kind: "news", sort: "newest", limit: 12, lang }),
   ]);
   const highlights = priority.items.filter((item): item is News => item.kind === "news");
   const story = featured.story || highlights[0];
@@ -153,7 +154,7 @@ export default async function RadarPage({
       />
       <section className="radar-masthead">
         <div className="shell">
-          <div className="radar-edition-line"><span>{t.eyebrow}</span><span className="radar-edition-note">IDEAS MOVE FAST. STAY CURIOUS. <span aria-hidden>✳</span></span></div>
+          <div className="radar-edition-line"><span>{t.eyebrow}</span><span className="radar-edition-note">{lang === "he" ? "העולם מתקדם. הסקרנות נשארת." : "IDEAS MOVE FAST. STAY CURIOUS."} <span aria-hidden>✳</span></span></div>
           <div className="radar-masthead-grid">
             <h1 className="radar-wordmark" dir="ltr">
               AI RADAR<span className="text-accent">.</span>
@@ -186,6 +187,9 @@ export default async function RadarPage({
       <RadarExplorer locale={lang} initial={data} initialQuery={query}>
         {story && <RadarLead story={story} sideStories={sideStories} locale={lang} />}
       </RadarExplorer>
+      <section className="shell py-12" aria-label={lang === "he" ? "מהקהילה, למי שבונה" : "From the community, for builders"}>
+        {partners.map((partner) => <PartnerCard key={partner.id} partner={partner} locale={lang} />)}
+      </section>
       <section
         id="radar-methodology"
         className="border-t border-line bg-cloud py-10"

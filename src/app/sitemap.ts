@@ -20,11 +20,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })),
   );
-  return [...pages,...locales.flatMap(locale=>content.map(item=>({
+  return [...pages,...locales.flatMap(locale=>content.filter(item=>item.locales.includes(locale)).map(item=>({
     url:`${contact.siteUrl}/${locale}/ai-radar/${item.kind}/${item.id}`,
     lastModified:item.updatedAt,
     changeFrequency:"weekly" as const,
     priority:0.6,
-    alternates:{languages:Object.fromEntries(locales.map(alt=>[alt,`${contact.siteUrl}/${alt}/ai-radar/${item.kind}/${item.id}`]))},
+    alternates:{languages:Object.fromEntries(item.locales.map(alt=>[alt,`${contact.siteUrl}/${alt}/ai-radar/${item.kind}/${item.id}`]))},
   })))];
 }

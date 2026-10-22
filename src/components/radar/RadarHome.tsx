@@ -8,8 +8,8 @@ import { displayDate } from "@/lib/radar/domain";
 export async function RadarHome({ locale }: { locale: Locale }) {
   const t = radarCopy[locale];
   const [data, featured] = await Promise.all([
-    radarData({ kind: "news", limit: 3 }),
-    featuredContent(),
+    radarData({ kind: "news", limit: 3, lang: locale }),
+    featuredContent(locale),
   ]);
   return (
     <section
@@ -35,9 +35,9 @@ export async function RadarHome({ locale }: { locale: Locale }) {
                   {item.sourceName} · {displayDate(item.publishedAt, locale)}
                 </p>
                 <h3 className="text-base font-medium leading-7 text-brand">
-                  <OutLink href={item.sourceUrl} className="hover:text-accent">
+                  <Link href={`/${locale}/ai-radar/${item.kind}/${item.id}`} className="hover:text-accent">
                     {item.title[locale]}
-                  </OutLink>
+                  </Link>
                 </h3>
               </article>
             ))}

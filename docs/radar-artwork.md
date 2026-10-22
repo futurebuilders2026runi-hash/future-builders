@@ -18,6 +18,25 @@ New imported articles receive a cover without modifying their source content
 or database records. Each generated cover carries an editorial-art credit and
 descriptive Hebrew and English alt text.
 
+## Club-supplied covers
+
+The club supplied six additional PNG illustrations in `public/radar` in October
+2026. Optimized WebP copies live in `public/radar/selected` (the original files
+are retained locally). These are conceptual illustrations, not publisher photos:
+
+| Supplied image | Optimized copy | Subject |
+| --- | --- | --- |
+| AI-Powered Legacy Modernisation | legacy-modernisation.webp | Legacy systems / COBOL |
+| Connected Southeast Asian City at Dusk | connected-asia.webp | Southeast Asia's digital economy |
+| Global Network Over Earth at Night | global-network.webp | Global data, languages, private computing |
+| Holographic AI Cube on Circuit Board | ai-compute.webp | Embeddings, model infrastructure |
+| Modern Glass Office at Sunset | industry-office.webp | Enterprise uses and economic research |
+| Robotic Hand Touching Glowing Interface | robotic-interface.webp | Agents, robotics, interactive AI |
+
+Subject-specific matches precede the five original thematic covers. All five
+original editorial files are preserved unchanged; `builders.webp` remains the
+cover for the existing AI coding story. Explicit record images take precedence.
+
 ## Final prompt set
 
 Each asset used the following common prompt, with its subject and palette below:

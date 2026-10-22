@@ -1,6 +1,55 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("Hebrew news and partner resources follow the route language", async ({ page }) => {
+  await page.goto("/he/ai-radar?lang=en");
+  const titles = page.locator(".radar-card-news .radar-card-title");
+  await expect(titles.first()).toBeVisible();
+  for (const title of await titles.all()) expect(await title.innerText()).toMatch(/[א-ת]/);
+  const headline = await titles.first().innerText();
+  await titles.first().getByRole("link").click();
+  await expect(page).toHaveURL(/\/he\/ai-radar\/news\//);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(headline);
+  await page.goto("/he/ai-radar");
+  const partner = page.locator(".partner-resource");
+  await expect(partner.getByRole("heading", { name: "ראובן לרנר" })).toBeVisible();
+  await expect(partner).toContainText("בכל יום שני, באנגלית");
+  await expect(partner.getByRole("link")).toHaveAttribute("href", "https://lernerpython.com/become-a-better-developer/");
+  await page.goto("/he#partners");
+  await expect(page.locator("#partners .partner-resource")).toContainText("ראובן לרנר");
+  await page.goto("/en/ai-radar");
+  await expect(page.locator(".partner-resource")).toContainText("Reuven Lerner");
+});
+
+test("untranslated imports stay off Hebrew listings and detail pages until translated", async ({ request }) => {
+  const headers = { Origin: "http://localhost:3101" };
+  expect((await request.post("/api/admin/login", { headers, data: { password: "radar-browser-test-password" } })).status()).toBe(200);
+  const original = (await (await request.get("/api/radar?kind=news&lang=en")).json()).items[0];
+  const record = { ...original, id: "locale-integration-test", sourceUrl: "https://openai.com/index/locale-integration-test", title: { en: "Untranslated locale integration news", he: "Untranslated locale integration news" }, originalTitle: "Untranslated locale integration news", featured: false, languageMode: "source-digest" };
+  const save = async (news: typeof record) => expect((await request.post("/api/admin/radar", { headers, data: { action: "save", record: news } })).status()).toBe(200);
+  const results = async (lang: string) => (await (await request.get(`/api/radar?kind=news&q=locale%20integration&lang=${lang}`)).json()).items;
+  await save(record);
+  try {
+    expect(await results("en")).toHaveLength(1);
+    expect(await results("he")).toHaveLength(0);
+    // Next can stream its not-found UI with HTTP 200 once a layout has flushed.
+    const missing = await (await request.get("/he/ai-radar/news/locale-integration-test")).text();
+    expect(missing).toMatch(/<meta name="robots" content="noindex"/);
+    expect(missing).not.toContain(record.title.en);
+    expect((await request.get("/en/ai-radar/news/locale-integration-test")).status()).toBe(200);
+    const sitemap = await (await request.get("/sitemap.xml")).text();
+    expect(sitemap).not.toContain("/he/ai-radar/news/locale-integration-test");
+    expect(sitemap).toContain("/en/ai-radar/news/locale-integration-test");
+    await save({ ...record, title: { ...record.title, he: "חדשות לבדיקת תרגום" }, languageMode: "edited" });
+    expect(await results("he")).toHaveLength(1);
+    const detail = await request.get("/he/ai-radar/news/locale-integration-test");
+    expect(detail.status()).toBe(200);
+    expect(await detail.text()).toContain("חדשות לבדיקת תרגום");
+  } finally {
+    await save({ ...record, status: "hidden" });
+  }
+});
+
 test("editorial covers load on mobile and the priority and filter controls work", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/en/ai-radar");

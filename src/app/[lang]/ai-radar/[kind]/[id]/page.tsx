@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, contact } from "@/content/config";
 import { radarCopy } from "@/content/radar";
-import { get } from "@/lib/radar/store";
-import { publicContent, jsonLd } from "@/lib/radar/domain";
+import { get, list } from "@/lib/radar/store";
+import { contentAvailableInLocale, publicContent, jsonLd } from "@/lib/radar/domain";
 import { RadarCard } from "@/components/radar/RadarCard";
 import { radarArtwork, radarTextDirection } from "@/lib/radar/presentation";
 import type { Content } from "@/lib/radar/schema";
@@ -12,7 +12,7 @@ import type { Content } from "@/lib/radar/schema";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 type Params = { lang: string; kind: string; id: string };
-async function load({ kind, id }: Params): Promise<Content | null> {
+async function load({ kind, id, lang }: Params): Promise<Content | null> {
   if (
     !["news", "models", "companies", "tools", "events"].includes(kind) ||
     !/^[a-zA-Z0-9_-]{1,100}$/.test(id)
@@ -20,7 +20,7 @@ async function load({ kind, id }: Params): Promise<Content | null> {
     return null;
   try {
     const record = await get(kind as Content["kind"], id);
-    return record && publicContent(record) ? record : null;
+    return record && isLocale(lang) && publicContent(record) && contentAvailableInLocale(record, lang) ? record : null;
   } catch {
     return null;
   }
@@ -40,7 +40,9 @@ export async function generateMetadata({
     description: item.summary[p.lang],
     alternates: {
       canonical: `/${p.lang}${path}`,
-      languages: { he: `/he${path}`, en: `/en${path}` },
+      languages: Object.fromEntries((["he", "en"] as const)
+        .filter((locale) => contentAvailableInLocale(item, locale))
+        .map((locale) => [locale, `/${locale}${path}`])),
     },
     openGraph: {
       title: item.title[p.lang],
@@ -61,6 +63,8 @@ export default async function RadarDetail({
   const item = await load(p);
   if (!item) notFound();
   const t = radarCopy[p.lang];
+  const categories = await list("categories").catch(() => []);
+  const tagLabels = Object.fromEntries(categories.map((category) => [category.id, category.title[isLocale(p.lang) ? p.lang : "he"]]));
   const structured: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type":
@@ -120,7 +124,7 @@ export default async function RadarDetail({
         <h1 className="h2 mb-6 text-brand" dir={radarTextDirection(item.title[p.lang])}>
           {item.title[p.lang]}
         </h1>
-        <RadarCard item={item} locale={p.lang} expanded />
+        <RadarCard item={item} locale={p.lang} tagLabels={tagLabels} expanded />
       </div>
     </section>
   );

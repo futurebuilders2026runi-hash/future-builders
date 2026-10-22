@@ -9,6 +9,8 @@ import {
   matchesQuery,
   publicContent,
   jsonLd,
+  contentAvailableInLocale,
+  displayDate,
 } from "../src/lib/radar/domain";
 import {
   parseFeed,
@@ -25,6 +27,8 @@ import {
 } from "../src/lib/radar/schema";
 import { list, put, get } from "../src/lib/radar/store";
 import { enrichDigest } from "../src/lib/radar/enrichment";
+import { applyReviewedHebrew, reviewedHebrewNews } from "../src/content/radar-translations";
+import { radarArtwork } from "../src/lib/radar/presentation";
 
 const subdir = `radar-test-${randomUUID()}`;
 const originalFetch = globalThis.fetch;
@@ -65,6 +69,12 @@ test("event boundaries, offsets, cancellation and draft status", () => {
     eventState({ ...event, eventStatus: "draft" }, Date.now()),
     "draft",
   );
+});
+test("dates use stable month labels across Safari and Node and retain event time zones", () => {
+  assert.equal(displayDate("2026-09-29T10:00:00Z", "en"), "29 Sep 2026");
+  assert.equal(displayDate("2026-10-21T22:00:00Z", "he", "Asia/Jerusalem", true), "22 באוק׳ 2026, 01:00");
+  assert.equal(displayDate("2026-10-21T22:00:00Z", "en", "UTC", true), "21 Oct 2026, 22:00");
+  assert.equal(displayDate("invalid", "he"), "—");
 });
 test("stable URL identity removes only tracking, retains meaningful query parameters", () => {
   assert.equal(
@@ -185,6 +195,32 @@ test("source requests reject private hosts and unapproved redirect destinations"
   await assert.rejects(() => fetchSource(source.url, source), /Unapproved/);
   globalThis.fetch = originalFetch;
 });
+
+test("reviewed news translations preserve sources and existing editorial Hebrew", () => {
+  for (const [title, translation] of reviewedHebrewNews) {
+    const raw = makeDigest({ title, url: "https://openai.com/test", publishedAt: "2026-10-20T10:00:00Z" }, source, "2026-10-20T12:00:00Z");
+    assert.equal(raw.title.he, translation.title);
+    assert.equal(raw.summary.he, translation.summary);
+    assert.equal(raw.title.en, title);
+    assert.equal(raw.originalTitle, title);
+    assert.ok(contentAvailableInLocale(raw, "he"));
+    assert.ok(recordSchema.safeParse(raw).success);
+    assert.equal(applyReviewedHebrew(raw), raw);
+  }
+  const raw = makeDigest({ title: "Untranslated future update", url: "https://openai.com/test", publishedAt: "2026-10-20T10:00:00Z" }, source, "2026-10-20T12:00:00Z");
+  assert.ok(contentAvailableInLocale(raw, "en"));
+  assert.equal(contentAvailableInLocale(raw, "he"), false);
+  assert.equal(contentAvailableInLocale({ ...raw, title: { ...raw.title, he: "כותרת בעברית" }, summary: { ...raw.summary, he: "English only" } }, "he"), false);
+});
+
+test("provided images match subjects and the favourite builders cover remains in use", () => {
+  const raw = makeDigest({ title: "Southeast Asia’s digital economy to hit $368 billion", url: "https://openai.com/test", publishedAt: "2026-10-20T10:00:00Z" }, source, "2026-10-20T12:00:00Z");
+  assert.equal(radarArtwork(raw).image, "/radar/selected/connected-asia.webp");
+  assert.equal(radarArtwork({ ...raw, image: "/radar/custom.webp" }).image, "/radar/custom.webp");
+  const coding = seedRecords().find(r => r.kind === "news" && r.title.en.includes("AI coding"));
+  assert.ok(coding && coding.kind === "news");
+  assert.equal(radarArtwork(coding).image, "/radar/editorial/builders.webp");
+});
 test("publisher trailing-slash redirects are followed without a normalization loop", async () => {
   let requests = 0;
   globalThis.fetch = async (input) => {
@@ -218,6 +254,7 @@ test("imports are idempotent, keep editorial edits, log failures and serialize c
   const id = articleId("https://openai.com/index/unique-test-model");
   const record = await get("news", id);
   assert.ok(record);
+  assert.match((await get("reviews", id))?.reason || "", /Hebrew translation required/);
   await put("news", {
     ...record,
     status: "hidden",

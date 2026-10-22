@@ -576,3 +576,25 @@ button.radar-tag:hover { border-color: var(--color-accent); color: var(--color-a
   .radar-artwork-image,.radar-card { transition: none; }
   .radar-card:hover,.radar-card:hover .radar-artwork-image,.radar-lead-story:hover .radar-artwork-image,.radar-side-story:hover .radar-artwork-image { transform: none; }
 }
+
+/* Community resources: shared by the home page and AI Radar. */
+.partner-resource { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.3fr); gap: 3rem; padding: clamp(1.5rem,4vw,3rem); border: 1px solid #233b5e; border-radius: 1.5rem; color: #fff; background: radial-gradient(ellipse at 0 100%,#1b4c68 0,transparent 65%),#102440; text-align: start; }
+.partner-resource-person { display: flex; align-items: flex-start; gap: 1.2rem; }
+.partner-resource-monogram { position: relative; display: grid; place-items: center; flex-shrink: 0; width: 4.5rem; height: 5rem; border: 1px solid #ffffff35; border-radius: .75rem; background: #ffffff09; color: #f7d489; font-size: 1.6rem; font-weight: 600; direction: ltr; }
+.partner-resource-monogram span { position: absolute; right: .4rem; bottom: .2rem; font-size: .8rem; color: #adc9df; }
+.partner-resource-eyebrow { margin-bottom: .8rem; color: #f7d489; font-size: .65rem; letter-spacing: .06em; }
+.partner-resource h3 { font-size: clamp(1.5rem,3vw,2rem); font-weight: 500; line-height: 1.2; }
+.partner-resource-role { margin-top: .65rem; font-size: .8rem; line-height: 1.8; color: #b9cddd; }
+.partner-resource-name { width: fit-content; font-size: clamp(1.5rem,4vw,2.2rem); font-weight: 500; line-height: 1.2; letter-spacing: -.04em; }
+.partner-resource-name span { color: #f7d489; }
+.partner-resource-description { margin-top: 1rem; max-width: 35rem; font-size: .9rem; line-height: 1.9; color: #dce8f1; }
+.partner-resource-link { display: inline-flex; align-items: center; gap: 1.3rem; margin-top: 1.3rem; padding: .75rem 1rem; border-radius: .45rem; background: #f7d489; color: #102440; font-weight: 600; font-size: .8rem; transition: background .2s; }
+.partner-resource-link:hover { background: #ffe6af; }
+.partner-resource-link:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
+.partner-resource-visit { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #ffffff24; font-size: .72rem; line-height: 1.8; color: #b9cddd; }
+@media (max-width:700px) {
+  .partner-resource { grid-template-columns: minmax(0,1fr); gap: 1.8rem; }
+  .partner-resource-person { gap: 1rem; }
+  .partner-resource-monogram { width: 3.5rem; height: 4rem; font-size: 1.3rem; }
+  .partner-resource-link { gap: .8rem; }
+}

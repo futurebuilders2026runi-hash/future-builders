@@ -12,6 +12,7 @@
     "radar:migrate": "tsx scripts/radar.ts migrate",
     "radar:worker": "tsx scripts/radar.ts worker",
     "radar:export": "tsx scripts/radar.ts export",
+    "radar:localize": "tsx scripts/radar.ts localize",
     "test:radar": "tsx --test tests/radar.test.ts",
     "test:e2e": "playwright test"
   },

@@ -188,9 +188,9 @@ export function RadarCard({
           className="radar-card-title text-xl font-medium leading-snug tracking-tight text-brand"
           dir={radarTextDirection(value(item.title))}
         >
-          <OutLink href={item.sourceUrl} className="hover:text-accent">
-            {value(item.title)}
-          </OutLink>
+          {item.kind === "news" ? (
+            expanded ? value(item.title) : <Link href={`/${locale}/ai-radar/news/${item.id}`} className="hover:text-accent">{value(item.title)}</Link>
+          ) : <OutLink href={item.sourceUrl} className="hover:text-accent">{value(item.title)}</OutLink>}
         </h3>
         {item.kind === "news" && item.languageMode === "source-digest" && (
           <p

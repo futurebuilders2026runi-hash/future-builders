@@ -8,10 +8,12 @@ import {
   type Model,
   type RadarEvent,
 } from "./schema";
-import { eventState, matchesQuery, publicContent } from "./domain";
+import { contentAvailableInLocale, eventState, matchesQuery, publicContent } from "./domain";
+import { isLocale, locales, type Locale } from "@/content/config";
 import { list } from "./store";
 
 export type RadarQuery = {
+  lang?: Locale;
   q?: string;
   kind?: string;
   category?: string;
@@ -103,14 +105,15 @@ async function snapshot(): Promise<Snapshot> {
 
 export async function radarData(query: RadarQuery = {}): Promise<RadarData> {
   const s = await snapshot();
+  const content = s.content.filter((item) => contentAvailableInLocale(item, query.lang || "en"));
   const now = Date.now();
   const counts = Object.fromEntries(
     ["news", "models", "companies", "tools", "events"].map((kind) => [
       kind,
-      s.content.filter((item) => item.kind === kind).length,
+      content.filter((item) => item.kind === kind).length,
     ]),
   );
-  let items = s.content.filter((item) => {
+  let items = content.filter((item) => {
     if (
       query.group === "startups" &&
       (item.kind !== "companies" || !item.startup)
@@ -242,20 +245,21 @@ export async function radarData(query: RadarQuery = {}): Promise<RadarData> {
   };
 }
 
-export async function featuredContent() {
+export async function featuredContent(locale: Locale = "en") {
   const s = await snapshot();
+  const content = s.content.filter((item) => contentAvailableInLocale(item, locale));
   return {
-    story: s.content
+    story: content
       .filter((item): item is News => item.kind === "news" && item.featured)
       .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0],
-    model: s.content
+    model: content
       .filter((item): item is Model => item.kind === "models")
       .sort(
         (a, b) =>
           Number(b.featured) - Number(a.featured) ||
           b.releasedAt.localeCompare(a.releasedAt),
       )[0],
-    event: s.content
+    event: content
       .filter(
         (item): item is RadarEvent =>
           item.kind === "events" &&
@@ -271,11 +275,16 @@ export async function featuredContent() {
 
 export async function radarSitemapItems() {
   const s = await snapshot();
-  return s.content.map(({ kind, id, updatedAt }) => ({ kind, id, updatedAt }));
+  return s.content.map((item) => ({
+    kind: item.kind, id: item.id, updatedAt: item.updatedAt,
+    locales: locales.filter((locale) => contentAvailableInLocale(item, locale)),
+  }));
 }
 
 export function queryFromParams(params: URLSearchParams): RadarQuery {
   const result: RadarQuery = {};
+  const lang = params.get("lang") || "";
+  if (isLocale(lang)) result.lang = lang;
   for (const key of [
     "q",
     "kind",
