@@ -38,16 +38,11 @@ export function RadarExplorer({
   const [error, setError] = useState("");
   const [models, setModels] = useState<Model[]>([]);
   const [compareError, setCompareError] = useState("");
-  const first = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const change = (next: Partial<RadarQuery>) =>
     setQuery((q) => ({ ...q, ...next, page: 1 }));
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
     const controller = new AbortController();
     setBusy(true);
     setError("");
@@ -63,6 +58,7 @@ export function RadarExplorer({
       try {
         const response = await fetch(`/api/radar?${params}`, {
           signal: controller.signal,
+          cache: "no-store",
         });
         if (!response.ok) throw new Error();
         const next: RadarData = await response.json();
@@ -90,12 +86,25 @@ export function RadarExplorer({
     };
   }, [query, t.unavailable]);
 
-  // Pick up scheduled imports and derive event transitions while the page stays open.
+  // Refresh saved browser pages too: Safari can restore an earlier empty result
+  // from its back/forward cache without mounting this component again.
   useEffect(() => {
-    const id = setInterval(() => {
+    const refresh = () => {
       if (!document.hidden) setQuery((q) => ({ ...q }));
-    }, 60000);
-    return () => clearInterval(id);
+    };
+    const restored = (event: PageTransitionEvent) => {
+      if (event.persisted) refresh();
+    };
+    const id = setInterval(refresh, 60000);
+    window.addEventListener("pageshow", restored);
+    window.addEventListener("online", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("pageshow", restored);
+      window.removeEventListener("online", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
   }, []);
 
   function compare(model: Model) {

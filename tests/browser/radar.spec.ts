@@ -1,6 +1,43 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("a saved empty page refreshes immediately when Safari restores it", async ({
+  page,
+  request,
+}) => {
+  const populated = await (await request.get("/api/radar?kind=news")).json();
+  expect(populated.items.length).toBeGreaterThan(0);
+  let showEmpty = true;
+  let refreshRequests = 0;
+  await page.route("**/api/radar?**", (route) => {
+    refreshRequests++;
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(
+        showEmpty ? { ...populated, items: [], total: 0, hasMore: false } : populated,
+      ),
+    });
+  });
+  await page.goto("/en/ai-radar");
+  // A new page must check for content even if the server snapshot is stale.
+  await expect.poll(() => refreshRequests).toBeGreaterThan(0);
+  await expect(page.locator("#radar-content article")).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "Nothing on the radar yet." }),
+  ).toBeVisible();
+
+  showEmpty = false;
+  const beforeRestore = refreshRequests;
+  await page.evaluate(() => {
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true }));
+  });
+  await expect.poll(() => refreshRequests).toBeGreaterThan(beforeRestore);
+  await expect(page.locator("#radar-content article")).toHaveCount(
+    populated.items.length,
+  );
+});
+
 test("authorized image uploads are re-encoded and served safely; unsafe formats are rejected", async ({
   request,
 }) => {
@@ -129,7 +166,7 @@ test("public APIs do not expose drafts, admin writes require session and origin,
   ).toBe(403);
   expect((await request.get("/api/cron/radar")).status()).toBe(401);
   const data = await (
-    await request.get("/api/radar?kind=events&eventState=upcoming")
+    await request.get("/api/radar?kind=events&eventState=all")
   ).json();
   expect(data.items).toHaveLength(1);
   expect(data.items[0].organizer).toBe("Lynx");
