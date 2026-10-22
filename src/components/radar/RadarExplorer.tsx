@@ -165,7 +165,7 @@ export function RadarExplorer({
 
   return (
     <>
-      <div className="shell relative -mt-7 z-10">
+      <div className="shell radar-search-wrap">
         <div className="radar-search-panel">
           <form
             role="search"
@@ -212,12 +212,19 @@ export function RadarExplorer({
           </form>
           <div className="flex flex-wrap items-center gap-2 px-4 py-3 sm:px-6">
             <button
+              className={`radar-tag radar-interesting ${query.sort === "important" ? "radar-interesting-active" : ""}`}
+              aria-pressed={query.sort === "important"}
+              onClick={() => setQuery({ kind: "news", sort: query.sort === "important" ? "newest" : "important", page: 1 })}
+            >
+              <span aria-hidden>✦</span> {t.interesting}
+            </button>
+            <button
               className="radar-tag"
               onClick={() =>
                 setQuery({ kind: "news", sort: "newest", page: 1 })
               }
             >
-              {t.latest} <span aria-hidden>↗</span>
+              {t.quickLatest} <span aria-hidden>↗</span>
             </button>
             <button
               className="radar-tag"
@@ -230,7 +237,7 @@ export function RadarExplorer({
                 })
               }
             >
-              {t.upcoming} <span aria-hidden>↗</span>
+              {t.quickEvents} <span aria-hidden>↗</span>
             </button>
             <span className="ms-auto hidden text-xs text-(--muted-fg) sm:block">
               {data.sourceCount} {t.connected}
@@ -241,7 +248,7 @@ export function RadarExplorer({
 
       {children}
       <section
-        className="shell pb-16 pt-10"
+        className="shell radar-feed-section pb-16 pt-10"
         id="radar-content"
         aria-label={t.all}
       >
@@ -291,7 +298,7 @@ export function RadarExplorer({
                     ? t.startupNote
                     : query.kind === "tools"
                       ? t.toolIntro
-                      : t.methodologyBody}
+                    : t.feedIntro}
             </p>
           </div>
           <p
@@ -302,6 +309,22 @@ export function RadarExplorer({
             {busy ? t.loading : `${data.total} ${t.results}`}
           </p>
         </div>
+        {query.kind !== "events" && (
+          <div className="radar-topic-strip" aria-label={t.quickTopics}>
+            <span className="radar-topic-prompt">{t.quickTopics}</span>
+            {[
+              ["models", "✦"], ["developers", "⌘"], ["research", "◎"], ["agents", "⌁"], ["startups", "↗"],
+            ].map(([id, icon]) => {
+              const category = data.categories.find((value) => value.id === id);
+              return category && (
+                <button key={id} type="button" className={`radar-topic-chip radar-topic-${id}`} aria-pressed={query.category === id}
+                  onClick={() => change({ kind: "news", category: query.category === id ? "" : id, company: "", group: "", q: "", sort: "newest" })}>
+                  <span aria-hidden>{icon}</span>{category.title[locale]}
+                </button>
+              );
+            })}
+          </div>
+        )}
         {query.kind === "companies" && (
           <div className="mb-5 flex flex-wrap gap-2">
             <button
@@ -337,6 +360,8 @@ export function RadarExplorer({
             </button>
           </div>
         )}
+        <details className="radar-filter-drawer" open={query.kind === "events"}>
+        <summary><span aria-hidden>☷</span>{t.filterToggle}<span className="radar-filter-chevron" aria-hidden>+</span></summary>
         <div className="radar-filters mb-5">
           {select(
             "category",
@@ -464,6 +489,7 @@ export function RadarExplorer({
             </label>
           </div>
         )}
+        </details>
         {(query.q ||
           query.category ||
           query.company ||
@@ -516,7 +542,7 @@ export function RadarExplorer({
         )}
         {data.items.length ? (
           <div
-            className="grid items-start gap-5 md:grid-cols-2 xl:grid-cols-3"
+            className="radar-story-grid grid gap-5 md:grid-cols-2 xl:grid-cols-3"
             aria-busy={busy}
           >
             {data.items.map((item: Content) => (

@@ -73,6 +73,8 @@ The first event is **Future of AI 2026**, organized by **Lynx**, 21 October 2026
 
 For images, confirm usage rights, upload PNG/JPEG/WebP/AVIF (up to 5 MB), and supply bilingual alt text and credit. The server validates and re-encodes uploads to bounded WebP images, strips metadata, stores them in the private Supabase bucket and serves generated IDs through a read-only media route. SVG/HTML uploads and arbitrary remote image URLs are not supported. Existing `/events/` or `/radar/` assets can also be referenced.
 
+The public design supplies original editorial cover art when a record has no uploaded image. Five thematic covers are selected from the headline and existing categories; uploaded images take precedence. This also covers future RSS imports without changing their records. The main story uses the existing manual Featured choice, while the adjacent stories show recent updates with visual variety. **Worth your attention** uses the existing editorial-priority sort. Asset locations, generation prompts and provenance are recorded in [docs/radar-artwork.md](docs/radar-artwork.md).
+
 ## Security and recovery
 
 All dashboard reads and writes check the existing signed session. Mutations also check the request origin. RLS and grants prevent anon/authenticated Supabase clients from reading or writing the editorial tables; only the server's service key has access. Supported-host allowlists cover both feed URLs and every redirect; no arbitrary URLs are fetched server-side from public input. Secrets are never returned by public or admin data responses.

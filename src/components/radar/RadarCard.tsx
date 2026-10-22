@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import type { Locale } from "@/content/config";
 import { radarCopy } from "@/content/radar";
 import type { Content, Model, RadarEvent } from "@/lib/radar/schema";
 import { eventState, displayDate } from "@/lib/radar/domain";
+import { radarTheme, radarTextDirection } from "@/lib/radar/presentation";
+import { RadarArtwork } from "./RadarArtwork";
 export { displayDate } from "@/lib/radar/domain";
 
 export function OutLink({
@@ -121,6 +122,7 @@ export function RadarCard({
   onCompare,
   selected = false,
   tagLabels = {},
+  expanded = false,
 }: {
   item: Content;
   locale: Locale;
@@ -129,27 +131,19 @@ export function RadarCard({
   onCompare?: (model: Model) => void;
   selected?: boolean;
   tagLabels?: Record<string, string>;
+  expanded?: boolean;
 }) {
   const t = radarCopy[locale];
   const value = (text: { he: string; en: string }) => text[locale];
   const yesNo = (status: "yes" | "no" | "unknown") => t[status];
+  const digest = item.kind === "news" && item.languageMode === "source-digest";
   return (
     <article
-      className={`radar-card radar-card-${item.kind}`}
+      className={`radar-card radar-card-${item.kind} radar-theme-${radarTheme(item)} ${expanded ? "radar-card-expanded" : ""}`}
       id={`item-${item.id}`}
     >
-      {item.image && (
-        <div className="relative aspect-[1.91/1] overflow-hidden rounded-t-2xl">
-          <Image
-            src={item.image}
-            alt={item.imageAlt?.[locale] || value(item.title)}
-            fill
-            sizes="(max-width: 640px) 100vw, 420px"
-            className="object-cover"
-          />
-        </div>
-      )}
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <RadarArtwork item={item} locale={locale} />
+      <div className="radar-card-body flex flex-1 flex-col p-5 sm:p-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
           <span className="flex items-center gap-2.5 text-xs font-medium">
             <span className="radar-source-mark" aria-hidden>
@@ -168,6 +162,7 @@ export function RadarCard({
             <span className="radar-badge">{t[item.kind]}</span>
           )}
         </div>
+        {item.featured && item.kind === "news" && <p className="radar-card-pick"><span aria-hidden>✦</span> {t.editorialPick}</p>}
         {item.kind === "events" && item.featured && (
           <p className="mb-3 text-xs font-medium text-accent">
             {t.eventFeatured}
@@ -190,8 +185,8 @@ export function RadarCard({
           </span>
         )}
         <h3
-          className="text-xl font-medium leading-snug tracking-tight text-brand"
-          dir="auto"
+          className="radar-card-title text-xl font-medium leading-snug tracking-tight text-brand"
+          dir={radarTextDirection(value(item.title))}
         >
           <OutLink href={item.sourceUrl} className="hover:text-accent">
             {value(item.title)}
@@ -205,12 +200,12 @@ export function RadarCard({
             {t.digest}
           </p>
         )}
-        <p className="mt-3 text-sm leading-7 text-(--muted-fg)">
+        {(!digest || expanded) && <p className="radar-card-summary mt-3 text-sm leading-7 text-(--muted-fg)">
           {value(item.summary)}
-        </p>
+        </p>}
 
-        {item.kind === "news" && (
-          <div className="my-4 border-s-2 border-accent/25 ps-3">
+        {item.kind === "news" && (!digest || expanded) && (
+          <div className="radar-card-why my-4">
             <p className="mb-1 text-xs font-medium text-accent">{t.why}</p>
             <p className="text-sm leading-6">{value(item.why)}</p>
           </div>
@@ -412,7 +407,7 @@ export function RadarCard({
         <div className="mt-auto pt-5">
           <div className="mb-4 flex flex-wrap gap-1.5">
             {[...new Set([...item.categories, ...item.tags])]
-              .slice(0, 7)
+              .slice(0, item.kind === "news" && !expanded ? 3 : 7)
               .map((tag) =>
                 onTag ? (
                   <button

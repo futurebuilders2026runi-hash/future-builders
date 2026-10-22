@@ -5,8 +5,9 @@ import { radarCopy } from "@/content/radar";
 import { radarData, featuredContent, queryFromParams } from "@/lib/radar/data";
 import { jsonLd, displayDate } from "@/lib/radar/domain";
 import { RadarExplorer } from "@/components/radar/RadarExplorer";
-import { OutLink } from "@/components/radar/RadarCard";
-import { Waves } from "@/components/BrandDecor";
+import { RadarLead } from "@/components/radar/RadarLead";
+import type { News } from "@/lib/radar/schema";
+import { radarTheme } from "@/lib/radar/presentation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -67,11 +68,25 @@ export default async function RadarPage({
       p.get("eventState") || (p.get("kind") === "events" ? "upcoming" : ""),
     page: 1,
   };
-  const [data, featured] = await Promise.all([
+  const [data, featured, priority] = await Promise.all([
     radarData(query),
     featuredContent(),
+    radarData({ kind: "news", sort: "newest", limit: 12 }),
   ]);
-  const story = featured.story;
+  const highlights = priority.items.filter((item): item is News => item.kind === "news");
+  const story = featured.story || highlights[0];
+  const sideStories: News[] = [];
+  const usedThemes = new Set(story ? [radarTheme(story)] : []);
+  for (const item of highlights) {
+    if (item.id === story?.id || usedThemes.has(radarTheme(item))) continue;
+    sideStories.push(item);
+    usedThemes.add(radarTheme(item));
+    if (sideStories.length === 2) break;
+  }
+  for (const item of highlights) {
+    if (sideStories.length === 2) break;
+    if (item.id !== story?.id && !sideStories.some((value) => value.id === item.id)) sideStories.push(item);
+  }
   const stale =
     data.lastRefresh &&
     Date.now() - Date.parse(data.lastRefresh) > 26 * 3600000;
@@ -136,29 +151,22 @@ export default async function RadarPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(structured) }}
       />
-      <section className="brand-sky relative overflow-hidden pb-20 pt-32 sm:pt-36">
-        <div className="grid-veil" />
-        <Waves className="opacity-45" lines={12} />
-        <div className="shell relative grid items-center gap-10 lg:grid-cols-[1fr_300px]">
-          <div>
-            <p className="eyebrow">{t.eyebrow}</p>
-            <h1 className="radar-wordmark mt-6" dir="ltr">
+      <section className="radar-masthead">
+        <div className="shell">
+          <div className="radar-edition-line"><span>{t.eyebrow}</span><span className="radar-edition-note">IDEAS MOVE FAST. STAY CURIOUS. <span aria-hidden>✳</span></span></div>
+          <div className="radar-masthead-grid">
+            <h1 className="radar-wordmark" dir="ltr">
               AI RADAR<span className="text-accent">.</span>
             </h1>
-            <p className="mt-4 text-lg font-medium text-accent sm:text-xl">
-              {t.tagline}
-            </p>
-            <h2 className="mt-4 max-w-2xl text-2xl font-medium leading-snug text-brand sm:text-3xl">
-              {t.headline}
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-(--muted-fg) sm:text-base">
-              {t.intro}
-            </p>
-            <div className="mt-6 flex items-center gap-2 text-xs text-(--muted-fg)">
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${data.unavailable || data.sourceFailures || stale || !data.lastRefresh ? "bg-amber-600" : "bg-accent"}`}
-                aria-hidden
-              />
+            <div className="radar-masthead-copy">
+              <h2>{t.heroHeadline}</h2>
+              <p>{t.heroIntro}</p>
+              <a className="radar-masthead-link" href="#radar-content">{t.browseFeed}<span aria-hidden>↓</span></a>
+            </div>
+          </div>
+          <div className="radar-edition-status">
+            <div className="flex items-center gap-2">
+              <span className={`radar-live-dot ${data.unavailable || data.sourceFailures || stale || !data.lastRefresh ? "radar-dot-amber" : ""}`} aria-hidden />
               <span>
                 {data.unavailable
                   ? t.unavailable
@@ -171,55 +179,12 @@ export default async function RadarPage({
                         : t.never}
               </span>
             </div>
-          </div>
-          <div
-            className="radar-orbit hidden lg:grid"
-            aria-hidden="true"
-            dir="ltr"
-          >
-            <div className="radar-sweep" />
-            <div className="radar-ring radar-ring-1" />
-            <div className="radar-ring radar-ring-2" />
-            <div className="radar-ring radar-ring-3" />
-            <span className="radar-cross-h" />
-            <span className="radar-cross-v" />
-            <span className="radar-dot radar-dot-1" />
-            <span className="radar-dot radar-dot-2" />
-            <span className="radar-dot radar-dot-3" />
-            <span className="radar-center" />
-            <span className="radar-orbit-label">FIND YOUR NEXT IDEA</span>
-            <span className="radar-coord">32.1638° N / 34.8357° E</span>
+            <span>{data.counts.news || 0} {t.news} <span aria-hidden> / </span> {data.sourceCount} {t.connected}</span>
           </div>
         </div>
       </section>
       <RadarExplorer locale={lang} initial={data} initialQuery={query}>
-        {story && (
-          <section className="shell pt-8" aria-label={t.featuredStory}>
-            <div className="on-dark radar-feature relative overflow-hidden rounded-3xl bg-navy p-6 sm:p-10">
-              <div className="grid-veil" />
-              <div className="relative grid items-center gap-8 md:grid-cols-[1fr_auto]">
-                <div>
-                  <p className="eyebrow">{t.featured}</p>
-                  <p className="mt-4 text-xs text-(--muted-fg)">
-                    {story.sourceName} · {displayDate(story.publishedAt, lang)}
-                  </p>
-                  <h2 className="mt-3 max-w-3xl text-2xl font-medium leading-snug sm:text-4xl">
-                    {story.title[lang]}
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-sm leading-7 text-(--muted-fg)">
-                    {story.summary[lang]}
-                  </p>
-                  <p className="mt-4 text-xs leading-6 text-accent-bright">
-                    {t.why} {story.kind === "news" ? story.why[lang] : ""}
-                  </p>
-                </div>
-                <OutLink href={story.sourceUrl} className="btn btn-ghost w-fit">
-                  {t.source}
-                </OutLink>
-              </div>
-            </div>
-          </section>
-        )}
+        {story && <RadarLead story={story} sideStories={sideStories} locale={lang} />}
       </RadarExplorer>
       <section
         id="radar-methodology"

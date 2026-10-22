@@ -1,6 +1,31 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("editorial covers load on mobile and the priority and filter controls work", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/en/ai-radar");
+  await expect(page.locator(".radar-lead-story")).toBeVisible();
+  const cards = page.locator(".radar-story-grid article");
+  await expect(cards.first()).toBeVisible();
+  const covers = cards.locator("img");
+  await expect(covers).toHaveCount(await cards.count());
+  for (const cover of await covers.all()) {
+    await cover.scrollIntoViewIfNeeded();
+    await expect.poll(() => cover.evaluate((node) => {
+      const image = node as HTMLImageElement;
+      return image.complete && image.naturalWidth > 0;
+    })).toBe(true);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole("button", { name: "Worth your attention", exact: true }).click();
+  await expect(page).toHaveURL(/sort=important/);
+  await expect(page.getByRole("button", { name: "Worth your attention", exact: true })).toHaveAttribute("aria-pressed", "true");
+  const filters = page.locator(".radar-filter-drawer");
+  await expect(filters).not.toHaveAttribute("open");
+  await filters.locator("summary").click();
+  await expect(filters.getByRole("combobox", { name: "All topics", exact: true })).toBeVisible();
+});
+
 test("a saved empty page refreshes immediately when Safari restores it", async ({
   page,
   request,

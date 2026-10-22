@@ -6,6 +6,7 @@ import { radarCopy } from "@/content/radar";
 import { get } from "@/lib/radar/store";
 import { publicContent, jsonLd } from "@/lib/radar/domain";
 import { RadarCard } from "@/components/radar/RadarCard";
+import { radarArtwork, radarTextDirection } from "@/lib/radar/presentation";
 import type { Content } from "@/lib/radar/schema";
 
 export const runtime = "nodejs";
@@ -46,7 +47,7 @@ export async function generateMetadata({
       description: item.summary[p.lang],
       url: `/${p.lang}${path}`,
       type: item.kind === "news" ? "article" : "website",
-      images: [item.image || "/og.png"],
+      images: [radarArtwork(item).image],
     },
   };
 }
@@ -116,10 +117,10 @@ export default async function RadarDetail({
         >
           {p.lang === "he" ? "→" : "←"} AI Radar
         </Link>
-        <h1 className="h2 mb-6 text-brand" dir="auto">
+        <h1 className="h2 mb-6 text-brand" dir={radarTextDirection(item.title[p.lang])}>
           {item.title[p.lang]}
         </h1>
-        <RadarCard item={item} locale={p.lang} />
+        <RadarCard item={item} locale={p.lang} expanded />
       </div>
     </section>
   );

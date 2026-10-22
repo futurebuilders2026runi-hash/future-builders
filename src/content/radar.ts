@@ -1,4 +1,16 @@
 const en = {
+  interesting: "Worth your attention",
+  quickLatest: "Latest updates",
+  quickEvents: "Upcoming events",
+  editorialPick: "EDITOR'S PICK",
+  onOurRadar: "ALSO ON OUR RADAR",
+  quickTopics: "Follow your curiosity",
+  filterToggle: "Filters & sorting",
+  feedIntro: "The releases, ideas and industry moves worth knowing about. Find your next rabbit hole.",
+  heroHeadline: "Fresh signals. Real things to build.",
+  heroIntro: "A little perspective on a fast-moving world. Models, discoveries and tools for people who build.",
+  browseFeed: "Explore the feed",
+  storyLink: "Explore the story",
   toolIntro:
     "Practical AI tools to explore. Club recommendations carry a separate Builders' Pick label.",
   uploadImage: "Upload image",
@@ -193,6 +205,18 @@ const en = {
 };
 
 const he: typeof en = {
+  interesting: "שווה עצירה",
+  quickLatest: "הכי חדש",
+  quickEvents: "אירועים קרובים",
+  editorialPick: "בחירת המערכת",
+  onOurRadar: "עוד על הרדאר",
+  quickTopics: "מה מסקרן אותך?",
+  filterToggle: "סינון ומיון",
+  feedIntro: "ההשקות, הרעיונות והמהלכים ששווה להכיר. כאן מתחיל הרעיון הבא שלכם.",
+  heroHeadline: "מה חדש ב־AI, ומה עושים עם זה.",
+  heroIntro: "קצת פרספקטיבה בעולם שזז מהר. מודלים, תגליות וכלים לאנשים שאוהבים לבנות.",
+  browseFeed: "לגלות מה חדש",
+  storyLink: "לגלות את הסיפור",
   toolIntro:
     "כלי AI שימושיים שכדאי לבדוק. המלצות המועדון מסומנות בנפרד בתגית בחירת המועדון.",
   uploadImage: "העלאת תמונה",
