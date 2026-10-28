@@ -51,6 +51,26 @@ export const partners: ClubPartner[] = [{
   },
 }];
 
+export type CompanyPartner = {
+  id: string;
+  name: string;
+  logo?: string;
+  url?: string;
+  /** Optical width within a shared, fixed-height logo area. */
+  logoWidth?: number;
+};
+
+/** Add another company and its official asset here to extend the logo grid. */
+export const companyPartners: CompanyPartner[] = [
+  { id: "wix", name: "Wix", logo: "/partners/wix.svg", url: "https://www.wix.com/", logoWidth: 88 },
+  { id: "base44", name: "Base44", logo: "/partners/base44.svg", url: "https://base44.com/", logoWidth: 140 },
+  // Keep the supplied name until the company's official website is identified.
+  { id: "window", name: "Window" },
+  { id: "genesis", name: "Genesis", logo: "/partners/genesis.svg", url: "https://genesis-accelerator.com/", logoWidth: 140 },
+  { id: "claude", name: "Claude (Anthropic)", logo: "/partners/claude.svg", url: "https://claude.com/", logoWidth: 145 },
+  { id: "nvidia", name: "NVIDIA", logo: "/partners/nvidia.svg", url: "https://www.nvidia.com/", logoWidth: 145 },
+];
+
 /**
  * Student projects. Empty until the first cohort ships — the Projects section
  * renders a "coming soon" state while there is nothing here.
@@ -110,6 +130,7 @@ export const speakers: Speaker[] = [];
  * URL carries the community discount code — keep the query string intact.
  */
 export const conference = {
+  date: "2026-10-21",
   path: "/future-of-ai",
   image: "/events/future-of-ai-2026.jpg",
   /** 1200×630 link-preview image (WhatsApp, LinkedIn, X…). */
@@ -118,12 +139,14 @@ export const conference = {
 };
 
 /**
- * Cards in the home page "Upcoming events" section, in display order. Text for
- * each key lives in the dictionaries under `events.items`.
+ * Event records, including past/undated entries retained for future reuse.
+ * Text for each key lives in the dictionaries under `events.items`.
  */
-export const upcomingEvents: {
+export type ClubEvent = {
   key: "future-of-ai" | "stripe-community" | "base44-workshop";
   image: string;
+  /** Confirmed event date in Israel, YYYY-MM-DD. Undated entries stay off upcoming events. */
+  date?: string;
   /** Internal page (prefixed with the locale) … */
   path?: string;
   /** … or an external site, opened in a new tab. */
@@ -132,9 +155,11 @@ export const upcomingEvents: {
   focus?: "left" | "right";
   /** Square posters with text everywhere: show the whole image instead of cropping. */
   poster?: boolean;
-}[] = [
+};
+
+export const clubEvents: ClubEvent[] = [
   // No path/url yet: registration hasn't opened, so the card shows `cta` as a status.
-  { key: "base44-workshop", image: "/events/base44-workshop.jpg", poster: true },
-  { key: "future-of-ai", image: conference.ogImage, path: conference.path },
+  { key: "base44-workshop", date: "2026-12-23", image: "/events/base44-workshop.jpg", poster: true },
+  { key: "future-of-ai", date: conference.date, image: conference.ogImage, path: conference.path },
   { key: "stripe-community", image: "/events/stripe-community-tlv.jpg", url: "https://www.stripecommunity.com/", focus: "left" },
 ];

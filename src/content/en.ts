@@ -191,7 +191,8 @@ export const en = {
       "Future Builders connects students directly with engineers, founders, product leaders and AI experts from the technology industry.",
       "Sessions throughout the program are designed together with professionals working on real AI products and systems.",
     ],
-    partnersLabel: "Program partners",
+    partnersLabel: "The companies and platforms we work with",
+    partnersMore: "More partners to be announced",
     partnersEmptyTitle: "Partners for the first cohort are being confirmed.",
     partnersEmptyBody:
       "Companies and industry professionals joining the program will be announced here.",
@@ -305,14 +306,14 @@ export const en = {
     items: {
       "base44-workshop": {
         badge: "Hands-on workshop",
-        title: "Building an AI product: from idea to reality",
-        tagline: "A hands-on workshop with Base44",
+        title: "Hands-on workshop with Base44",
+        tagline: "From an idea to a working AI product",
         date: "23.12.2026 · 18:00",
         venue: "Reichman University",
         body: [
-          "Learn how to turn an idea into a real product with Base44's tools — no code, and fast: get to know the platform, build a live product during the workshop, see real-world examples and practical tips, and learn how to take your idea to the next step.",
+          "A hands-on workshop in collaboration with Base44, where participants will build AI-powered products and applications, from an initial idea to a working product, while exploring the platform's capabilities through practical experience.",
         ],
-        perk: "Limited to 50 selected students",
+        perk: "",
         details: [],
         cta: "Registration opens soon — stay tuned",
         imageAlt: "Future Builders × Base44 hands-on workshop: building an AI product from idea to reality, 23.12 at 18:00, Reichman University",

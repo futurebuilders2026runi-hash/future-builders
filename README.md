@@ -50,12 +50,14 @@ Structural data lives in [src/content/config.ts](src/content/config.ts):
 | Export             | Effect on the site                                                                                   |
 | ------------------ | ---------------------------------------------------------------------------------------------------- |
 | `contact`          | Email, LinkedIn, Instagram and the canonical site URL used by SEO tags                                |
-| `partners`         | **Empty by design.** While empty the Partners block shows "partners being confirmed". Add a company only once the collaboration is signed and they have approved use of their name/logo. |
+| `companyPartners`  | Company/platform logo grid. Add an entry with its name, local official logo, URL and optional optical width; the responsive grid expands automatically. |
+| `partners`         | Community partner profiles and resources, displayed below the company logos. |
+| `clubEvents`       | Event cards with confirmed ISO dates. Only today/future events in Asia/Jerusalem appear, sorted by date; past and undated entries remain in the source. |
 | `projects`         | Empty → Projects shows the "first products are being built" state. Add entries and the grid appears.   |
 | `communityPhotos`  | Empty → labelled placeholder tiles. Add photos (in `/public`) and they become a collage.               |
 | `speakers`         | Empty → the Speakers section is hidden entirely. Add people and it appears with track filters.         |
 
-Partner logos go in `public/partners/`, photos anywhere under `public/`.
+Partner logos go in `public/partners/` (official sources are recorded in `docs/partner-logos.md`), photos anywhere under `public/`.
 
 ### What stays in English on the Hebrew site
 
@@ -167,7 +169,7 @@ Deliberately subtle, and all of it respects `prefers-reduced-motion`:
 - [`<Reveal>`](src/components/Reveal.tsx) — fade + rise on scroll, used everywhere
 - Hero pipeline cycles through Idea → POC on a loop
 - Program timeline rail fills as you scroll (horizontal on desktop, vertical on mobile)
-- Partner logos scroll in a slow marquee once `partners` is populated
+- Partner logo links lift subtly on hover; reduced-motion preferences disable movement
 
 Reveals ship with `opacity:0` inline, so the layout includes a `<noscript>`
 override that makes everything visible without JS.
@@ -204,7 +206,7 @@ These are placeholders written to read sensibly, not confirmed facts:
 4. **"Is the program free?"** — the FAQ answer defers the question. Replace with
    the real answer.
 5. **"When does registration open?"** — same; add the actual dates.
-6. **Partner logos** — intentionally none. See `partners` above.
+6. **Window logo** — currently displayed as text until its official website is identified. See `companyPartners` above.
 
 ## Growing the site (phase 2+)
 

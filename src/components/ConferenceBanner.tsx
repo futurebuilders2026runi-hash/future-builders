@@ -1,9 +1,11 @@
 import Link from "next/link";
 import type { Dict } from "@/content";
 import { conference, type Locale } from "@/content/config";
+import { isUpcomingDate } from "@/lib/events";
 
 /** Slim home-page strip pointing to the Future of AI 2026 conference page. */
 export function ConferenceBanner({ locale, dict }: { locale: Locale; dict: Dict }) {
+  if (!isUpcomingDate(conference.date)) return null;
   const { banner } = dict.conference;
 
   return (
@@ -18,7 +20,6 @@ export function ConferenceBanner({ locale, dict }: { locale: Locale; dict: Dict 
             className="glow -top-16 end-[-4rem] h-40 w-40 bg-accent-bright/30"
           />
           <span className="relative inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-bright shadow-[0_0_10px_2px] shadow-accent-bright/50" />
             <bdi>{banner.badge}</bdi>
           </span>
           <span className="relative text-sm text-white/80 sm:flex-1">{banner.text}</span>

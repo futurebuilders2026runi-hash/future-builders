@@ -2,10 +2,14 @@ import Link from "next/link";
 import { CircuitFlow } from "../CircuitFlow";
 import { Reveal } from "../Reveal";
 import type { Dict } from "@/content";
-import { upcomingEvents, type Locale } from "@/content/config";
+import type { Locale } from "@/content/config";
+import { getUpcomingEvents } from "@/lib/events";
 
 export function Events({ locale, dict }: { locale: Locale; dict: Dict }) {
   const { events } = dict;
+  const upcomingEvents = getUpcomingEvents();
+
+  if (upcomingEvents.length === 0) return null;
 
   return (
     <section id="events" className="section relative overflow-hidden bg-cloud">
@@ -72,7 +76,7 @@ export function Events({ locale, dict }: { locale: Locale; dict: Dict }) {
                         {t.date && (
                           <li className="flex items-center gap-2">
                             <CalendarIcon />
-                            <bdi>{t.date}</bdi>
+                            <time dateTime={event.date}><bdi>{t.date}</bdi></time>
                           </li>
                         )}
                         {t.venue && (
@@ -132,7 +136,7 @@ export function Events({ locale, dict }: { locale: Locale; dict: Dict }) {
                         </CardLink>
                       ) : (
                         <p className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-dashed border-accent/40 bg-accent/5 px-5 py-3 text-sm font-semibold text-brand sm:w-auto">
-                          <span className="h-2 w-2 animate-pulse rounded-full bg-accent" aria-hidden />
+                          <span className="h-2 w-2 rounded-full bg-accent" aria-hidden />
                           {t.cta}
                         </p>
                       )}
