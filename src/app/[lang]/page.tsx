@@ -14,7 +14,7 @@ import { Speakers } from "@/components/sections/Speakers";
 import { Events } from "@/components/sections/Events";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { getDict } from "@/content";
-import { isLocale, type Locale } from "@/content/config";
+import { isLocale, projects, type Locale } from "@/content/config";
 import { RadarHome } from "@/components/radar/RadarHome";
 
 export const dynamic = "force-dynamic";
@@ -39,12 +39,13 @@ export default async function HomePage({
       <Learn dict={dict} />
       <Program dict={dict} />
       <Industry locale={locale} dict={dict} />
+      <Events locale={locale} dict={dict} />
       <DemoDay dict={dict} />
       <Who locale={locale} dict={dict} />
       <Speakers dict={dict} />
       <Community dict={dict} />
-      <Projects dict={dict} />
-      <Events locale={locale} dict={dict} />
+      {/* Hidden until the first project is added to `projects` in content/config.ts */}
+      {projects.length > 0 && <Projects dict={dict} />}
       <RadarHome locale={locale} />
       <FinalCta locale={locale} dict={dict} />
     </>

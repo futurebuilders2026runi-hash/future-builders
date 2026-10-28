@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo, ReichmanLogo } from "./Logo";
 import type { Dict } from "@/content";
-import type { Locale } from "@/content/config";
+import { projects, type Locale } from "@/content/config";
 
 type Props = { locale: Locale; dict: Dict };
 
@@ -40,7 +40,7 @@ export function Header({ locale, dict }: Props) {
     { href: `${home}#about`, label: dict.nav.about },
     { href: `${home}#program`, label: dict.nav.program },
     { href: `${home}#partners`, label: dict.nav.partners },
-    { href: `${home}#projects`, label: dict.nav.projects },
+    ...(projects.length > 0 ? [{ href: `${home}#projects`, label: dict.nav.projects }] : []),
     { href: `${home}#events`, label: dict.nav.events },
     { href: `${home}/ai-radar`, label: dict.nav.aiRadar },
     { href: `/${locale}/companies`, label: dict.nav.forCompanies },

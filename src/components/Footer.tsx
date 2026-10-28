@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo, ReichmanLogo } from "./Logo";
-import { contact } from "@/content/config";
+import { contact, projects } from "@/content/config";
 import type { Dict } from "@/content";
 import type { Locale } from "@/content/config";
 
@@ -10,7 +10,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
   const links = [
     { href: `${home}#about`, label: dict.nav.about },
     { href: `${home}#program`, label: dict.nav.program },
-    { href: `${home}#projects`, label: dict.nav.projects },
+    ...(projects.length > 0 ? [{ href: `${home}#projects`, label: dict.nav.projects }] : []),
     { href: `${home}#partners`, label: dict.nav.partners },
     { href: `${home}/apply`, label: dict.nav.apply },
   ];
