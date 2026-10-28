@@ -121,6 +121,20 @@ export const conference = {
  * Cards in the home page "Upcoming events" section, in display order. Text for
  * each key lives in the dictionaries under `events.items`.
  */
-export const upcomingEvents = [
+export const upcomingEvents: {
+  key: "future-of-ai" | "stripe-community" | "base44-workshop";
+  image: string;
+  /** Internal page (prefixed with the locale) … */
+  path?: string;
+  /** … or an external site, opened in a new tab. */
+  url?: string;
+  /** Which side of the image to keep when a tall card crops it. Default: center. */
+  focus?: "left" | "right";
+  /** Square posters with text everywhere: show the whole image instead of cropping. */
+  poster?: boolean;
+}[] = [
+  // No path/url yet: registration hasn't opened, so the card shows `cta` as a status.
+  { key: "base44-workshop", image: "/events/base44-workshop.jpg", poster: true },
   { key: "future-of-ai", image: conference.ogImage, path: conference.path },
-] as const;
+  { key: "stripe-community", image: "/events/stripe-community-tlv.jpg", url: "https://www.stripecommunity.com/", focus: "left" },
+];
