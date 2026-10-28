@@ -7,15 +7,11 @@ export function PartnerCard({ partner, locale }: { partner: ClubPartner; locale:
   return (
     <article className="partner-resource" aria-labelledby={`partner-${partner.id}`}>
       <div className="partner-resource-person">
-        <span className="partner-resource-monogram" aria-hidden>{partner.monogram}<span>↗</span></span>
-        <div>
-          <p className="partner-resource-eyebrow">{partner.eyebrow[locale]}</p>
-          <h3 id={`partner-${partner.id}`}>{partner.name[locale]}</h3>
-          <p className="partner-resource-role">{partner.role[locale]}</p>
-        </div>
+        <h3 id={`partner-${partner.id}`}>{partner.name[locale]}</h3>
+        <p className="partner-resource-role">{partner.role[locale]}</p>
+        <p className="partner-resource-name" dir="ltr">{partner.resourceName}</p>
       </div>
       <div className="partner-resource-body">
-        <p className="partner-resource-name" dir="ltr">{partner.resourceName}<span aria-hidden>_</span></p>
         <p className="partner-resource-description">{partner.description[locale]}</p>
         {partner.perk && (
           <div className="partner-resource-perk">
@@ -31,7 +27,7 @@ export function PartnerCard({ partner, locale }: { partner: ClubPartner; locale:
           </div>
         )}
         <a href={partner.url} target="_blank" rel="noopener noreferrer" className="partner-resource-link">
-          {partner.cta[locale]}<span aria-hidden>↗</span>
+          {partner.cta[locale]}
         </a>
         {partner.guestNote && <p className="partner-resource-visit">{partner.guestNote[locale]}</p>}
       </div>

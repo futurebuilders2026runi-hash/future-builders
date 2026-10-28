@@ -185,12 +185,12 @@ export const en = {
   },
 
   industry: {
-    eyebrow: "Industry",
-    title: "Built with the industry, not around it.",
+    eyebrow: "Industry & community",
+    title: "Our partners",
     body: [
-      "Future Builders connects students directly with engineers, founders, product leaders and AI experts from the technology industry.",
-      "Sessions throughout the program are designed together with professionals working on real AI products and systems.",
+      "Sessions, workshops and mentorship with companies and industry professionals.",
     ],
+    communityLabel: "From the community",
     partnersLabel: "The companies and platforms we work with",
     partnersMore: "More partners to be announced",
     partnersEmptyTitle: "Partners for the first cohort are being confirmed.",

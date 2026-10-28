@@ -50,14 +50,14 @@ export const partners: ClubPartner[] = [
     monogram: "RL",
     name: { he: "ראובן לרנר", en: "Reuven Lerner" },
     eyebrow: { he: "שותף לקהילה · אורח בהמשך", en: "COMMUNITY PARTNER · FUTURE GUEST" },
-    role: { he: "מדריך Python, מחבר ספרים ושותף לקהילה", en: "Python trainer, author & community partner" },
+    role: { he: "מדריך Python ומחבר ספרים", en: "Python trainer and author" },
     description: {
-      he: "מנה שבועית של Python: הסברים ודוגמאות שיעזרו לכתוב קוד ברור, יעיל ופייתוני יותר. הניוזלטר של ראובן נשלח בכל יום שני, באנגלית.",
-      en: "A weekly dose of Python: explanations and examples to help you write clearer, more efficient, idiomatic code. Reuven's English-language newsletter arrives every Monday.",
+      he: "ניוזלטר שבועי עם הסברים ודוגמאות לכתיבת Python ברורה ויעילה. נשלח בכל יום שני, באנגלית.",
+      en: "A weekly newsletter with explanations and examples for writing clear, effective Python. Sent every Monday, in English.",
     },
     resourceName: "Better Developers",
     url: "https://lernerpython.com/become-a-better-developer/",
-    cta: { he: "להיכרות ולהרשמה לניוזלטר", en: "Explore & subscribe to the newsletter" },
+    cta: { he: "לניוזלטר של ראובן", en: "Read Reuven's newsletter" },
     guestNote: {
       he: "ראובן יתארח בהמשך באחד ממפגשי המועדון. פרטים על המפגש יפורסמו בהמשך.",
       en: "Reuven will join us at a future club session. Session details will be announced later.",

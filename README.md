@@ -169,7 +169,7 @@ Deliberately subtle, and all of it respects `prefers-reduced-motion`:
 - [`<Reveal>`](src/components/Reveal.tsx) — fade + rise on scroll, used everywhere
 - Hero pipeline cycles through Idea → POC on a loop
 - Program timeline rail fills as you scroll (horizontal on desktop, vertical on mobile)
-- Partner logo links lift subtly on hover; reduced-motion preferences disable movement
+- Partner logos use an evenly spaced grid with a subtle opacity change on hover
 
 Reveals ship with `opacity:0` inline, so the layout includes a `<noscript>`
 override that makes everything visible without JS.

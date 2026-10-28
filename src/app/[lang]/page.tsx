@@ -38,8 +38,8 @@ export default async function HomePage({
       <About dict={dict} />
       <Learn dict={dict} />
       <Program dict={dict} />
-      <Industry locale={locale} dict={dict} />
       <Events locale={locale} dict={dict} />
+      <Industry locale={locale} dict={dict} />
       <DemoDay dict={dict} />
       <Who locale={locale} dict={dict} />
       <Speakers dict={dict} />

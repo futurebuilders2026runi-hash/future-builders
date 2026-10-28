@@ -39,9 +39,9 @@ export function Header({ locale, dict }: Props) {
   const links = [
     { href: `${home}#about`, label: dict.nav.about },
     { href: `${home}#program`, label: dict.nav.program },
+    { href: `${home}#events`, label: dict.nav.events },
     { href: `${home}#partners`, label: dict.nav.partners },
     ...(projects.length > 0 ? [{ href: `${home}#projects`, label: dict.nav.projects }] : []),
-    { href: `${home}#events`, label: dict.nav.events },
     { href: `${home}/ai-radar`, label: dict.nav.aiRadar },
     { href: `/${locale}/companies`, label: dict.nav.forCompanies },
   ];
