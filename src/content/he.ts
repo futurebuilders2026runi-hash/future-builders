@@ -60,7 +60,7 @@ export const he: Dict = {
 
   stats: [
     { value: "30-40", label: "סטודנטים נבחרים" },
-    { value: "14", label: "מפגשים" },
+    { value: "12", label: "מפגשים" },
     { value: "סמסטר אחד", label: "מרעיון ל-POC" },
     { value: "Demo Day", label: "הצגת המוצרים הסופית" },
   ],

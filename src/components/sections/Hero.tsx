@@ -28,7 +28,6 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dict }) {
           <div>
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3.5 py-1.5 text-[0.72rem] font-medium text-brand backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_2px] shadow-accent/40" />
                 {hero.badge}
               </span>
             </Reveal>

@@ -99,12 +99,6 @@ export function Projects({ dict }: { dict: Dict }) {
         ) : (
           <Reveal delay={0.12}>
             <div className="mt-5 grid place-items-center rounded-2xl border border-dashed border-line bg-white px-4 py-8 text-center">
-              <span
-                aria-hidden
-                className="mb-4 grid h-12 w-12 place-items-center rounded-full border border-line"
-              >
-                <span className="h-2 w-2 animate-pulse rounded-full bg-linear-to-br from-accent-bright to-accent" />
-              </span>
               <p className="h3 max-w-md">{copy.emptyTitle}</p>
               <p className="mt-3 text-[0.9375rem] text-(--muted-fg)">
                 {copy.emptyBody}

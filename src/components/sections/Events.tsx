@@ -60,7 +60,6 @@ export function Events({ locale, dict }: { locale: Locale; dict: Dict }) {
 
                   <div className="flex flex-col p-5 text-center sm:p-7 md:text-start">
                     <span className="mx-auto inline-flex w-fit items-center gap-2 rounded-full border border-line bg-cloud px-3 py-1 text-xs font-medium text-brand md:mx-0">
-                      <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_2px] shadow-accent/40" />
                       {t.badge}
                     </span>
 
@@ -136,7 +135,6 @@ export function Events({ locale, dict }: { locale: Locale; dict: Dict }) {
                         </CardLink>
                       ) : (
                         <p className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-dashed border-accent/40 bg-accent/5 px-5 py-3 text-sm font-semibold text-brand sm:w-auto">
-                          <span className="h-2 w-2 rounded-full bg-accent" aria-hidden />
                           {t.cta}
                         </p>
                       )}

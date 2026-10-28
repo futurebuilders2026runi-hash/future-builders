@@ -629,6 +629,15 @@ button.radar-tag:hover { border-color: var(--color-accent); color: var(--color-a
 .partner-resource-link:hover { background: #ffe6af; }
 .partner-resource-link:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
 .partner-resource-visit { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #ffffff24; font-size: .72rem; line-height: 1.8; color: #b9cddd; }
+.partner-resource-perk { margin-top: 1.2rem; max-width: 35rem; padding: 1rem 1.1rem; border: 1px dashed #f7d48980; border-radius: .75rem; background: #f7d4890f; }
+.partner-resource-perk > p { font-size: .9rem; line-height: 1.6; color: #fff; }
+.partner-resource-perk strong { margin-inline-end: .35rem; color: #f7d489; font-size: 1.6rem; font-weight: 600; letter-spacing: -.02em; vertical-align: -.1em; }
+.partner-resource-perk-code { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .75rem; font-size: .78rem; color: #b9cddd; }
+.partner-resource-code { display: inline-flex; align-items: center; gap: .75rem; padding: .4rem .5rem .4rem .75rem; border: 1px solid #ffffff35; border-radius: .45rem; background: #ffffff0d; color: #fff; cursor: pointer; transition: border-color .2s; }
+.partner-resource-code:hover { border-color: #f7d489; }
+.partner-resource-code:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.partner-resource-code code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; letter-spacing: .02em; }
+.partner-resource-code span { padding: .15rem .45rem; border-radius: .3rem; background: #f7d489; color: #102440; font-size: .7rem; font-weight: 600; }
 @media (max-width:700px) {
   .partner-resource { grid-template-columns: minmax(0,1fr); gap: 1.8rem; }
   .partner-resource-person { gap: 1rem; }

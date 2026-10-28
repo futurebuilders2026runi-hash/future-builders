@@ -58,7 +58,7 @@ export const en = {
 
   stats: [
     { value: "30–40", label: "Selected students" },
-    { value: "14", label: "Sessions" },
+    { value: "12", label: "Sessions" },
     { value: "1 semester", label: "From idea to POC" },
     { value: "Demo Day", label: "Final product showcase" },
   ],

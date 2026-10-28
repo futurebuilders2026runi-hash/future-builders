@@ -25,31 +25,67 @@ export const contact = {
 
 export type ClubPartner = {
   id: string;
+  /** Initials shown in place of a photo or logo. */
+  monogram: string;
   name: Record<Locale, string>;
+  eyebrow: Record<Locale, string>;
   role: Record<Locale, string>;
   description: Record<Locale, string>;
   resourceName: string;
   url: string;
-  guestNote: Record<Locale, string>;
+  cta: Record<Locale, string>;
+  /**
+   * A members-only benefit. Kept as structured data so a future
+   * "Community benefits" area can list every partner that has one.
+   */
+  perk?: { value: string; label: Record<Locale, string>; code?: string };
+  guestNote?: Record<Locale, string>;
 };
 
 // Partnerships announced with the club's explicit authorization. Newsletter
 // details checked against LernerPython; the future visit has no scheduled date.
-export const partners: ClubPartner[] = [{
-  id: "reuven-lerner",
-  name: { he: "ראובן לרנר", en: "Reuven Lerner" },
-  role: { he: "מדריך Python, מחבר ספרים ושותף לקהילה", en: "Python trainer, author & community partner" },
-  description: {
-    he: "מנה שבועית של Python: הסברים ודוגמאות שיעזרו לכתוב קוד ברור, יעיל ופייתוני יותר. הניוזלטר של ראובן נשלח בכל יום שני, באנגלית.",
-    en: "A weekly dose of Python: explanations and examples to help you write clearer, more efficient, idiomatic code. Reuven's English-language newsletter arrives every Monday.",
+export const partners: ClubPartner[] = [
+  {
+    id: "reuven-lerner",
+    monogram: "RL",
+    name: { he: "ראובן לרנר", en: "Reuven Lerner" },
+    eyebrow: { he: "שותף לקהילה · אורח בהמשך", en: "COMMUNITY PARTNER · FUTURE GUEST" },
+    role: { he: "מדריך Python, מחבר ספרים ושותף לקהילה", en: "Python trainer, author & community partner" },
+    description: {
+      he: "מנה שבועית של Python: הסברים ודוגמאות שיעזרו לכתוב קוד ברור, יעיל ופייתוני יותר. הניוזלטר של ראובן נשלח בכל יום שני, באנגלית.",
+      en: "A weekly dose of Python: explanations and examples to help you write clearer, more efficient, idiomatic code. Reuven's English-language newsletter arrives every Monday.",
+    },
+    resourceName: "Better Developers",
+    url: "https://lernerpython.com/become-a-better-developer/",
+    cta: { he: "להיכרות ולהרשמה לניוזלטר", en: "Explore & subscribe to the newsletter" },
+    guestNote: {
+      he: "ראובן יתארח בהמשך באחד ממפגשי המועדון. פרטים על המפגש יפורסמו בהמשך.",
+      en: "Reuven will join us at a future club session. Session details will be announced later.",
+    },
   },
-  resourceName: "Better Developers",
-  url: "https://lernerpython.com/become-a-better-developer/",
-  guestNote: {
-    he: "ראובן יתארח בהמשך באחד ממפגשי המועדון. פרטים על המפגש יפורסמו בהמשך.",
-    en: "Reuven will join us at a future club session. Session details will be announced later.",
+  {
+    id: "itay-hacmon",
+    monogram: "IH",
+    name: { he: "איתי חכמון", en: "Itay Hacmon" },
+    eyebrow: { he: "שותף לקהילה · הטבה לחברי הקהילה", en: "COMMUNITY PARTNER · MEMBER BENEFIT" },
+    role: {
+      he: "מייסד Impact with AI. מומחה לבניית מערכות AI ואוטומציות, מרצה ומלווה חברות בהטמעת פתרונות AI מתקדמים.",
+      en: "Founder of Impact with AI. An expert in building AI systems and automations, a lecturer, and an advisor helping companies adopt advanced AI solutions.",
+    },
+    description: {
+      he: "במסגרת שיתוף הפעולה עם Future Builders, חברי הקהילה נהנים מהנחה בלעדית של 30% לסדנת Claude Code המעשית של איתי.",
+      en: "As part of the partnership with Future Builders, community members get an exclusive 30% discount on Itay's hands-on Claude Code workshop.",
+    },
+    resourceName: "Impact with AI",
+    url: "https://impact-with.ai/he/claude-code-workshop",
+    cta: { he: "לסדנה ולהטבה", en: "To the workshop & discount" },
+    perk: {
+      value: "30%",
+      label: { he: "הנחה לסדנת Claude Code", en: "off the Claude Code workshop" },
+      code: "future-builders30",
+    },
   },
-}];
+];
 
 export type CompanyPartner = {
   id: string;
