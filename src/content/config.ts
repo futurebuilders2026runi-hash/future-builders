@@ -20,7 +20,7 @@ export const contact = {
   whatsapp: "https://wa.me/972587878676",
   linkedin: "https://www.linkedin.com/",
   instagram: "https://www.instagram.com/",
-  siteUrl: "https://futurebuilders.ai",
+  siteUrl: "https://www.future-builders.club",
 };
 
 export type ClubPartner = {
