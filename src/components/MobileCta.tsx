@@ -17,7 +17,7 @@ export function MobileCta({ locale, label }: { locale: Locale; label: string }) 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname.endsWith("/apply") || pathname.includes("/admin") || pathname.includes("/ai-radar")) return null;
+  if (pathname.endsWith("/apply") || pathname.includes("/admin") || pathname.includes("/ai-radar") || pathname.endsWith("/base44-workshop")) return null;
 
   return (
     <div

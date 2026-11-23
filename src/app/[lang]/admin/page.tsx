@@ -5,11 +5,14 @@ import { notFound } from "next/navigation";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { AdminControls } from "@/components/admin/AdminControls";
 import { LinkStatsPanel } from "@/components/admin/LinkStatsPanel";
+import { WorkshopRegistrationsPanel } from "@/components/admin/WorkshopRegistrationsPanel";
 import { getDict, isLocale } from "@/content";
 import { degreeValues, yearValues, type ApplicationRecord } from "@/lib/application-schema";
 import { adminConfigured, isAdmin } from "@/lib/admin-auth";
 import { listApplications } from "@/lib/applications";
 import { getLinkStats, type LinkStats } from "@/lib/link-events";
+import { listWorkshopRegistrations } from "@/lib/workshop-registrations";
+import type { WorkshopRecord } from "@/lib/workshop-schema";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,8 +31,15 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
   let applications: ApplicationRecord[] = [];
   let loadError = false;
   let linkStats: LinkStats | null = null;
+  let workshopRegs: WorkshopRecord[] | null = null;
   if (authenticated) {
-    const [apps, stats] = await Promise.allSettled([listApplications(), getLinkStats("future-of-ai")]);
+    const [apps, stats, workshop] = await Promise.allSettled([
+      listApplications(),
+      getLinkStats("future-of-ai"),
+      listWorkshopRegistrations(),
+    ]);
+    if (workshop.status === "fulfilled") workshopRegs = workshop.value;
+    else console.error("[future-builders] failed to load workshop registrations", workshop.reason);
     if (apps.status === "fulfilled") applications = apps.value;
     else {
       loadError = true;
@@ -55,6 +65,7 @@ export default async function AdminPage({ params }: { params: Promise<{ lang: st
           {authenticated && <div className="flex flex-wrap gap-3"><Link className="btn btn-primary" href={`/${lang}/admin/ai-radar`}>{radarCopy[lang].adminLink}</Link><AdminControls dict={dict} /></div>}
         </div>
 
+        {authenticated && <WorkshopRegistrationsPanel dict={dict} locale={lang} registrations={workshopRegs} />}
         {authenticated && <LinkStatsPanel dict={dict} locale={lang} stats={linkStats} />}
 
         {!authenticated ? <AdminLogin dict={dict} configured={adminConfigured()} /> : loadError ? (

@@ -4,7 +4,7 @@ import { radarSitemapItems } from "@/lib/radar/data";
 
 export const dynamic = "force-dynamic";
 
-const ROUTES = ["", "/apply", "/companies", "/future-of-ai", "/ai-radar"];
+const ROUTES = ["", "/apply", "/companies", "/future-of-ai", "/ai-radar", "/base44-workshop"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const content = await radarSitemapItems();

@@ -194,8 +194,7 @@ export type ClubEvent = {
 };
 
 export const clubEvents: ClubEvent[] = [
-  // No path/url yet: registration hasn't opened, so the card shows `cta` as a status.
-  { key: "base44-workshop", date: "2026-12-23", image: "/events/base44-workshop.jpg", poster: true },
+  { key: "base44-workshop", date: "2026-12-23", image: "/events/base44-workshop.jpg", path: "/base44-workshop", poster: true },
   { key: "future-of-ai", date: conference.date, image: conference.ogImage, path: conference.path },
   { key: "stripe-community", image: "/events/stripe-community-tlv.jpg", url: "https://www.stripecommunity.com/", focus: "left" },
 ];
