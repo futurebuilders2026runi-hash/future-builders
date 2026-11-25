@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { saveApplication } from "@/lib/applications";
 import { validateApplication } from "@/lib/application-schema";
+import { clubApplicationsOpen } from "@/content/config";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  if (!clubApplicationsOpen) {
+    return NextResponse.json({ error: "applications_closed" }, { status: 403 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();

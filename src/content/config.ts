@@ -198,3 +198,10 @@ export const clubEvents: ClubEvent[] = [
   { key: "future-of-ai", date: conference.date, image: conference.ogImage, path: conference.path },
   { key: "stripe-community", image: "/events/stripe-community-tlv.jpg", url: "https://www.stripecommunity.com/", focus: "left" },
 ];
+
+/**
+ * Club applications. While false, /apply shows a "registration opens soon"
+ * notice instead of the form and /api/apply rejects submissions. Set to true
+ * when registration opens (end of February 2027).
+ */
+export const clubApplicationsOpen = false;

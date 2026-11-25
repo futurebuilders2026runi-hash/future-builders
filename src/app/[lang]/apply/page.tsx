@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CircuitCorner, Waves } from "@/components/BrandDecor";
 import { CircuitFlow } from "@/components/CircuitFlow";
 import { ApplyForm } from "@/components/forms/ApplyForm";
 import { Reveal } from "@/components/Reveal";
 import { getDict } from "@/content";
-import { isLocale, type Locale } from "@/content/config";
+import { clubApplicationsOpen, isLocale, type Locale } from "@/content/config";
 
 export async function generateMetadata({
   params,
@@ -45,7 +46,8 @@ export default async function ApplyPage({
           <Reveal>
             <p className="eyebrow">{dict.apply.eyebrow}</p>
             <h1 className="h1 mx-auto mt-3 max-w-3xl text-brand md:mx-0">{dict.apply.title}</h1>
-            <p className="lede mx-auto mt-4 max-w-xl md:mx-0">{dict.apply.body}</p>
+            {/* "Applications are reviewed on a rolling basis" — only true while open */}
+            {clubApplicationsOpen && <p className="lede mx-auto mt-4 max-w-xl md:mx-0">{dict.apply.body}</p>}
           </Reveal>
         </div>
       </section>
@@ -53,7 +55,23 @@ export default async function ApplyPage({
       <section className="section relative overflow-hidden bg-cloud">
         <CircuitFlow variant={3} />
         <div className="shell relative max-w-3xl">
-          <ApplyForm locale={locale} dict={dict} />
+          {clubApplicationsOpen ? (
+            <ApplyForm locale={locale} dict={dict} />
+          ) : (
+            <div className="rounded-2xl border border-line bg-white p-6 text-center sm:p-8">
+              <p className="eyebrow justify-center">{dict.apply.eyebrow}</p>
+              <h2 className="h2 mt-3">{dict.apply.closedTitle}</h2>
+              <p className="lede mx-auto mt-4 max-w-lg">{dict.apply.closedBody}</p>
+              <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+                <Link href={`/${locale}/base44-workshop`} className="btn btn-primary">
+                  {dict.apply.closedWorkshop}
+                </Link>
+                <Link href={`/${locale}`} className="btn btn-ghost">
+                  {dict.apply.closedHome}
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>

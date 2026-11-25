@@ -17,6 +17,7 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [participation, setParticipation] = useState<Participation>("solo");
+  const [ideaMode, setIdeaMode] = useState<"own" | "pool">("own");
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,7 +45,18 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries());
+    const { poolIdea, ...data } = Object.fromEntries(new FormData(form).entries());
+
+    // A pool pick is saved as the idea text, labelled so the admin can tell it apart.
+    if (ideaMode === "pool") {
+      if (typeof poolIdea !== "string" || !poolIdea) {
+        setStatus("error");
+        setMessage(f.ideaPoolError);
+        form.querySelector<HTMLInputElement>('input[name="poolIdea"]')?.focus();
+        return;
+      }
+      data.idea = `${f.ideaPoolPrefix}: ${poolIdea}`;
+    }
 
     const validation = validateWorkshop({ ...data, locale });
     if (validation.error) {
@@ -171,7 +183,56 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       <fieldset className="mt-6" disabled={status === "sending"}>
         <legend className="eyebrow mx-auto mb-3 md:mx-0">{t.sections.questions}</legend>
         <div className="grid gap-3">
-          <TextArea id="idea" name="idea" label={f.idea} placeholder={f.ideaPlaceholder} required rows={4} maxLength={workshopLimits.idea} />
+          <div>
+            <p className="field-label">{f.idea}</p>
+            <div className="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label={f.idea}>
+              {(["own", "pool"] as const).map((value) => (
+                <label
+                  key={value}
+                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-line px-4 py-3 text-sm font-medium text-brand transition-colors has-checked:border-accent has-checked:bg-accent/8"
+                >
+                  <input
+                    type="radio"
+                    name="ideaMode"
+                    value={value}
+                    checked={ideaMode === value}
+                    onChange={() => setIdeaMode(value)}
+                    className="h-4 w-4 accent-(--color-accent)"
+                  />
+                  {f.ideaMode[value]}
+                </label>
+              ))}
+            </div>
+
+            {ideaMode === "own" ? (
+              <div className="mt-3">
+                <TextArea id="idea" name="idea" label={f.ideaOwnLabel} placeholder={f.ideaPlaceholder} required rows={4} maxLength={workshopLimits.idea} />
+              </div>
+            ) : (
+              <fieldset className="mt-3">
+                <legend className="field-label">{f.ideaPoolLabel}</legend>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {f.ideaPool.map((idea) => (
+                    <label
+                      key={idea.title}
+                      className="flex cursor-pointer gap-3 rounded-xl border border-line p-3 text-start transition-colors has-checked:border-accent has-checked:bg-accent/8"
+                    >
+                      <input type="radio" name="poolIdea" value={idea.title} className="mt-1 h-4 w-4 shrink-0 accent-(--color-accent)" />
+                      <span className="min-w-0">
+                        <span className="block font-semibold text-brand">{idea.title}</span>
+                        <span className="mt-1 block text-sm leading-relaxed text-(--muted-fg)">{idea.body}</span>
+                        {idea.build && (
+                          <span className="mt-1 block text-xs leading-relaxed text-(--muted-fg)">
+                            <span className="font-semibold text-brand">{f.ideaPoolBuild}</span> {idea.build}
+                          </span>
+                        )}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            )}
+          </div>
           <TextArea id="aiDaily" name="aiDaily" label={f.aiDaily} placeholder={f.aiDailyPlaceholder} required rows={4} maxLength={workshopLimits.aiDaily} />
         </div>
       </fieldset>
