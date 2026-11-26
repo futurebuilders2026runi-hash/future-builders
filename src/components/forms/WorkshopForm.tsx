@@ -3,8 +3,15 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Text, TextArea } from "./Fields";
-import { validateWorkshop, workshopLimits, type Participation, type WorkshopError } from "@/lib/workshop-schema";
+import { Select, Text, TextArea } from "./Fields";
+import {
+  validateWorkshop,
+  workshopDegreeValues,
+  workshopLimits,
+  workshopYearValues,
+  type Participation,
+  type WorkshopError,
+} from "@/lib/workshop-schema";
 import { contact } from "@/content/config";
 import type { Dict } from "@/content";
 import type { Locale } from "@/content/config";
@@ -37,6 +44,8 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       missing_team: t.teamError,
       invalid_email: t.emailError,
       invalid_phone: t.phoneError,
+      invalid_degree: t.degreeError,
+      invalid_year: t.yearError,
       field_too_long: t.lengthError,
     };
     return messages[error as WorkshopError] ?? "";
@@ -140,6 +149,22 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
           </div>
           <Text id="phone" name="phone" type="tel" label={f.phone} required dir="ltr" maxLength={workshopLimits.phone} />
           <Text id="email" name="email" type="email" label={f.email} required dir="ltr" maxLength={workshopLimits.email} />
+          <Select
+            id="degree"
+            name="degree"
+            label={f.degree}
+            options={workshopDegreeValues.map((value, i) => ({ value, label: f.degreeOptions[i] }))}
+            placeholder={f.degreePlaceholder}
+            required
+          />
+          <Select
+            id="year"
+            name="year"
+            label={f.year}
+            options={workshopYearValues.map((value, i) => ({ value, label: f.yearOptions[i] }))}
+            placeholder={f.yearPlaceholder}
+            required
+          />
         </div>
       </fieldset>
 

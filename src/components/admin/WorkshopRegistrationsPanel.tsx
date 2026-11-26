@@ -1,6 +1,6 @@
 import type { Dict } from "@/content";
 import type { Locale } from "@/content/config";
-import type { WorkshopRecord } from "@/lib/workshop-schema";
+import { workshopDegreeValues, workshopYearValues, type WorkshopRecord } from "@/lib/workshop-schema";
 
 const SEATS = 50;
 
@@ -64,13 +64,16 @@ export function WorkshopRegistrationsPanel({
             <div className="mt-4 grid gap-2">
               {registrations.map((r) => {
                 const date = new Date(r.submittedAt);
+                // Registrations from before 26.11.2026 have no track or year.
+                const degree = f.degreeOptions[workshopDegreeValues.indexOf(r.degree)] ?? "—";
+                const year = f.yearOptions[workshopYearValues.indexOf(r.year)] ?? "—";
                 return (
                   <details key={r.id} className="rounded-xl border border-line">
                     <summary className="cursor-pointer rounded-xl p-3 focus-visible:outline-2 focus-visible:outline-accent sm:p-4">
                       <span className="ms-2 inline-flex max-w-full flex-col gap-1 align-middle">
                         <span className="font-semibold text-brand">{r.fullName}</span>
                         <span className="text-xs text-(--muted-fg)">
-                          {r.participation === "team" ? t.team : t.solo} ·{" "}
+                          {degree} · {year} · {r.participation === "team" ? t.team : t.solo} ·{" "}
                           {Number.isNaN(date.getTime()) ? "—" : formatter.format(date)}
                         </span>
                       </span>

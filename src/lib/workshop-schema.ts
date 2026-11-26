@@ -1,6 +1,12 @@
 /** Registration for the Base44 hands-on workshop (23.12.2026). Shared by the form and the API. */
 
+import { degreeValues } from "./application-schema";
+
 export const WORKSHOP_ID = "base44-2026-12";
+
+/** The club's four Computer Science tracks, plus anyone from elsewhere. */
+export const workshopDegreeValues = [...degreeValues, "other"] as const;
+export const workshopYearValues = ["1", "2", "3"] as const;
 
 export const participationValues = ["solo", "team"] as const;
 export type Participation = (typeof participationValues)[number];
@@ -9,6 +15,8 @@ export type WorkshopData = {
   fullName: string;
   phone: string;
   email: string;
+  degree: (typeof workshopDegreeValues)[number];
+  year: (typeof workshopYearValues)[number];
   participation: Participation;
   /** Teammates' names; empty when coming solo. */
   teamMembers: string;
@@ -28,12 +36,16 @@ export type WorkshopError =
   | "missing_team"
   | "invalid_email"
   | "invalid_phone"
+  | "invalid_degree"
+  | "invalid_year"
   | "field_too_long";
 
 export const workshopLimits = {
   fullName: 120,
   phone: 30,
   email: 254,
+  degree: 100,
+  year: 10,
   participation: 10,
   teamMembers: 1000,
   idea: 4000,
@@ -63,6 +75,9 @@ export function validateWorkshop(body: unknown):
   }
   if (fields.participation === "team" && !fields.teamMembers) return { error: "missing_team" };
   if (fields.participation === "solo") fields.teamMembers = "";
+
+  if (!workshopDegreeValues.includes(fields.degree as WorkshopData["degree"])) return { error: "invalid_degree" };
+  if (!workshopYearValues.includes(fields.year as WorkshopData["year"])) return { error: "invalid_year" };
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return { error: "invalid_email" };
   const digits = fields.phone.replace(/\D/g, "");

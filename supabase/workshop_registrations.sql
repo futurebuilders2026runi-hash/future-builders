@@ -14,6 +14,11 @@ create table if not exists public.workshop_registrations (
   "submittedAt" timestamptz not null default now()
 );
 
+-- Added 26.11.2026: study year and track.
+alter table public.workshop_registrations
+  add column if not exists degree text,
+  add column if not exists year text;
+
 create index if not exists workshop_registrations_workshop_idx
   on public.workshop_registrations (workshop, "submittedAt" desc);
 
