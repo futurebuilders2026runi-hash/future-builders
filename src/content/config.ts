@@ -19,7 +19,7 @@ export const contact = {
   email: "futurebuilders@post.runi.ac.il",
   whatsapp: "https://wa.me/972587878676",
   linkedin: "https://www.linkedin.com/",
-  instagram: "https://www.instagram.com/",
+  instagram: "https://www.instagram.com/future.builders.runi/",
   siteUrl: "https://www.future-builders.club",
 };
 

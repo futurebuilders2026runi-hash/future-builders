@@ -153,9 +153,15 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
         </span>
         <h2 className="h2">{t.successTitle}</h2>
         <p className="lede mx-auto mt-3 max-w-md">{t.successBody}</p>
-        <Link href={`/${locale}`} className="btn btn-ghost mt-5">
-          {t.successCta}
-        </Link>
+        <p className="mx-auto mt-5 max-w-md font-medium text-brand">{t.successFollow}</p>
+        <div className="mt-4 flex flex-col justify-center gap-3 sm:flex-row">
+          <a href={contact.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            {t.successInstagram}
+          </a>
+          <Link href={`/${locale}`} className="btn btn-ghost">
+            {t.successCta}
+          </Link>
+        </div>
       </motion.div>
     );
   }
