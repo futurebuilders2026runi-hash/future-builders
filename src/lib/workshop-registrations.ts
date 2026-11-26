@@ -3,7 +3,14 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { appendFile, mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { WORKSHOP_ID, type WorkshopData, type WorkshopRecord } from "./workshop-schema";
+import {
+  WORKSHOP_ID,
+  poolIdeaIds,
+  type PoolIdeaId,
+  type PoolIdeaUsage,
+  type WorkshopData,
+  type WorkshopRecord,
+} from "./workshop-schema";
 
 // Same storage rules as club applications (see applications.ts): Supabase when
 // configured, a local file only in development.
@@ -24,8 +31,9 @@ function storageConfig() {
 const localFile = () => path.join(process.cwd(), ".data", "workshop-registrations.jsonl");
 
 export async function saveWorkshopRegistration(data: WorkshopData): Promise<void> {
-  const record: WorkshopRecord = {
+  const record = {
     ...data,
+    poolIdea: data.poolIdea || null,
     id: randomUUID(),
     workshop: WORKSHOP_ID,
     submittedAt: new Date().toISOString(),
@@ -43,6 +51,23 @@ export async function saveWorkshopRegistration(data: WorkshopData): Promise<void
   }
   await mkdir(path.dirname(localFile()), { recursive: true, mode: 0o700 });
   await appendFile(localFile(), `${JSON.stringify(record)}\n`, { mode: 0o600 });
+}
+
+/**
+ * How many registrations picked each pool idea, oldest first, with first names
+ * only — this is shown on the public form ("you'll join Dana's team").
+ */
+export async function getPoolIdeaUsage(): Promise<PoolIdeaUsage> {
+  const usage: PoolIdeaUsage = {};
+  const records = (await listWorkshopRegistrations()).slice().reverse();
+  for (const r of records) {
+    const id = r.poolIdea as PoolIdeaId | null | undefined;
+    if (!id || !poolIdeaIds.includes(id)) continue;
+    const entry = (usage[id] ??= { count: 0, names: [] });
+    entry.count += 1;
+    entry.names.push(r.fullName.trim().split(/\s+/)[0] ?? "");
+  }
+  return usage;
 }
 
 export async function listWorkshopRegistrations(): Promise<WorkshopRecord[]> {

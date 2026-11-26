@@ -5,11 +5,13 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Select, Text, TextArea } from "./Fields";
 import {
+  POOL_IDEA_CAPACITY,
   validateWorkshop,
   workshopDegreeValues,
   workshopLimits,
   workshopYearValues,
   type Participation,
+  type PoolIdeaUsage,
   type WorkshopError,
 } from "@/lib/workshop-schema";
 import { contact } from "@/content/config";
@@ -25,6 +27,25 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
   const [message, setMessage] = useState("");
   const [participation, setParticipation] = useState<Participation>("solo");
   const [ideaMode, setIdeaMode] = useState<"own" | "pool">("own");
+  const [poolPick, setPoolPick] = useState("");
+  const [usage, setUsage] = useState<PoolIdeaUsage | null>(null);
+
+  async function loadUsage() {
+    try {
+      const res = await fetch("/api/workshop/ideas", { cache: "no-store" });
+      if (res.ok) setUsage(await res.json());
+    } catch {
+      // Without availability data every idea stays selectable; the server still enforces the limit.
+      setUsage({});
+    }
+  }
+
+  useEffect(() => {
+    if (ideaMode === "pool" && usage === null) loadUsage();
+  }, [ideaMode, usage]);
+
+  const taken = (id: string) => usage?.[id as keyof PoolIdeaUsage];
+  const pickedTaken = poolPick ? taken(poolPick) : undefined;
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,6 +67,7 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
       invalid_phone: t.phoneError,
       invalid_degree: t.degreeError,
       invalid_year: t.yearError,
+      idea_full: f.ideaFullError,
       field_too_long: t.lengthError,
     };
     return messages[error as WorkshopError] ?? "";
@@ -55,16 +77,19 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
     event.preventDefault();
     const form = event.currentTarget;
     const { poolIdea, ...data } = Object.fromEntries(new FormData(form).entries());
+    data.poolIdea = "";
 
-    // A pool pick is saved as the idea text, labelled so the admin can tell it apart.
+    // A pool pick is saved by id (for the 3-per-idea limit) and as labelled idea text for the admin.
     if (ideaMode === "pool") {
-      if (typeof poolIdea !== "string" || !poolIdea) {
+      const idea = f.ideaPool.find((item) => item.id === poolIdea);
+      if (!idea) {
         setStatus("error");
         setMessage(f.ideaPoolError);
         form.querySelector<HTMLInputElement>('input[name="poolIdea"]')?.focus();
         return;
       }
-      data.idea = `${f.ideaPoolPrefix}: ${poolIdea}`;
+      data.idea = `${f.ideaPoolPrefix}: ${idea.title}`;
+      data.poolIdea = idea.id;
     }
 
     const validation = validateWorkshop({ ...data, locale });
@@ -92,6 +117,10 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
         const result = await res.json().catch(() => ({}));
         setStatus("error");
         setMessage(errorMessage(String(result.error)));
+        if (result.error === "idea_full") {
+          setPoolPick("");
+          loadUsage();
+        }
         return;
       }
       setStatus("sent");
@@ -237,14 +266,38 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
               <fieldset className="mt-3">
                 <legend className="field-label">{f.ideaPoolLabel}</legend>
                 <div className="grid gap-2 sm:grid-cols-2">
-                  {f.ideaPool.map((idea) => (
+                  {f.ideaPool.map((idea) => {
+                    const count = taken(idea.id)?.count ?? 0;
+                    const full = count >= POOL_IDEA_CAPACITY;
+                    return (
                     <label
-                      key={idea.title}
-                      className="flex cursor-pointer gap-3 rounded-xl border border-line p-3 text-start transition-colors has-checked:border-accent has-checked:bg-accent/8"
+                      key={idea.id}
+                      className={`flex gap-3 rounded-xl border border-line p-3 text-start transition-colors has-checked:border-accent has-checked:bg-accent/8 ${
+                        full ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                      }`}
                     >
-                      <input type="radio" name="poolIdea" value={idea.title} className="mt-1 h-4 w-4 shrink-0 accent-(--color-accent)" />
-                      <span className="min-w-0">
-                        <span className="block font-semibold text-brand">{idea.title}</span>
+                      <input
+                        type="radio"
+                        name="poolIdea"
+                        value={idea.id}
+                        checked={poolPick === idea.id}
+                        onChange={() => setPoolPick(idea.id)}
+                        disabled={full}
+                        className="mt-1 h-4 w-4 shrink-0 accent-(--color-accent)"
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+                          <span className="font-semibold text-brand">{idea.title}</span>
+                          {count > 0 && (
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[0.6875rem] font-semibold ${
+                                full ? "bg-cloud text-(--muted-fg)" : "bg-accent/10 text-accent"
+                              }`}
+                            >
+                              {full ? f.ideaPoolFull : f.ideaPoolSpots.replace("{n}", String(count))}
+                            </span>
+                          )}
+                        </span>
                         <span className="mt-1 block text-sm leading-relaxed text-(--muted-fg)">{idea.body}</span>
                         {idea.build && (
                           <span className="mt-1 block text-xs leading-relaxed text-(--muted-fg)">
@@ -253,8 +306,15 @@ export function WorkshopForm({ locale, dict }: { locale: Locale; dict: Dict }) {
                         )}
                       </span>
                     </label>
-                  ))}
+                    );
+                  })}
                 </div>
+                {usage === null && <p className="mt-2 text-sm text-(--muted-fg)">{f.ideaPoolLoading}</p>}
+                {pickedTaken && pickedTaken.count > 0 && (
+                  <p role="status" className="mt-3 rounded-xl border border-accent/30 bg-accent/5 px-4 py-3 text-sm font-medium text-brand">
+                    {f.ideaPoolJoin.replace("{names}", pickedTaken.names.join(locale === "he" ? " ו" : " & "))}
+                  </p>
+                )}
               </fieldset>
             )}
           </div>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { saveWorkshopRegistration } from "@/lib/workshop-registrations";
-import { validateWorkshop } from "@/lib/workshop-schema";
+import { getPoolIdeaUsage, saveWorkshopRegistration } from "@/lib/workshop-registrations";
+import { POOL_IDEA_CAPACITY, validateWorkshop } from "@/lib/workshop-schema";
 
 export const runtime = "nodejs";
 
@@ -18,6 +18,11 @@ export async function POST(request: Request) {
   }
 
   try {
+    // Re-check on the server: the form's view of free seats may be stale.
+    const { poolIdea } = validation.data;
+    if (poolIdea && ((await getPoolIdeaUsage())[poolIdea]?.count ?? 0) >= POOL_IDEA_CAPACITY) {
+      return NextResponse.json({ error: "idea_full" }, { status: 409 });
+    }
     await saveWorkshopRegistration(validation.data);
   } catch (error) {
     console.error("[future-builders] failed to save workshop registration", error);

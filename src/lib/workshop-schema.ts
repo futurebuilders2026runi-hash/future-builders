@@ -8,6 +8,20 @@ export const WORKSHOP_ID = "base44-2026-12";
 export const workshopDegreeValues = [...degreeValues, "other"] as const;
 export const workshopYearValues = ["1", "2", "3"] as const;
 
+/**
+ * Idea-pool ids, in display order. Each dictionary's `workshop.fields.ideaPool`
+ * lists the same ids. Up to POOL_IDEA_CAPACITY registrations can share one.
+ */
+export const poolIdeaIds = [
+  "trip", "secondhand", "food", "summaries", "roommates", "rides",
+  "lostfound", "scheduler", "lending", "recipes", "workout",
+] as const;
+export type PoolIdeaId = (typeof poolIdeaIds)[number];
+export const POOL_IDEA_CAPACITY = 3;
+
+/** Per pool idea: how many picked it, and their first names (all that's shown publicly). */
+export type PoolIdeaUsage = Partial<Record<PoolIdeaId, { count: number; names: string[] }>>;
+
 export const participationValues = ["solo", "team"] as const;
 export type Participation = (typeof participationValues)[number];
 
@@ -21,6 +35,8 @@ export type WorkshopData = {
   /** Teammates' names; empty when coming solo. */
   teamMembers: string;
   idea: string;
+  /** Pool idea id, or "" for an idea of their own. */
+  poolIdea: PoolIdeaId | "";
   aiDaily: string;
   locale: "he" | "en";
 };
@@ -38,6 +54,7 @@ export type WorkshopError =
   | "invalid_phone"
   | "invalid_degree"
   | "invalid_year"
+  | "idea_full"
   | "field_too_long";
 
 export const workshopLimits = {
@@ -49,6 +66,7 @@ export const workshopLimits = {
   participation: 10,
   teamMembers: 1000,
   idea: 4000,
+  poolIdea: 20,
   aiDaily: 4000,
 } as const;
 
@@ -66,7 +84,7 @@ export function validateWorkshop(body: unknown):
     if (raw !== undefined && typeof raw !== "string") return { error: "missing_fields" };
     const value = typeof raw === "string" ? raw.trim() : "";
     if (value.length > limit) return { error: "field_too_long" };
-    if (!value && key !== "teamMembers") return { error: "missing_fields" };
+    if (!value && key !== "teamMembers" && key !== "poolIdea") return { error: "missing_fields" };
     fields[key] = value;
   }
 
@@ -75,6 +93,8 @@ export function validateWorkshop(body: unknown):
   }
   if (fields.participation === "team" && !fields.teamMembers) return { error: "missing_team" };
   if (fields.participation === "solo") fields.teamMembers = "";
+
+  if (fields.poolIdea && !poolIdeaIds.includes(fields.poolIdea as PoolIdeaId)) return { error: "missing_fields" };
 
   if (!workshopDegreeValues.includes(fields.degree as WorkshopData["degree"])) return { error: "invalid_degree" };
   if (!workshopYearValues.includes(fields.year as WorkshopData["year"])) return { error: "invalid_year" };
